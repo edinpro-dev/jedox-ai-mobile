@@ -1,0 +1,5 @@
+# Ignore all files in the router folder
+src/router/**
+
+# Or just ignore a specific config file
+src/router/routes.ts

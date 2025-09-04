@@ -1,50 +1,87 @@
-# Welcome to your Expo app 👋
+# Jedox AI Portal
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo Router for file-based routing and a comprehensive component system.
 
-## Get started
+## 🚀 Quick Start
 
-1. Install dependencies
+1. **Install dependencies**
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
-2. Start the app
+2. **Start the app**
+    ```bash
+    npx expo start
+    ```
 
-   ```bash
-   npx expo start
-   ```
+## 📁 Project Structure
 
-In the output, you'll find options to open the app in a
+### **App Folder (`/app`)**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+File-based routing using Expo Router:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `_layout.tsx` - Root layout with providers (Redux, React Query, Theme)
+- `login.tsx` - Login screen (`/login`)
+- `expired.tsx` - Session expired screen (`/expired`)
+- `+not-found.tsx` - 404 page (`/not-found`)
+- `(app)/` - Protected app routes
+    - `_layout.tsx` - App layout wrapper
+    - `index.tsx` - Home screen (`/`)
+    - `about.tsx` - About screen (`/about`)
 
-## Get a fresh project
+### **Components (`/components`)**
 
-When you're ready, run:
+Global reusable components used across screens:
 
-```bash
-npm run reset-project
-```
+### **Features (`/features`)**
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Feature-based architecture - each feature should include:
 
-## Learn more
+- `constants.ts` - Feature-specific constants
+- `hooksApi.ts` - API hooks using React Query
+- `types.ts` - TypeScript type definitions
+- `enums.ts` - Enum definitions
+- `components/` - Feature-specific components
 
-To learn more about developing your project with Expo, look at the following resources:
+### **Shared Feature (`/features/shared`)**
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Template for all features with common components:
 
-## Join the community
+- Error, Expired, Forbidden, NotFound, NoRecords components
+- Global types and enums
+- API hooks template
 
-Join our community of developers creating universal apps.
+### **State Management (`/redux`)**
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `store.ts` - Redux store with persistence
+- `appSlice.ts` - App state (user, token, error modals)
+
+### **Styling (`/constants`, `/lib`)**
+
+- `Colors.ts` - Color palette with light/dark themes
+- `theme.ts` - Theme configuration
+- `tailwind.config.js` - Tailwind CSS setup
+
+### **API (`/axiosConfig.ts`)**
+
+- Axios configuration with token injection
+- Platform-specific base URLs
+- Error handling
+
+## 🎨 Design System
+
+- **Colors**: Primary (purple), Secondary (pink), Accent (cyan)
+- **Typography**: Poppins font family
+- **Components**: Consistent API with variants and themes
+- **Dark Mode**: Full light/dark theme support
+
+## 📱 Available Scripts
+
+- `npx expo start` - Start development server
+- `npx expo run:ios` - Run on iOS
+- `npx expo run:android` - Run on Android
+
+## 🔧 Adding New Features
+
+Follow the shared feature structure:
