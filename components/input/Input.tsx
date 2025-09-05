@@ -136,6 +136,7 @@ const Input: React.FC<InputProps> = ({
                     secureTextEntry={isSecureTextEntry}
                 />
                 <View className="absolute right-2 top-0 bottom-0 flex items-center justify-center">
+                    {iconRight}
                     {isPassword && (
                         <>
                             {isSecureTextEntry ? (

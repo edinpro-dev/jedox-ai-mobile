@@ -6,6 +6,8 @@ import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Text } from "../text";
 
+export type RenderMode = "default" | "checkbox"
+
 export interface SelectVariant {
     variant?: "default" | "primary" | "secondary" | "success" | "warning" | "error";
     size?: "sm" | "md" | "lg";
@@ -27,14 +29,15 @@ export interface SelectDataItem {
 
 export interface SelectProps extends SelectVariant {
     data: SelectDataItem[];
-    value?: string | number;
-    onChange?: (item: SelectDataItem) => void;
+    value?: SelectDataItem | (string | number)[];
+    onChange?: (value: SelectDataItem | (string | number)[]) => void;
     onFocus?: () => void;
     onBlur?: () => void;
     labelField?: string;
     valueField?: string;
     className?: string;
     style?: any;
+    renderMode?: RenderMode
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -57,6 +60,7 @@ const Select: React.FC<SelectProps> = ({
     valueField = "value",
     className = "",
     style,
+    renderMode = "default",
     ...props
 }) => {
     const baseColor = useThemeColor({}, "base100");
@@ -108,8 +112,8 @@ const Select: React.FC<SelectProps> = ({
     const borderColor = disabled
         ? theme.colors.disabled
         : isFocused
-          ? getVariantColor(actualVariant)
-          : theme.colors.borderColorTable;
+            ? getVariantColor(actualVariant)
+            : theme.colors.borderColorTable;
 
     const backgroundColor = "white";
     const textColor = "black";
@@ -132,6 +136,31 @@ const Select: React.FC<SelectProps> = ({
     const placeholderColor = "gray";
     const selectedTextColor = disabled ? theme.colors.neutral : textColor;
 
+    //Handle change value
+    const handleChange = (item: SelectDataItem) => {
+        if (renderMode === "checkbox") {
+            //for array of value
+            const currentValue = Array.isArray(value) ? value : [];
+            const itemValue = item[valueField];
+
+            //check if item is selected
+            const isSelected = currentValue.includes(itemValue);
+
+            let newValue;
+            if (isSelected) {
+                //remove item from array
+                newValue = currentValue.filter((value) => value !== itemValue);
+            } else {
+                //add item to array
+                newValue = [...currentValue, itemValue];
+            }
+
+            onChange?.(newValue);
+        } else {
+            onChange?.(item);
+        }
+    }
+
     return (
         <View style={containerStyle}>
             {label && (
@@ -145,8 +174,38 @@ const Select: React.FC<SelectProps> = ({
                 </Text>
             )}
 
+            {/* Custom display for selected values */}
+            {renderMode === "checkbox" && (
+                <View >
+                    {label && (
+                        <Text className="text-sm font-poppins-medium mb-1">
+                            {label}
+                        </Text>
+                    )}
+
+                    {renderMode === "checkbox" && Array.isArray(value) && value.length > 0 && (
+                        <View className="flex-row flex-wrap mb-2">
+                            {data
+                                .filter((item) => value.includes(item[valueField]))
+                                .map((item) => (
+                                    <View
+                                        key={item[valueField]}
+                                        className="bg-primary/20 rounded-lg px-2 py-1 mr-1 mb-1"
+                                    >
+                                        <Text className="text-primary font-poppins-regular">
+                                            {item[labelField]}
+                                        </Text>
+                                    </View>
+                                ))}
+                        </View>
+                    )}
+                </View>
+            )}
+
+            {/* DropDown */}
             <Dropdown
                 {...props}
+                closeModalWhenSelectedItem={renderMode !== "checkbox"}
                 style={dropdownStyle}
                 placeholderStyle={{
                     color: placeholderColor,
@@ -188,11 +247,9 @@ const Select: React.FC<SelectProps> = ({
                 valueField={valueField}
                 placeholder={placeholder}
                 searchPlaceholder={searchPlaceholder}
-                value={value}
+                value={renderMode === "checkbox" ? null : value}
                 disable={disabled}
-                onChange={(item) => {
-                    onChange?.(item);
-                }}
+                onChange={handleChange}
                 onFocus={() => {
                     if (!disabled) {
                         setIsFocused(true);
@@ -203,13 +260,34 @@ const Select: React.FC<SelectProps> = ({
                     setIsFocused(false);
                     onBlur?.();
                 }}
-                renderItem={(item, selected) => (
-                    <View className="p-3">
-                        <Text className={`font-poppins-regular ${selected ? "text-primary" : ""}`}>
-                            {item[labelField]}
-                        </Text>
-                    </View>
-                )}
+                renderItem={(item) => {
+                    const isSelected =
+                        renderMode === "checkbox" && Array.isArray(value)
+                            ? value.includes(item[valueField])
+                            : value === item[valueField];
+
+                    return (
+                        renderMode === "checkbox" ? (
+                            <View className="flex-row items-center p-3">
+                                <View
+                                    className={`w-5 h-5 mr-2 rounded border ${isSelected ? "bg-primary border-primary" : "border-gray-400"
+                                        }`}
+                                />
+                                <Text
+                                    className={`font-poppins-regular ${isSelected ? "text-primary" : ""}`}
+                                >
+                                    {item[labelField]}
+                                </Text>
+                            </View>
+                        ) : (
+                            <View className="p-3">
+                                    <Text className={`font-poppins-regular ${isSelected ? "text-primary" : ""}`}>
+                                        {item[labelField]}
+                                    </Text>
+                                </View>
+                        )
+                    )
+                }}
             />
 
             {helperText && (
