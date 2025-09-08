@@ -29,11 +29,12 @@ import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-qu
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekOfYear from "dayjs/plugin/weekOfYear";
-import { router, Slot } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -115,10 +116,14 @@ export default function RootLayout() {
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <QueryClientProvider client={queryClient}>
-                        <GestureHandlerRootView style={{ flex: 1 }}>
-                            <Slot />
-                            <StatusBar style="auto" />
-                        </GestureHandlerRootView>
+                        <PaperProvider>
+                            <GestureHandlerRootView style={{ flex: 1 }}>
+                                <Stack initialRouteName="(app)">
+                                    <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                                </Stack>
+                                <StatusBar style="auto" />
+                            </GestureHandlerRootView>
+                        </PaperProvider>
                     </QueryClientProvider>
                 </PersistGate>
                 <ErrorModalWrapper />

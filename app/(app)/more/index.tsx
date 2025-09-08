@@ -22,7 +22,7 @@ const More = () => {
                     <TouchableOpacity
                         key={index}
                         className="p-4 border-b border-gray-300"
-                        onPress={() => router.push(`/(app)/more/${item.route}` as any)}
+                        onPress={() => router.push(`/more/${item.route}` as any)}
                     >
                         <Text>{item.title}</Text>
                     </TouchableOpacity>
