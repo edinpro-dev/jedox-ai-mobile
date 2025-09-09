@@ -69,7 +69,7 @@ const driverSchedule = () => {
                                             data={vehiclePieData}
                                             radius={30}
                                             innerRadius={20}
-                                            backgroundColor={colors.base100}
+                                            backgroundColor={colors.base300}
                                         />
                                     </View>
                                 </View>
@@ -102,7 +102,7 @@ const driverSchedule = () => {
                                             data={vehiclePieData}
                                             radius={30}
                                             innerRadius={20}
-                                            backgroundColor={colors.base100}
+                                            backgroundColor={colors.base300}
                                         />
                                     </View>
                                 </View>
