@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React from "react";
+import { Text, View } from "react-native";
 
 interface TableProps {
     tableHead: string[];
@@ -10,7 +10,7 @@ const Table = () => {
         <View>
             <Text>Table</Text>
         </View>
-    )
-}
+    );
+};
 
-export default Table
+export default Table;

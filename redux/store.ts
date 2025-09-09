@@ -4,24 +4,24 @@ import { persistReducer, persistStore } from "redux-persist";
 import { appSlice } from "./appSlice";
 
 const persistConfig = {
-  key: "root",
-  storage: AsyncStorage,
-  whitelist: ["user", "token"], // Only persist the user field from app slice
+    key: "root",
+    storage: AsyncStorage,
+    whitelist: ["user", "token"], // Only persist the user field from app slice
 };
 
 // Persist only the app slice
 const persistedAppReducer = persistReducer(persistConfig, appSlice.reducer);
 
 export const store = configureStore({
-  reducer: {
-    app: persistedAppReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
-      },
-    }),
+    reducer: {
+        app: persistedAppReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+            },
+        }),
 });
 
 export const persistor = persistStore(store);

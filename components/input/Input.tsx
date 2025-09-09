@@ -120,14 +120,12 @@ const Input: React.FC<InputProps> = ({
             )}
 
             <View className="relative">
-                <View className="absolute left-2 top-0 bottom-0 flex items-center justify-center z-10">
-                    {iconLeft}
-                </View>
+                <View className="absolute left-2 top-0 bottom-0 flex items-center justify-center z-10">{iconLeft}</View>
 
                 <TextInput
                     {...props}
                     className={combinedClassName}
-                    style={[inputStyle, iconLeft ? { paddingLeft: 30 } : {},]}
+                    style={[inputStyle, iconLeft ? { paddingLeft: 30 } : {}]}
                     placeholderTextColor={placeholderColor}
                     editable={!disabled}
                     selectTextOnFocus={!disabled}

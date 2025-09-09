@@ -6,7 +6,7 @@ import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Text } from "../text";
 
-export type RenderMode = "default" | "checkbox"
+export type RenderMode = "default" | "checkbox";
 
 export interface SelectVariant {
     variant?: "default" | "primary" | "secondary" | "success" | "warning" | "error";
@@ -114,8 +114,8 @@ const Select: React.FC<SelectProps> = ({
     const borderColor = disabled
         ? theme.colors.disabled
         : isFocused
-            ? getVariantColor(actualVariant)
-            : theme.colors.borderColorTable;
+          ? getVariantColor(actualVariant)
+          : theme.colors.borderColorTable;
 
     const backgroundColor = "white";
     const textColor = "black";
@@ -161,7 +161,7 @@ const Select: React.FC<SelectProps> = ({
         } else {
             onChange?.(item);
         }
-    }
+    };
 
     return (
         <View style={containerStyle}>
@@ -178,12 +178,8 @@ const Select: React.FC<SelectProps> = ({
 
             {/* Custom display for selected values */}
             {renderMode === "checkbox" && (
-                <View >
-                    {label && (
-                        <Text className="text-sm font-poppins-medium mb-1">
-                            {label}
-                        </Text>
-                    )}
+                <View>
+                    {label && <Text className="text-sm font-poppins-medium mb-1">{label}</Text>}
 
                     {renderMode === "checkbox" && Array.isArray(value) && value.length > 0 && (
                         <View className="flex-row flex-wrap mb-2">
@@ -194,9 +190,7 @@ const Select: React.FC<SelectProps> = ({
                                         key={item[valueField]}
                                         className="bg-primary/20 rounded-lg px-2 py-1 mr-1 mb-1"
                                     >
-                                        <Text className="text-primary font-poppins-regular">
-                                            {item[labelField]}
-                                        </Text>
+                                        <Text className="text-primary font-poppins-regular">{item[labelField]}</Text>
                                     </View>
                                 ))}
                         </View>
@@ -237,11 +231,7 @@ const Select: React.FC<SelectProps> = ({
                         <IconChevronDown size={20} color="black" />
                     </View>
                 )}
-                renderLeftIcon={() => leftIcon ? (
-                    <View className="pl-2">
-                        {leftIcon}
-                    </View>
-                ) : null}
+                renderLeftIcon={() => (leftIcon ? <View className="pl-2">{leftIcon}</View> : null)}
                 containerStyle={{
                     backgroundColor: baseColor,
                     borderRadius: 6,
@@ -273,31 +263,28 @@ const Select: React.FC<SelectProps> = ({
                             ? value.includes(item[valueField])
                             : value === item[valueField];
 
-                    return (
-                        renderMode === "checkbox" ? (
-                            <View className="flex-row items-center gap-2 p-3">
-                                <View
-                                    className={`w-5 h-5 mr-2 rounded border ${isSelected ? "bg-primary border-primary" : "border-gray-400"
-                                        }`}
-                                />
+                    return renderMode === "checkbox" ? (
+                        <View className="flex-row items-center gap-2 p-3">
+                            <View
+                                className={`w-5 h-5 mr-2 rounded border ${
+                                    isSelected ? "bg-primary border-primary" : "border-gray-400"
+                                }`}
+                            />
 
-                                {/* If icon exists */}
-                                {item.icon && (<View>{item.icon}</View>)}
+                            {/* If icon exists */}
+                            {item.icon && <View>{item.icon}</View>}
 
-                                <Text
-                                    className={`font-poppins-regular ${isSelected ? "text-primary" : ""}`}
-                                >
-                                    {item[labelField]}
-                                </Text>
-                            </View>
-                        ) : (
-                            <View className="p-3">
-                                    <Text className={`font-poppins-regular ${isSelected ? "text-primary" : ""}`}>
-                                        {item[labelField]}
-                                    </Text>
-                                </View>
-                        )
-                    )
+                            <Text className={`font-poppins-regular ${isSelected ? "text-primary" : ""}`}>
+                                {item[labelField]}
+                            </Text>
+                        </View>
+                    ) : (
+                        <View className="p-3">
+                            <Text className={`font-poppins-regular ${isSelected ? "text-primary" : ""}`}>
+                                {item[labelField]}
+                            </Text>
+                        </View>
+                    );
                 }}
             />
 

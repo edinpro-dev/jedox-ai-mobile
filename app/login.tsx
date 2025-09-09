@@ -11,21 +11,14 @@ const LoginScreen = () => {
         <SafeAreaView className="flex-1">
             <View className="flex-1 items-center justify-center px-5">
                 <Card className="w-full gap-10">
-                    <Image
-                        source={require("@/assets/images/adaptive-icon.png")}
-                        className="size-[50px] mx-auto"
-                    />
+                    <Image source={require("@/assets/images/adaptive-icon.png")} className="size-[50px] mx-auto" />
 
                     <View className="gap-10">
                         <Input placeholder="User Id" className="w-full" />
                         <Input placeholder="Password" isPassword />
                     </View>
 
-                    <Text
-                        variant="caption-large"
-                        color="accent"
-                        align="right"
-                    >
+                    <Text variant="caption-large" color="accent" align="right">
                         Forgot Password?
                     </Text>
 
@@ -44,6 +37,5 @@ const LoginScreen = () => {
         </SafeAreaView>
     );
 };
-
 
 export default LoginScreen;

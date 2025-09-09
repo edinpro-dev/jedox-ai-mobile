@@ -34,7 +34,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -116,14 +115,12 @@ export default function RootLayout() {
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <QueryClientProvider client={queryClient}>
-                        <PaperProvider>
-                            <GestureHandlerRootView style={{ flex: 1 }}>
-                                <Stack initialRouteName="(app)">
-                                    <Stack.Screen name="(app)" options={{ headerShown: false }} />
-                                </Stack>
-                                <StatusBar style="auto" />
-                            </GestureHandlerRootView>
-                        </PaperProvider>
+                        <GestureHandlerRootView style={{ flex: 1 }}>
+                            <Stack initialRouteName="(app)">
+                                <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                            </Stack>
+                            <StatusBar style="auto" />
+                        </GestureHandlerRootView>
                     </QueryClientProvider>
                 </PersistGate>
                 <ErrorModalWrapper />

@@ -1,67 +1,48 @@
-import { Button } from '@/components/button'
-import { Card } from '@/components/card'
-import { Input } from '@/components/input'
-import { Select } from '@/components/select'
-import { useUsers } from '@/components/tabBar/more/users/users'
-import { Text } from '@/components/text'
-import AntDesign from '@expo/vector-icons/AntDesign'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
-import React from 'react'
-import { View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Button } from "@/components/button";
+import { Input } from "@/components/input";
+import { Select } from "@/components/select";
+import { Text } from "@/components/text";
+import { useUsers } from "@/features/more/hooks/users/users";
+import { IconSearch, IconUserPlus, IconUsersPlus } from "@tabler/icons-react-native";
+import React from "react";
+import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const users = () => {
     const { colors, usersDummyData, userRoleDummyData } = useUsers();
     return (
-        <SafeAreaView
-            edges={["left", "right", "bottom"]}
-            className='flex-1 bg-base-300 dark:bg-base-300-dark'
-        >
-            <Card>
-                <View className='flex-row items-center justify-between'>
-                    <Text variant={"h4"}>Users</Text>
-                    <View className='flex-col items-start gap-4'>
-                        <Button variant='outline' className='w-full items-center'>
-                            <AntDesign name="adduser" size={20} color="white" />
+        <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
+            <View className="flex-1 gap-4">
+                <Text variant={"h4"} className="p-4">
+                    Users
+                </Text>
+                <View className="p-4 items-start gap-4">
+                    <Button variant="outline" className="w-full items-center">
+                        <View className="flex-row items-center gap-2">
+                            <IconUserPlus size={20} color="white" />
                             <Text>Add new user</Text>
-                        </Button>
-                        <Button variant='outline' className='w-full items-center'>
-                            <AntDesign name="addusergroup" size={20} color="white" />
+                        </View>
+                    </Button>
+                    <Button variant="outline" className="w-full items-center">
+                        <View className="flex-row items-center gap-2">
+                            <IconUsersPlus size={20} color="white" />
                             <Text>Bulk User Upload</Text>
-                        </Button>
-                    </View>
+                        </View>
+                    </Button>
                 </View>
-                <View className='flex-row justify-between items-center mt-4'>
-                    <View className='w-[50%]'>
-                        <Input
-                            variant='primary'
-                            placeholder='User'
-                            className='w-full'
-                            iconLeft={<FontAwesome name="search" size={18} color={colors.primary} />}
-                        />
-                    </View>
-
-                    <View className='flex-col gap-4'>
-                        <Select
-                            search={false}
-                            variant='primary'
-                            data={usersDummyData}
-                            placeholder='Status'
-                            style={{ width: 120 }}
-                        />
-
-                        <Select
-                            search={false}
-                            variant='primary'
-                            data={userRoleDummyData}
-                            placeholder='User Role'
-                            style={{ width: 120 }}
-                        />
-                    </View>
+                <View className="p-4 gap-4">
+                    <Input
+                        variant="primary"
+                        placeholder="User"
+                        className="w-full"
+                        iconLeft={<IconSearch size={18} color={colors.primary} />}
+                    />
+                    <Select search={false} variant="primary" data={usersDummyData} placeholder="Status" />
+                    <Select search={false} variant="primary" data={userRoleDummyData} placeholder="User Role" />
                 </View>
-            </Card>
+            </View>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default users
+export default users;

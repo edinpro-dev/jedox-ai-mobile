@@ -1,17 +1,15 @@
 import { Text } from "@/components/text";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
 const More = () => {
     const menuItems = [
-        { title: "Assessment", route: "/assessment", icon: <MaterialIcons name="assessment" size={24} color="black" /> },
-        { title: "Vehicle History", route: "/vehicleHistory" },
+        { title: "Assessment", route: "/assessment" },
+        { title: "Vehicle History", route: "/vehicle-history" },
         { title: "Users", route: "/users" },
-        { title: "Auto Emailer", route: "/autoEmailer" },
-        { title: "Driver Schedule", route: "/driverSchedule" },
+        { title: "Auto Emailer", route: "/auto-emailer" },
+        { title: "Driver Schedule", route: "/driver-schedule" },
         { title: "Checklist", route: "/checklist" },
     ];
 
