@@ -2,7 +2,7 @@ import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Input } from "@/components/input";
 import { Text } from "@/components/text";
-import { useAssessment } from "@/features/more/hooks/assessment/assessment";
+import { useAssessment } from "@/features/more/hooks/useAssessment";
 import { IconCamera, IconCloudUpload } from "@tabler/icons-react-native";
 import React from "react";
 import { ScrollView, View } from "react-native";

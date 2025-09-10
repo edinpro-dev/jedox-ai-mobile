@@ -5,6 +5,7 @@
         "source.sortMembers": "explicit"
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.enable": true,
     "editor.formatOnSave": true,
     "eslint.alwaysShowStatus": true,
     "eslint.options": {

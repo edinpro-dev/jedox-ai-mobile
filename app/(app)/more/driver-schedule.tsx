@@ -2,7 +2,7 @@ import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
-import { useDriverSchedule } from "@/features/more/hooks/driverSchedule/driverSchedule";
+import { useDriverSchedule } from "@/features/more/hooks/useDriverSchedule";
 import {
     IconFileTypeCsv,
     IconLink,

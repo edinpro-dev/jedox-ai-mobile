@@ -1,6 +1,6 @@
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
-import { useVehicleHistory } from "@/features/more/hooks/vehicleHistory/vehicleHistory";
+import { useVehicleHistory } from "@/features/more/hooks/useVehicleHistory";
 import { IconArrowUp, IconClipboard, IconSearch } from "@tabler/icons-react-native";
 import React from "react";
 import { View } from "react-native";

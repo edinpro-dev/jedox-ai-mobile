@@ -3,10 +3,9 @@ import { Input } from "@/components/input";
 import { CalendarModal } from "@/components/modals/calendar";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
-import { useSearch } from "@/features/search/hooks/search";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { IconSearch } from "@tabler/icons-react-native";
+import Settings from "@/features/search/components/search-settings/Settings";
+import { useSearch } from "@/features/search/hooks/useSearch";
+import { IconCalendar, IconSearch, IconSettings } from "@tabler/icons-react-native";
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,6 +26,11 @@ const search = () => {
         approvalStatusData,
         inspectionTypeData,
         subLocationData,
+        setIsSettingsOpen,
+        isSettingsOpen,
+        columns,
+        toggleActive,
+        handleDragEnd,
     } = useSearch();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -64,12 +68,7 @@ const search = () => {
                         {/* Date Input */}
                         <Input
                             iconRight={
-                                <AntDesign
-                                    name="calendar"
-                                    size={24}
-                                    color={colors.accent}
-                                    onPress={() => setIsCalendarOpen(true)}
-                                />
+                                <IconCalendar size={24} color={colors.accent} onPress={() => setIsCalendarOpen(true)} />
                             }
                             value={selectedDate.toDateString()}
                         />
@@ -165,10 +164,20 @@ const search = () => {
                 <View className="flex-1 p-4">
                     <View className="flex-row items-center justify-between">
                         <Text variant={"body"}>Total Count: 24</Text>
-                        <Button variant="ghost">
-                            <FontAwesome6 name="gear" size={20} color={colors.baseContent} />
+                        <Button variant="ghost" onPress={() => setIsSettingsOpen(true)}>
+                            <IconSettings size={20} color={colors.baseContent} />
                         </Button>
                     </View>
+
+                    {isSettingsOpen && (
+                        <Settings
+                            isVisible={isSettingsOpen}
+                            setIsSettingsOpen={setIsSettingsOpen}
+                            columns={columns}
+                            toggleActive={toggleActive}
+                            handleDragEnd={handleDragEnd}
+                        />
+                    )}
 
                     <ScrollView horizontal></ScrollView>
 

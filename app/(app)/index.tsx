@@ -3,7 +3,7 @@ import CalendarModal from "@/components/modals/calendar/CalendarModal";
 import { Select } from "@/components/select";
 import { SelectDataItem } from "@/components/select/Select";
 import { Text } from "@/components/text";
-import { useHome } from "@/features/home/hooks/home";
+import { useHome } from "@/features/home/hooks/useHome";
 import {
     IconArrowUpRight,
     IconDownload,
@@ -28,6 +28,7 @@ const Index = () => {
         handleCustomDateSelect,
         inspectionPieData,
         colors,
+        bg,
         vehiclePieData,
     } = useHome();
     return (
@@ -91,7 +92,7 @@ const Index = () => {
                                 data={inspectionPieData}
                                 radius={80}
                                 innerRadius={70}
-                                backgroundColor={colors.base300}
+                                backgroundColor={bg}
                             />
                         </View>
 
@@ -224,13 +225,7 @@ const Index = () => {
                         </View>
                         {/* Pie chart */}
                         <View className="p-4 items-center">
-                            <PieChart
-                                donut
-                                data={vehiclePieData}
-                                radius={80}
-                                innerRadius={70}
-                                backgroundColor={colors.base300}
-                            />
+                            <PieChart donut data={vehiclePieData} radius={80} innerRadius={70} backgroundColor={bg} />
                         </View>
 
                         {/* Inspection count */}
