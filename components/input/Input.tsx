@@ -11,6 +11,7 @@ export interface InputVariant {
     error?: boolean;
     disabled?: boolean;
     iconRight?: React.ReactNode;
+    iconLeft?: React.ReactNode;
     isPassword?: boolean;
 }
 
@@ -25,6 +26,7 @@ const Input: React.FC<InputProps> = ({
     disabled = false,
     className = "",
     iconRight,
+    iconLeft,
     style,
     isPassword = false,
     ...props
@@ -118,10 +120,12 @@ const Input: React.FC<InputProps> = ({
             )}
 
             <View className="relative">
+                <View className="absolute left-2 top-0 bottom-0 flex items-center justify-center z-10">{iconLeft}</View>
+
                 <TextInput
                     {...props}
                     className={combinedClassName}
-                    style={inputStyle}
+                    style={[inputStyle, iconLeft ? { paddingLeft: 30 } : {}]}
                     placeholderTextColor={placeholderColor}
                     editable={!disabled}
                     selectTextOnFocus={!disabled}
@@ -136,6 +140,7 @@ const Input: React.FC<InputProps> = ({
                     secureTextEntry={isSecureTextEntry}
                 />
                 <View className="absolute right-2 top-0 bottom-0 flex items-center justify-center">
+                    {iconRight}
                     {isPassword && (
                         <>
                             {isSecureTextEntry ? (

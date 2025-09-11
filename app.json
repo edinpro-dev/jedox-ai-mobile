@@ -28,7 +28,8 @@
             "statusBar": {
                 "backgroundColor": "transparent",
                 "translucent": true
-            }
+            },
+            "permissions": ["android.permission.RECORD_AUDIO"]
         },
         "web": {
             "bundler": "metro",
@@ -66,6 +67,12 @@
         ],
         "experiments": {
             "typedRoutes": true
+        },
+        "extra": {
+            "router": {},
+            "eas": {
+                "projectId": "a460de71-e098-4d20-8c27-1f9aad27204c"
+            }
         }
     }
 }

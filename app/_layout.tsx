@@ -29,7 +29,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-qu
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekOfYear from "dayjs/plugin/weekOfYear";
-import { router, Slot } from "expo-router";
+import { router, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -116,7 +116,9 @@ export default function RootLayout() {
                 <PersistGate loading={null} persistor={persistor}>
                     <QueryClientProvider client={queryClient}>
                         <GestureHandlerRootView style={{ flex: 1 }}>
-                            <Slot />
+                            <Stack initialRouteName="(app)">
+                                <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                            </Stack>
                             <StatusBar style="auto" />
                         </GestureHandlerRootView>
                     </QueryClientProvider>
