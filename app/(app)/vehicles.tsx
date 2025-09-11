@@ -8,7 +8,7 @@ import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const vehicles = () => {
+const Vehicles = () => {
     const { colors, fuelTypeData, ownershipTypeData, locationData } = useVehicle();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -62,4 +62,4 @@ const vehicles = () => {
     );
 };
 
-export default vehicles;
+export default Vehicles;
