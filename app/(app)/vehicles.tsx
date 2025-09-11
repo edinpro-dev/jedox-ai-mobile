@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
+import { AddNewVehicle } from "@/features/vehicles/components/modals/add-new-vehicle";
 import { useVehicle } from "@/features/vehicles/hooks/useVehicle";
 import { IconCsv, IconSearch, IconTruck, IconTruckDelivery } from "@tabler/icons-react-native";
 import React from "react";
@@ -9,7 +10,17 @@ import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Vehicles = () => {
-    const { colors, fuelTypeData, ownershipTypeData, locationData } = useVehicle();
+    const {
+        colors,
+        fuelTypeData,
+        ownershipTypeData,
+        locationData,
+        isVehicleModalOpen,
+        setIsVehicleModalOpen,
+        isStatusActive,
+        toggleStatus,
+        translateX,
+    } = useVehicle();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
             <View className="p-4">
@@ -22,7 +33,10 @@ const Vehicles = () => {
                         </View>
                     </Button>
 
-                    <Button variant="outline">
+                    <Button
+                        variant="outline"
+                        onPress={() => setIsVehicleModalOpen((prev) => ({ ...prev, addNewVehicle: true }))}
+                    >
                         <View className="flex-row items-center gap-2">
                             <IconTruck size={24} color={"white"} />
                             <Text>Add New Vehicle</Text>
@@ -57,6 +71,16 @@ const Vehicles = () => {
                     <Select search={false} data={ownershipTypeData} placeholder="Ownership Type" />
                     <Select search={false} data={locationData} placeholder="Location" />
                 </View>
+
+                {isVehicleModalOpen.addNewVehicle && (
+                    <AddNewVehicle
+                        isVisible={isVehicleModalOpen.addNewVehicle}
+                        setIsVehicleModalOpen={setIsVehicleModalOpen}
+                        isStatusActive={isStatusActive}
+                        toggleStatus={toggleStatus}
+                        translateX={translateX}
+                    />
+                )}
             </View>
         </SafeAreaView>
     );
