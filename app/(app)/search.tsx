@@ -191,7 +191,13 @@ const Search = () => {
                     )}
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <Table title="Assessment" columns={columns} rows={displayRows} />
+                        <Table
+                            title="Assessment"
+                            columns={columns}
+                            rows={displayRows}
+                            sortable={true}
+                            sortableColumns={[1, 3, 9, 10, 11, 12]}
+                        />
                     </ScrollView>
 
                     {/* Data Table Pagination */}

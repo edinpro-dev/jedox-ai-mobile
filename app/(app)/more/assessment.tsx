@@ -1,15 +1,16 @@
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Input } from "@/components/input";
+import { Select } from "@/components/select";
 import { Text } from "@/components/text";
 import { useAssessment } from "@/features/more/hooks/useAssessment";
 import { IconCamera, IconCloudUpload } from "@tabler/icons-react-native";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { Image, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const assessment = () => {
-    const { colors } = useAssessment();
+    const { colors, inspectionTypeData, licensePlateImage, handlePickImage } = useAssessment();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
             <ScrollView className="flex-1">
@@ -30,15 +31,26 @@ const assessment = () => {
                                 <Input
                                     variant="primary"
                                     placeholder="License Plate Now*"
-                                    iconRight={<IconCamera size={24} color={colors.accent} />}
+                                    iconRight={
+                                        <Pressable onPress={handlePickImage}>
+                                            <IconCamera size={24} color={colors.accent} />
+                                        </Pressable>
+                                    }
                                 />
+
+                                {licensePlateImage && (
+                                    <Image
+                                        source={{ uri: licensePlateImage }}
+                                        style={{ width: 100, height: 100, borderRadius: 8 }}
+                                    />
+                                )}
 
                                 {/* Inspection type */}
 
-                                <Input variant="primary" placeholder="Inspection Type*" />
+                                <Select search={false} data={inspectionTypeData} placeholder="Inspection type*" />
 
                                 {/* Make and Model */}
-                                <Input variant="primary" placeholder="Enter make & model*" />
+                                <Select search={false} data={[]} placeholder="Enter make & model*" />
 
                                 {/* Bloodstyle */}
                                 <Input disabled={true} placeholder="Bloodstyle*" />

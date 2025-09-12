@@ -19,7 +19,7 @@ import { PieChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const driverSchedule = () => {
-    const { colors, vehiclePieData } = useDriverSchedule();
+    const { colors, bg, vehiclePieData } = useDriverSchedule();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
             <View className="p-4">
@@ -48,7 +48,7 @@ const driverSchedule = () => {
                                     <View className="px-1 border-r border-white">
                                         <View className="flex-row items-center justify-between gap-1">
                                             <View className="flex-row items-center gap-1">
-                                                <View className="w-5 h-5 rounded bg-white"></View>
+                                                <View className="w-5 h-5 rounded bg-base-300"></View>
                                                 <IconTruck size={24} color="white" />
                                                 <Text>Total Active Vehicles</Text>
                                             </View>
@@ -69,7 +69,7 @@ const driverSchedule = () => {
                                             data={vehiclePieData}
                                             radius={30}
                                             innerRadius={20}
-                                            backgroundColor={colors.base300}
+                                            backgroundColor={bg}
                                         />
                                     </View>
                                 </View>
@@ -81,7 +81,7 @@ const driverSchedule = () => {
                                     <View className="px-1 border-r border-white">
                                         <View className="flex-row items-center justify-between gap-1">
                                             <View className="flex-row items-center gap-1">
-                                                <View className="w-5 h-5 rounded bg-white"></View>
+                                                <View className="w-5 h-5 rounded bg-base-300"></View>
                                                 <IconUsersGroup size={24} color="white" />
                                                 <Text>Total Number of Drivers</Text>
                                             </View>
@@ -102,7 +102,7 @@ const driverSchedule = () => {
                                             data={vehiclePieData}
                                             radius={30}
                                             innerRadius={20}
-                                            backgroundColor={colors.base300}
+                                            backgroundColor={bg}
                                         />
                                     </View>
                                 </View>

@@ -70,20 +70,15 @@ const subLocationData: Data[] = [{ label: "Jedox Couriers", value: "jedox-courie
 const paginationData = [
     {
         title: "Vehicle Info",
-        data: [
-            "KT24CKL - W1V3HBFZ1SP717923",
-            "KT24CKL - W1V3HBFZ1SP717923",
-            "qwfdqf - W1V3HBFZ1SP717923",
-            "mytty - W1V3HBFZ1SP717923",
-        ],
+        data: ["ADWQDDWQD - HFQFQQFQWFQF", "KT24CKL - FQFQFQFQFQ", "WQEQW - GGREHJJ4", "HHEHRREH - QFQ123FEWAFQA"],
     },
     {
         title: "Date",
-        data: ["8th Sep 2025 04:24", "8th Sep 2025 04:24", "8th Sep 2025 04:24", "8th Sep 2025 04:24"],
+        data: ["1th Sep 2025 01:28", "4th Sep 2025 09:24", "12th Sep 2025 02:24", "14th Sep 2025 03:24"],
     },
     {
         title: "Make & Model",
-        data: ["Mercedes-Benz Sprinter", "Mercedes-Benz Sprinter", "Mercedes-Benz Sprinter", "Mercedes-Benz Sprinter"],
+        data: ["Mercedes-Benz Sprinter", "Totota Corolla", "Ford Transit", "Honda Civic"],
     },
     { title: "Created by ", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
     { title: "Inspection Status ", data: ["Completed", "Completed", "Completed", "Completed"] },
@@ -101,7 +96,7 @@ const paginationData = [
             "End of Shift Inspection",
         ],
     },
-    { title: "Estimated Cost of repair", data: ["GBP 541,00", "GBP 541,00", "GBP 541,00", "GBP 541,00"] },
+    { title: "Estimated Cost of repair", data: ["GBP 541,00", "GBP 542,00", "GBP 543,00", "GBP 544,00"] },
     { title: "Approved Cost of repair", data: ["N/A", "N/A", "N/A", "N/A"] },
 ];
 

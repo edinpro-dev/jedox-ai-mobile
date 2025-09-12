@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
+import { AddBulkVehicle } from "@/features/vehicles/components/modals/add-bulk-vehicle";
 import { AddNewVehicle } from "@/features/vehicles/components/modals/add-new-vehicle";
 import { useVehicle } from "@/features/vehicles/hooks/useVehicle";
 import { IconCsv, IconSearch, IconTruck, IconTruckDelivery } from "@tabler/icons-react-native";
@@ -43,7 +44,10 @@ const Vehicles = () => {
                         </View>
                     </Button>
 
-                    <Button variant="outline">
+                    <Button
+                        variant="outline"
+                        onPress={() => setIsVehicleModalOpen((prev) => ({ ...prev, addBulkVehicle: true }))}
+                    >
                         <View className="flex-row items-center gap-2">
                             <IconTruckDelivery size={24} color={"white"} />
                             <Text>Bulk Vehicle Upload</Text>
@@ -79,6 +83,13 @@ const Vehicles = () => {
                         isStatusActive={isStatusActive}
                         toggleStatus={toggleStatus}
                         translateX={translateX}
+                    />
+                )}
+
+                {isVehicleModalOpen.addBulkVehicle && (
+                    <AddBulkVehicle
+                        isVisible={isVehicleModalOpen.addBulkVehicle}
+                        setIsVehicleModalOpen={setIsVehicleModalOpen}
                     />
                 )}
             </View>

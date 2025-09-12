@@ -4,6 +4,7 @@ import { Animated } from "react-native";
 
 export interface VehicleModalState {
     addNewVehicle: boolean;
+    addBulkVehicle: boolean;
 }
 
 const fuelTypeData = [
@@ -26,7 +27,8 @@ const locationData = [{ label: "Jedox Couriers", value: "jedox" }];
 export const useVehicle = () => {
     const [isStatusActive, setIsStatusActive] = useState<boolean>(false);
     const [isVehicleModalOpen, setIsVehicleModalOpen] = useState<VehicleModalState>({
-        addNewVehicle: false
+        addNewVehicle: false,
+        addBulkVehicle: false
     });
     const { colors } = useTheme();
 
