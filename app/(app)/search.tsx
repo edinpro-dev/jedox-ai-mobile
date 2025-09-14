@@ -1,7 +1,9 @@
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { CalendarModal } from "@/components/modals/calendar";
+import { Pagination } from "@/components/pagination";
 import { Select } from "@/components/select";
+import { Table } from "@/components/table";
 import { Text } from "@/components/text";
 import Settings from "@/features/search/components/search-settings/Settings";
 import { useSearch } from "@/features/search/hooks/useSearch";
@@ -10,7 +12,7 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const search = () => {
+const Search = () => {
     const {
         createdData,
         colors,
@@ -31,6 +33,13 @@ const search = () => {
         columns,
         toggleActive,
         handleDragEnd,
+        handleApply,
+        handleSaveAndApply,
+        nextPage,
+        prevPage,
+        page,
+        totalPage,
+        displayRows,
     } = useSearch();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -176,16 +185,27 @@ const search = () => {
                             columns={columns}
                             toggleActive={toggleActive}
                             handleDragEnd={handleDragEnd}
+                            onApply={handleApply}
+                            onSaveApply={handleSaveAndApply}
                         />
                     )}
 
-                    <ScrollView horizontal></ScrollView>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <Table
+                            title="Assessment"
+                            columns={columns}
+                            rows={displayRows}
+                            sortable={true}
+                            sortableColumns={[1, 3, 9, 10, 11, 12]}
+                        />
+                    </ScrollView>
 
                     {/* Data Table Pagination */}
+                    <Pagination page={page} totalPage={totalPage} onNext={nextPage} onPrev={prevPage} />
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
 };
 
-export default search;
+export default Search;
