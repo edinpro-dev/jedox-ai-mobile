@@ -33,9 +33,13 @@ export const useUsers = () => {
     const [isUserModalOpen, setIsUserModalOpen] = useState<UserModalState>({
         addNewUser: false,
         addBulkUser: false
-    })
+    });
 
     const { colors } = useTheme();
+
+    //toggleModal
+    const closeModal = (key: "addNewUser" | "addBulkUser") => setIsUserModalOpen((prev) => ({ ...prev, [key]: false }));
+    const openModal = (key: "addNewUser" | "addBulkUser") => setIsUserModalOpen((prev) => ({ ...prev, [key]: true }));
 
     return {
         colors,
@@ -46,7 +50,8 @@ export const useUsers = () => {
         setUserRole,
         userRoleDummyData,
         isUserModalOpen,
-        setIsUserModalOpen,
+        closeModal,
+        openModal,
         addNewUserRole,
         pdfFormatData
     };

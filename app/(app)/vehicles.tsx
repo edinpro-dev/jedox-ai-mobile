@@ -17,7 +17,8 @@ const Vehicles = () => {
         ownershipTypeData,
         locationData,
         isVehicleModalOpen,
-        setIsVehicleModalOpen,
+        closeModal,
+        openModal,
         isStatusActive,
         toggleStatus,
         translateX,
@@ -34,20 +35,14 @@ const Vehicles = () => {
                         </View>
                     </Button>
 
-                    <Button
-                        variant="outline"
-                        onPress={() => setIsVehicleModalOpen((prev) => ({ ...prev, addNewVehicle: true }))}
-                    >
+                    <Button variant="outline" onPress={() => openModal("addNewVehicle")}>
                         <View className="flex-row items-center gap-2">
                             <IconTruck size={24} color={"white"} />
                             <Text>Add New Vehicle</Text>
                         </View>
                     </Button>
 
-                    <Button
-                        variant="outline"
-                        onPress={() => setIsVehicleModalOpen((prev) => ({ ...prev, addBulkVehicle: true }))}
-                    >
+                    <Button variant="outline" onPress={() => openModal("addNewVehicle")}>
                         <View className="flex-row items-center gap-2">
                             <IconTruckDelivery size={24} color={"white"} />
                             <Text>Bulk Vehicle Upload</Text>
@@ -79,7 +74,7 @@ const Vehicles = () => {
                 {isVehicleModalOpen.addNewVehicle && (
                     <AddNewVehicle
                         isVisible={isVehicleModalOpen.addNewVehicle}
-                        setIsVehicleModalOpen={setIsVehicleModalOpen}
+                        closeModal={closeModal}
                         isStatusActive={isStatusActive}
                         toggleStatus={toggleStatus}
                         translateX={translateX}
@@ -87,10 +82,7 @@ const Vehicles = () => {
                 )}
 
                 {isVehicleModalOpen.addBulkVehicle && (
-                    <AddBulkVehicle
-                        isVisible={isVehicleModalOpen.addBulkVehicle}
-                        setIsVehicleModalOpen={setIsVehicleModalOpen}
-                    />
+                    <AddBulkVehicle isVisible={isVehicleModalOpen.addBulkVehicle} closeModal={closeModal} />
                 )}
             </View>
         </SafeAreaView>

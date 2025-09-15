@@ -1,6 +1,5 @@
 import { Button } from "@/components/button";
 import { Text } from "@/components/text";
-import { VehicleModalState } from "@/features/vehicles/hooks/useVehicle";
 import { IconDownload, IconFile, IconUpload, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { View } from "react-native";
@@ -8,18 +7,15 @@ import Modal from "react-native-modal";
 
 type AddBulkUserProps = {
     isVisible: boolean;
-    setIsVehicleModalOpen: React.Dispatch<React.SetStateAction<VehicleModalState>>;
+    closeModal: (key: "addNewVehicle" | "addBulkVehicle") => void;
 };
 
-const AddBulkVehicle = ({ isVisible, setIsVehicleModalOpen }: AddBulkUserProps) => {
+const AddBulkVehicle = ({ isVisible, closeModal }: AddBulkUserProps) => {
     return (
         <Modal isVisible={isVisible} className="px-4 rounded bg-base-100 dark:bg-base-100-dark">
             <View className="flex-1">
                 <View className="py-4 flex-row justify-end">
-                    <Button
-                        variant="ghost"
-                        onPress={() => setIsVehicleModalOpen((prev) => ({ ...prev, addBulkVehicle: false }))}
-                    >
+                    <Button variant="ghost" onPress={() => closeModal("addBulkVehicle")}>
                         <IconX size={24} color="grey" />
                     </Button>
                 </View>

@@ -1,11 +1,14 @@
 import { Button } from "@/components/button";
 import { Text } from "@/components/text";
+import { AddNewChecklist } from "@/features/more/components/modals/checklist/add-new-checklist";
+import { useChecklist } from "@/features/more/hooks/useChecklist";
 import { IconPlus } from "@tabler/icons-react-native";
 import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const checklist = () => {
+    const { isChecklistModalOpen, closeModal, openModal, inspectionTypeData } = useChecklist();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
             <View className="p-4">
@@ -13,13 +16,21 @@ const checklist = () => {
                     <View className="mb-4">
                         <Text variant={"h4"}>Checklist SetUp</Text>
                     </View>
-                    <Button>
+                    <Button onPress={openModal}>
                         <View className="flex-row items-center gap-2">
                             <IconPlus size={20} color="white" />
                             <Text>New</Text>
                         </View>
                     </Button>
                 </View>
+
+                {isChecklistModalOpen.addNewChecklist && (
+                    <AddNewChecklist
+                        isVisible={isChecklistModalOpen.addNewChecklist}
+                        closeModal={closeModal}
+                        inspectionTypeData={inspectionTypeData}
+                    />
+                )}
             </View>
         </SafeAreaView>
     );

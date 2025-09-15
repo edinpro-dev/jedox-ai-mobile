@@ -49,13 +49,18 @@ export const useVehicle = () => {
         outputRange: [1, 30] //slide left and right
     });
 
+    //toggleModal
+    const closeModal = (key: "addNewVehicle" | "addBulkVehicle") => setIsVehicleModalOpen((prev) => ({ ...prev, [key]: false }));
+    const openModal = (key: "addNewVehicle" | "addBulkVehicle") => setIsVehicleModalOpen((prev) => ({ ...prev, [key]: true })); 
+
     return {
         colors,
         fuelTypeData,
         ownershipTypeData,
         locationData,
         isVehicleModalOpen,
-        setIsVehicleModalOpen,
+        closeModal,
+        openModal,
         isStatusActive,
         toggleStatus,
         translateX

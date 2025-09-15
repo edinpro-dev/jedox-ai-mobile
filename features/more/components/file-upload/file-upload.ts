@@ -1,16 +1,18 @@
-import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
 
-
-export const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ["images"],
-        allowsEditing: true,
-        quality: 1
+export const pickFile = async () => {
+    const result = await DocumentPicker.getDocumentAsync({
+        type: [
+            "application/vnd.ms-excel", //.xls
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" //.xlsx
+        ],
+        copyToCacheDirectory: true
     });
 
     if (!result.canceled) {
-        const fileUri = result.assets[0].uri;
-        return fileUri;
+        const file = result.assets[0].uri;
+        return file;
     }
+
     return null;
 }

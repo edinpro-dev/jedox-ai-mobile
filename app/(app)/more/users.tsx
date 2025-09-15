@@ -16,7 +16,8 @@ const users = () => {
         usersDummyData,
         userRoleDummyData,
         isUserModalOpen,
-        setIsUserModalOpen,
+        closeModal,
+        openModal,
         addNewUserRole,
         pdfFormatData,
     } = useUsers();
@@ -27,21 +28,13 @@ const users = () => {
                     Users
                 </Text>
                 <View className="p-4 items-start gap-4">
-                    <Button
-                        variant="outline"
-                        className="w-full items-center"
-                        onPress={() => setIsUserModalOpen((prev) => ({ ...prev, addNewUser: true }))}
-                    >
+                    <Button variant="outline" className="w-full items-center" onPress={() => openModal("addNewUser")}>
                         <View className="flex-row items-center gap-2">
                             <IconUserPlus size={20} color="white" />
                             <Text>Add new user</Text>
                         </View>
                     </Button>
-                    <Button
-                        variant="outline"
-                        className="w-full items-center"
-                        onPress={() => setIsUserModalOpen((prev) => ({ ...prev, addBulkUser: true }))}
-                    >
+                    <Button variant="outline" className="w-full items-center" onPress={() => openModal("addBulkUser")}>
                         <View className="flex-row items-center gap-2">
                             <IconUsersPlus size={20} color="white" />
                             <Text>Bulk User Upload</Text>
@@ -64,7 +57,7 @@ const users = () => {
             {isUserModalOpen.addNewUser && (
                 <AddNewUser
                     isVisible={isUserModalOpen.addNewUser}
-                    setIsUserModalOpen={setIsUserModalOpen}
+                    closeModal={closeModal}
                     addNewUserRole={addNewUserRole}
                     pdfFormatData={pdfFormatData}
                 />
@@ -72,7 +65,7 @@ const users = () => {
 
             {/* Add bulk user modal */}
             {isUserModalOpen.addBulkUser && (
-                <AddBulkUser isVisible={isUserModalOpen.addBulkUser} setIsUserModalOpen={setIsUserModalOpen} />
+                <AddBulkUser isVisible={isUserModalOpen.addBulkUser} closeModal={closeModal} />
             )}
         </SafeAreaView>
     );
