@@ -1,16 +1,11 @@
 import { Button } from "@/components/button";
+import { Column } from "@/components/table/Table";
 import { Text } from "@/components/text";
 import { IconCheck, IconMenu2 } from "@tabler/icons-react-native";
 import { Pressable, View } from "react-native";
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from "react-native-draggable-flatlist";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
-
-export type Column = {
-    id: number;
-    label: string;
-    isActive: boolean;
-};
 
 type Props = {
     isVisible: boolean;

@@ -1,5 +1,6 @@
 import { Button } from "@/components/button";
 import { Text } from "@/components/text";
+import { ModalKey } from "@/features/more/hooks/useUsers";
 import { IconDownload, IconFile, IconUpload, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { View } from "react-native";
@@ -7,7 +8,7 @@ import Modal from "react-native-modal";
 
 type AddBulkUserProps = {
     isVisible: boolean;
-    closeModal: (key: "addNewUser" | "addBulkUser") => void;
+    closeModal: (key: ModalKey) => void;
 };
 
 const AddBulkUser = ({ isVisible, closeModal }: AddBulkUserProps) => {
