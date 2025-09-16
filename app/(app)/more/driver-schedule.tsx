@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
+import { DriverSchedule } from "@/features/more/components/modals/driver-schedule";
 import { useDriverSchedule } from "@/features/more/hooks/useDriverSchedule";
 import {
     IconFileTypeCsv,
@@ -19,7 +20,8 @@ import { PieChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const driverSchedule = () => {
-    const { colors, bg, vehiclePieData } = useDriverSchedule();
+    const { colors, bg, vehiclePieData, isDriverScheduleModalOpen, closeModal, openModal, handlePickFile } =
+        useDriverSchedule();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
             <View className="p-4">
@@ -34,7 +36,7 @@ const driverSchedule = () => {
                                 </View>
                             </Button>
 
-                            <Button variant="primary">
+                            <Button variant="primary" onPress={openModal}>
                                 <View className="flex-row items-center gap-2">
                                     <IconPlus size={20} color="white" />
                                     <Text>Bulk Assignment</Text>
@@ -137,6 +139,16 @@ const driverSchedule = () => {
                         </View>
                     </View>
                 </View>
+
+                {/* Modal */}
+
+                {isDriverScheduleModalOpen.addBulkAssignment && (
+                    <DriverSchedule
+                        isVisible={isDriverScheduleModalOpen.addBulkAssignment}
+                        closeModal={closeModal}
+                        handlePickFile={handlePickFile}
+                    />
+                )}
             </View>
         </SafeAreaView>
     );

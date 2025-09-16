@@ -2,7 +2,6 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
-import { VehicleModalState } from "@/features/vehicles/hooks/useVehicle";
 import { IconCheck, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { Animated, Pressable, ScrollView, View } from "react-native";
@@ -12,27 +11,18 @@ type AddNewVehicleProps = {
     isVisible: boolean;
     isStatusActive: boolean;
     toggleStatus: () => void;
+    closeModal: (key: "addNewVehicle" | "addBulkVehicle") => void;
     translateX: Animated.AnimatedInterpolation<string | number>;
-    setIsVehicleModalOpen: React.Dispatch<React.SetStateAction<VehicleModalState>>;
 };
 
-const AddNewVehicle = ({
-    isVisible,
-    isStatusActive,
-    setIsVehicleModalOpen,
-    toggleStatus,
-    translateX,
-}: AddNewVehicleProps) => {
+const AddNewVehicle = ({ isVisible, isStatusActive, closeModal, toggleStatus, translateX }: AddNewVehicleProps) => {
     return (
         <Modal isVisible={isVisible} className="p-4 rounded bg-base-100 dark:bg-base-100-dark">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 <View className="gap-3">
                     <View className="flex-row items-center justify-between">
                         <Text variant={"h3"}>Add New Vehicle</Text>
-                        <Button
-                            variant="ghost"
-                            onPress={() => setIsVehicleModalOpen((prev) => ({ ...prev, addNewVehicle: false }))}
-                        >
+                        <Button variant="ghost" onPress={() => closeModal("addNewVehicle")}>
                             <IconX size={24} color="grey" />
                         </Button>
                     </View>

@@ -3,7 +3,6 @@ import { Card } from "@/components/card";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
-import { UserModalState } from "@/features/more/hooks/useUsers";
 import { IconPoint, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { ScrollView, View } from "react-native";
@@ -19,19 +18,16 @@ type AddNewUserProps = {
         label: string;
         value: string;
     }[];
-    setIsUserModalOpen: React.Dispatch<React.SetStateAction<UserModalState>>;
+    closeModal: (key: "addNewUser" | "addBulkUser") => void;
 };
-const AddNewUser = ({ isVisible, addNewUserRole, pdfFormatData, setIsUserModalOpen }: AddNewUserProps) => {
+const AddNewUser = ({ isVisible, addNewUserRole, pdfFormatData, closeModal }: AddNewUserProps) => {
     return (
         <Modal isVisible={isVisible} className="p-4 rounded bg-base-100 dark:bg-base-100-dark">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 <View className="gap-4">
                     <View className="flex-row items-center justify-between">
                         <Text variant={"h3"}>Add New User</Text>
-                        <Button
-                            variant="ghost"
-                            onPress={() => setIsUserModalOpen((prev) => ({ ...prev, addNewUser: false }))}
-                        >
+                        <Button variant="ghost" onPress={() => closeModal("addNewUser")}>
                             <IconX size={24} color="grey" />
                         </Button>
                     </View>

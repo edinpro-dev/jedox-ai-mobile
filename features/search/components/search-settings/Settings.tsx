@@ -22,15 +22,7 @@ type Props = {
     onSaveApply: () => Promise<void>;
 };
 
-const Settings = ({
-    isVisible,
-    toggleActive,
-    columns,
-    handleDragEnd,
-    setIsSettingsOpen,
-    onApply,
-    onSaveApply,
-}: Props) => {
+const Settings = ({ isVisible, toggleActive, columns, handleDragEnd, onApply, onSaveApply }: Props) => {
     const renderItem = ({ item, drag, isActive: isDragging }: RenderItemParams<Column>) => {
         return (
             <ScaleDecorator>

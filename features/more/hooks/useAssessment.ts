@@ -1,6 +1,6 @@
 import { useTheme } from "@/lib/theme";
 import { useState } from "react";
-import { pickImage } from "../components/file-upload/file-upload";
+import { pickImage } from "../components/image-upload/image-upload";
 
 const inspectionTypeData = [
     { label: "Start of Shift Inspection", value: "start-of-shift" },

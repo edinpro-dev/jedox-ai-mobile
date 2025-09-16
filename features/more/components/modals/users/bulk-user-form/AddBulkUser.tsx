@@ -1,6 +1,5 @@
 import { Button } from "@/components/button";
 import { Text } from "@/components/text";
-import { UserModalState } from "@/features/more/hooks/useUsers";
 import { IconDownload, IconFile, IconUpload, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { View } from "react-native";
@@ -8,18 +7,15 @@ import Modal from "react-native-modal";
 
 type AddBulkUserProps = {
     isVisible: boolean;
-    setIsUserModalOpen: React.Dispatch<React.SetStateAction<UserModalState>>;
+    closeModal: (key: "addNewUser" | "addBulkUser") => void;
 };
 
-const AddBulkUser = ({ isVisible, setIsUserModalOpen }: AddBulkUserProps) => {
+const AddBulkUser = ({ isVisible, closeModal }: AddBulkUserProps) => {
     return (
         <Modal isVisible={isVisible} className="px-4 rounded bg-base-100 dark:bg-base-100-dark">
             <View className="flex-1">
                 <View className="py-4 flex-row justify-end">
-                    <Button
-                        variant="ghost"
-                        onPress={() => setIsUserModalOpen((prev) => ({ ...prev, addBulkUser: false }))}
-                    >
+                    <Button variant="ghost" onPress={() => closeModal("addBulkUser")}>
                         <IconX size={24} color="grey" />
                     </Button>
                 </View>
