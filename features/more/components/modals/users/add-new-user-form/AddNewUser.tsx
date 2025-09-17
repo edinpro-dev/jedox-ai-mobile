@@ -3,6 +3,7 @@ import { Card } from "@/components/card";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
+import { ModalKey } from "@/features/more/hooks/useUsers";
 import { IconPoint, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { ScrollView, View } from "react-native";
@@ -18,7 +19,7 @@ type AddNewUserProps = {
         label: string;
         value: string;
     }[];
-    closeModal: (key: "addNewUser" | "addBulkUser") => void;
+    closeModal: (key: ModalKey) => void;
 };
 const AddNewUser = ({ isVisible, addNewUserRole, pdfFormatData, closeModal }: AddNewUserProps) => {
     return (

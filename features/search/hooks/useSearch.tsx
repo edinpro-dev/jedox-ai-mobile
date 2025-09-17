@@ -1,11 +1,11 @@
 import { SelectDataItem } from "@/components/select/Select";
+import { Column } from "@/components/table/Table";
 import { useTheme } from "@/lib/theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
-import { Column } from "../components/search-settings/Settings";
 
 export interface Data extends SelectDataItem {
     icon?: React.ReactNode;
@@ -120,7 +120,7 @@ export const useSearch = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
-    const [columns, setColumns] = useState(searchColumnsData);
+    const [columns, setColumns] = useState<Column[]>(searchColumnsData);
     const [filteredData, setFilteredData] = useState({
         createdBy: [] as (string | number)[],
         inspectionStatus: [] as (string | number)[],
