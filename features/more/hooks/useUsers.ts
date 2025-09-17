@@ -1,4 +1,3 @@
-import { Column } from "@/components/table/Table";
 import { useTheme } from "@/lib/theme";
 import { useState } from "react";
 
@@ -56,7 +55,6 @@ const dummyUsersData = [
 
 export const useUsers = () => {
     const [deactivateUser, setDeactivateUser] = useState<number[]>([]);
-    const [columns, setColumns] = useState<Column[]>(dummyUsersData);
     const [usersData, setUsersData] = useState<string[]>([]);
     const [userRole, setUserRole] = useState<string[]>([]);
     const [isUserModalOpen, setIsUserModalOpen] = useState<UserModalState>({
@@ -136,7 +134,6 @@ export const useUsers = () => {
         addNewUserRole,
         pdfFormatData,
         dummyUsersData,
-        columns,
         rows,
         deactivateUser,
         toggleAllRow,

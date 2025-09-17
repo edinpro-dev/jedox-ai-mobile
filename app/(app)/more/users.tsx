@@ -22,7 +22,7 @@ const users = () => {
         openModal,
         addNewUserRole,
         pdfFormatData,
-        columns,
+        dummyUsersData,
         rows,
         deactivateUser,
         toggleAllRow,
@@ -78,7 +78,7 @@ const users = () => {
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <Table
                             title="Users"
-                            columns={columns}
+                            columns={dummyUsersData}
                             rows={rows}
                             sortable={true}
                             sortableColumns={[0, 1, 2]}

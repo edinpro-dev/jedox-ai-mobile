@@ -10,7 +10,7 @@ const AppLayout = () => {
     return (
         <SafeAreaView className="flex-1">
             <Tabs
-                initialRouteName="index"
+                initialRouteName="vehicles"
                 screenOptions={{
                     header: () => <Profile />,
                     tabBarShowLabel: true,
