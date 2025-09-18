@@ -1,5 +1,7 @@
+import { VehicleStatusState } from "@/features/vehicles/hooks/useVehicle";
 import { sortTableData } from "@/lib/sortTableData";
 import {
+    IconArrowRight,
     IconCheck,
     IconEdit,
     IconMinus,
@@ -23,11 +25,12 @@ interface TableProps {
     sortable?: boolean;
     checkbox?: boolean;
     useIsActive?: boolean;
-    rowStatus?: boolean[];
+    isStatusActive?: VehicleStatusState;
     checked?: number[];
     sortableColumns?: number[];
     rows: (string | number)[][];
-    onEdit?: (index: number) => void;
+    onEditClick?: (index: number) => void;
+    onHistoryClick?: (index: number) => void;
     toggleAll?: (row: any[][]) => void;
     toggleRowStatus?: (index: number) => void;
     toggleIndividualRow?: (rowIndex: number) => void;
@@ -51,9 +54,10 @@ const Table = ({
     toggleIndividualRow,
     checked,
     toggleRowStatus,
-    rowStatus,
+    isStatusActive,
     translateXRow,
-    onEdit,
+    onEditClick,
+    onHistoryClick,
 }: TableProps) => {
     const [sortConfig, setSortConfig] = useState<SortConfig>({ columnIndex: null, direction: "asc" });
 
@@ -83,7 +87,7 @@ const Table = ({
 
     return (
         <View>
-            <ScrollView stickyHeaderIndices={[0]}>
+            <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
                 <View className="px-4 flex-row items-center justify-start gap-4 border-b border-base-100 bg-base-100 dark:bg-base-100-dark">
                     {/* Checkbox column */}
                     {checkbox && (
@@ -147,8 +151,12 @@ const Table = ({
                                 const column = activeColumns[colIndex];
                                 return (
                                     <View key={colIndex} className="w-52 p-4">
-                                        {column.label === "Edit" ? (
-                                            <Pressable onPress={() => onEdit?.(rowIndex)}>
+                                        {column.label === "History" ? (
+                                            <Pressable onPress={() => onHistoryClick?.(rowIndex)}>
+                                                <IconArrowRight size={24} color={"#7367f0"} />
+                                            </Pressable>
+                                        ) : column.label === "Edit" ? (
+                                            <Pressable onPress={() => onEditClick?.(rowIndex)}>
                                                 <IconEdit size={24} color={"#7367f0"} />
                                             </Pressable>
                                         ) : column.label === "Status" ? (
@@ -159,7 +167,11 @@ const Table = ({
                                                         width: 60,
                                                         height: 30,
                                                         borderRadius: 15,
-                                                        backgroundColor: rowStatus?.[rowIndex] ? "#10b981" : "#d1d5db",
+                                                        backgroundColor: isStatusActive?.editVehicleTableStatus[
+                                                            rowIndex
+                                                        ]
+                                                            ? "#10b981"
+                                                            : "#d1d5db",
                                                         justifyContent: "center",
                                                         padding: 2,
                                                     }}
@@ -179,7 +191,7 @@ const Table = ({
                                                             justifyContent: "center",
                                                         }}
                                                     >
-                                                        {rowStatus?.[rowIndex] && (
+                                                        {isStatusActive?.editVehicleTableStatus?.[rowIndex] && (
                                                             <IconCheck size={18} color="#10b981" />
                                                         )}
                                                     </Animated.View>

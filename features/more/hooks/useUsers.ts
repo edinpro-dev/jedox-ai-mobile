@@ -1,12 +1,18 @@
 import { useTheme } from "@/lib/theme";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Animated, Easing } from "react-native";
 
-export type ModalKey = "addNewUser" | "addBulkUser" | "deactivateUser";
+export type ModalKey = keyof UserModalState;
 
 export interface UserModalState {
     addNewUser: boolean;
     addBulkUser: boolean;
     deactivateUser: boolean;
+    editUser: boolean;
+}
+
+export interface UserStatusState {
+    editUser: boolean;
 }
 
 const usersDummyData = [
@@ -54,28 +60,54 @@ const dummyUsersData = [
 ]
 
 export const useUsers = () => {
-    const [deactivateUser, setDeactivateUser] = useState<number[]>([]);
-    const [usersData, setUsersData] = useState<string[]>([]);
-    const [userRole, setUserRole] = useState<string[]>([]);
-    const [isUserModalOpen, setIsUserModalOpen] = useState<UserModalState>({
-        addNewUser: false,
-        addBulkUser: false,
-        deactivateUser: false
-    });
-
-    const { colors } = useTheme();
-
     // build rows data
     const rows = dummyUsersData[0].data.map((_, rowIndex) =>
         dummyUsersData.map(col => col.data?.[rowIndex] ?? "")
     );
 
+    const [deactivateUser, setDeactivateUser] = useState<number[]>([]);
+    const [usersData, setUsersData] = useState<string[]>([]);
+    const [userRole, setUserRole] = useState<string[]>([]);
+    const [isStatusActive, setIsStatusActive] = useState<UserStatusState>({
+        editUser: false
+    });
+    const [isUserModalOpen, setIsUserModalOpen] = useState<UserModalState>({
+        addNewUser: false,
+        addBulkUser: false,
+        deactivateUser: false,
+        editUser: false
+    });
+
+    const { colors } = useTheme();
+
+    //status button animation in users
+    const animation = useRef(new Animated.Value((0))).current;
+
     //toggleModal
     const closeModal = (key: ModalKey) => setIsUserModalOpen((prev) => ({ ...prev, [key]: false }));
     const openModal = (key: ModalKey) => setIsUserModalOpen((prev) => ({ ...prev, [key]: true }));
 
+    //toggle status button in edit user table
+    const toggleEditUserStatus = () => {
+        setIsStatusActive((prev) => ({
+            ...prev, editUser: !prev.editUser
+        }));
+        Animated.timing(animation, {
+            toValue: isStatusActive.editUser ? 0 : 1,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: false
+        }).start();
+    };
 
-    //toggle deactivate user
+    //translate edit user modal
+    const translateX = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 30]
+    });
+
+
+    //toggle checkbox in users table
     const toggleIndividualRow = (rowIndex: number) => {
         setDeactivateUser((prev) => {
             let updated: number[];
@@ -96,6 +128,7 @@ export const useUsers = () => {
         });
     }
 
+    //toggle checkbox in users table
     const toggleAllRow = (row: any[][]) => {
         setDeactivateUser((prev) => {
             let updated: number[];
@@ -138,6 +171,9 @@ export const useUsers = () => {
         deactivateUser,
         toggleAllRow,
         toggleIndividualRow,
-        selectedUser
+        selectedUser,
+        isStatusActive,
+        toggleEditUserStatus,
+        translateX
     };
 };

@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
+import { VehicleStatusState } from "@/features/vehicles/hooks/useVehicle";
 import { IconCheck, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { Animated, Pressable, ScrollView, View } from "react-native";
@@ -9,13 +10,19 @@ import Modal from "react-native-modal";
 
 type AddNewVehicleProps = {
     isVisible: boolean;
-    isStatusActive: boolean;
-    toggleStatus: () => void;
+    isStatusActive: VehicleStatusState;
+    toggleAddNewVehicleStatus: () => void;
     closeModal: (key: "addNewVehicle" | "addBulkVehicle") => void;
     translateX: Animated.AnimatedInterpolation<string | number>;
 };
 
-const AddNewVehicle = ({ isVisible, isStatusActive, closeModal, toggleStatus, translateX }: AddNewVehicleProps) => {
+const AddNewVehicle = ({
+    isVisible,
+    isStatusActive,
+    closeModal,
+    toggleAddNewVehicleStatus,
+    translateX,
+}: AddNewVehicleProps) => {
     return (
         <Modal isVisible={isVisible} className="p-4 rounded bg-base-100 dark:bg-base-100-dark">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
@@ -67,18 +74,19 @@ const AddNewVehicle = ({ isVisible, isStatusActive, closeModal, toggleStatus, tr
                         <Select data={[]} placeholder="Select*" />
                     </View>
 
+                    {/* Status button */}
                     <View>
                         <Text variant={"label"} className="mb-2">
                             Status
                         </Text>
                         <View className="flex-row items-center gap-4">
                             <Pressable
-                                onPress={toggleStatus}
+                                onPress={toggleAddNewVehicleStatus}
                                 style={{
                                     width: 60,
                                     height: 30,
                                     borderRadius: 15,
-                                    backgroundColor: isStatusActive ? "#10b981" : "#d1d5db",
+                                    backgroundColor: isStatusActive.addNewVehicleStatus ? "#10b981" : "#d1d5db",
                                     justifyContent: "center",
                                     padding: 2,
                                 }}
@@ -94,10 +102,12 @@ const AddNewVehicle = ({ isVisible, isStatusActive, closeModal, toggleStatus, tr
                                         justifyContent: "center",
                                     }}
                                 >
-                                    {isStatusActive && <IconCheck size={18} color="#10b981" />}
+                                    {isStatusActive.addNewVehicleStatus && <IconCheck size={18} color="#10b981" />}
                                 </Animated.View>
                             </Pressable>
-                            <Text variant={"caption"}>{isStatusActive ? "Active" : "Inactive"}</Text>
+                            <Text variant={"caption"}>
+                                {isStatusActive.addNewVehicleStatus ? "Active" : "Inactive"}
+                            </Text>
                         </View>
                     </View>
 

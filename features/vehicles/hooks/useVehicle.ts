@@ -1,15 +1,21 @@
 import { useTheme } from "@/lib/theme";
 import { useRef, useState } from "react";
-import { Animated } from "react-native";
-
-export type ModalKey = "addNewVehicle" | "addBulkVehicle" | "deactivateVehicle" | "editVehicle";
-
+import { Animated, Easing } from "react-native";
 
 export interface VehicleModalState {
     addNewVehicle: boolean;
     addBulkVehicle: boolean;
     deactivateVehicle: boolean;
     editVehicle: boolean;
+    history: boolean;
+}
+
+export type ModalKey = keyof VehicleModalState;
+
+export interface VehicleStatusState {
+    addNewVehicleStatus: boolean;
+    editVehicleTableStatus: boolean[];
+    editVehicleModalStatus: boolean;
 }
 
 const fuelTypeData = [
@@ -47,17 +53,23 @@ export const useVehicle = () => {
     const rows = vehicleDummyData[0].data.map((_, item) => vehicleDummyData.map((col) => col.data?.[item] ?? ""));
 
     const [deactivateVehicle, setDeactivateVehicle] = useState<number[]>([]);
-    const [isStatusActive, setIsStatusActive] = useState<boolean>(false);
-    const [rowStatus, setRowStatus] = useState<boolean[]>(rows.map(() => false));
+    const [isStatusActive, setIsStatusActive] = useState<VehicleStatusState>({
+        addNewVehicleStatus: false,
+        editVehicleTableStatus: rows.map(() => false),
+        editVehicleModalStatus: false
+    });
     const [isVehicleModalOpen, setIsVehicleModalOpen] = useState<VehicleModalState>({
         addNewVehicle: false,
         addBulkVehicle: false,
         deactivateVehicle: false,
-        editVehicle: false
+        editVehicle: false,
+        history: false
     });
     const { colors } = useTheme();
 
+    //Status button animation add new vehicle modal
     const animation = useRef(new Animated.Value(0)).current;
+    //Status button animation vehicle table
     const animations = useRef(rows.map(() => new Animated.Value(0))).current;
 
     //toggleModal
@@ -66,7 +78,7 @@ export const useVehicle = () => {
 
 
 
-    //toggle deactivate vehicle
+    //checkbox in vehicle table
     const toggleIndividualRow = (rowIndex: number) => {
         setDeactivateVehicle((prev) => {
             let updated: number[];
@@ -89,6 +101,7 @@ export const useVehicle = () => {
         });
     }
 
+    //checkbox in vehicle table
     const toggleAllRow = (row: any[][]) => {
         setDeactivateVehicle((prev) => {
             let updated: number[];
@@ -113,28 +126,44 @@ export const useVehicle = () => {
 
 
     //toggle add new vehicle active status
-    const toggleStatus = () => {
-        setIsStatusActive(!isStatusActive);
+    const toggleAddNewVehicleStatus = () => {
+        setIsStatusActive((prev) => ({ ...prev, addNewVehicleStatus: !prev.addNewVehicleStatus }));
         Animated.timing(animation, {
-            toValue: isStatusActive ? 0 : 1,
-            duration: 200,
+            toValue: isStatusActive.addNewVehicleStatus ? 0 : 1,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
             useNativeDriver: false,
         }).start();
     };
 
     //toggle individual vehicle table row active status
     const toggleRowStatus = (index: number) => {
-        setRowStatus((prev) => {
-            const updated = [...prev];
+        setIsStatusActive((prev) => {
+            let updated = [...prev.editVehicleTableStatus];
             updated[index] = !updated[index];
 
-            Animated.timing(animations[index], {
-                toValue: updated[index] ? 1 : 0,
-                duration: 200,
-                useNativeDriver: false,
-            }).start();
-            return updated;
+            return {
+                ...prev,
+                editVehicleTableStatus: updated
+            }
         });
+        Animated.timing(animations[index], {
+            toValue: isStatusActive.editVehicleTableStatus[index] ? 0 : 1,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: false,
+        }).start();
+    }
+
+    //toggle edit vehicle modal active status
+    const toggleEditVehicleModalStatus = () => {
+        setIsStatusActive((prev) => ({ ...prev, editVehicleModalStatus: !prev.editVehicleModalStatus }));
+        Animated.timing(animation, {
+            toValue: isStatusActive.editVehicleModalStatus ? 0 : 1,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: false,
+        }).start();
     }
 
     // translate add new vehicle status
@@ -162,12 +191,12 @@ export const useVehicle = () => {
         closeModal,
         openModal,
         isStatusActive,
-        toggleStatus,
+        toggleAddNewVehicleStatus,
+        toggleEditVehicleModalStatus,
         translateX,
         vehicleDummyData,
         rows,
         toggleRowStatus,
-        rowStatus,
         translateXRow,
         toggleIndividualRow,
         deactivateVehicle,

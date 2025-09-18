@@ -7,6 +7,7 @@ import { AddBulkVehicle } from "@/features/vehicles/components/modals/add-bulk-v
 import { AddNewVehicle } from "@/features/vehicles/components/modals/add-new-vehicle";
 import { DeactivateVehicle } from "@/features/vehicles/components/modals/deactivate-vehicle";
 import { EditVehicle } from "@/features/vehicles/components/modals/edit-vehicle";
+import { VehicleHistory } from "@/features/vehicles/components/modals/history";
 import { useVehicle } from "@/features/vehicles/hooks/useVehicle";
 import { IconCsv, IconSearch, IconTruck, IconTruckDelivery } from "@tabler/icons-react-native";
 import React from "react";
@@ -23,12 +24,12 @@ const Vehicles = () => {
         closeModal,
         openModal,
         isStatusActive,
-        toggleStatus,
+        toggleAddNewVehicleStatus,
+        toggleEditVehicleModalStatus,
         translateX,
         vehicleDummyData,
         rows,
         toggleRowStatus,
-        rowStatus,
         translateXRow,
         toggleIndividualRow,
         deactivateVehicle,
@@ -88,7 +89,7 @@ const Vehicles = () => {
                         isVisible={isVehicleModalOpen.addNewVehicle}
                         closeModal={closeModal}
                         isStatusActive={isStatusActive}
-                        toggleStatus={toggleStatus}
+                        toggleAddNewVehicleStatus={toggleAddNewVehicleStatus}
                         translateX={translateX}
                     />
                 )}
@@ -109,12 +110,13 @@ const Vehicles = () => {
                             useIsActive={false}
                             checked={deactivateVehicle}
                             checkbox={true}
-                            rowStatus={rowStatus}
+                            isStatusActive={isStatusActive}
                             translateXRow={translateXRow}
                             toggleRowStatus={toggleRowStatus}
                             toggleIndividualRow={toggleIndividualRow}
                             toggleAll={toggleAllRow}
-                            onEdit={() => openModal("editVehicle")}
+                            onEditClick={() => openModal("editVehicle")}
+                            onHistoryClick={() => openModal("history")}
                         />
                     </ScrollView>
 
@@ -127,7 +129,18 @@ const Vehicles = () => {
 
                     {/* Edit vehicle modal */}
                     {isVehicleModalOpen.editVehicle && (
-                        <EditVehicle isVisible={isVehicleModalOpen.editVehicle} closeModal={closeModal} />
+                        <EditVehicle
+                            isVisible={isVehicleModalOpen.editVehicle}
+                            closeModal={closeModal}
+                            isStatusActive={isStatusActive}
+                            toggleEditVehicleModalStatus={toggleEditVehicleModalStatus}
+                            translateX={translateX}
+                        />
+                    )}
+
+                    {/* History modal */}
+                    {isVehicleModalOpen.history && (
+                        <VehicleHistory isVisible={isVehicleModalOpen.history} closeModal={closeModal} />
                     )}
                 </View>
             </View>

@@ -13,9 +13,9 @@ type AddBulkUserProps = {
 
 const AddBulkUser = ({ isVisible, closeModal }: AddBulkUserProps) => {
     return (
-        <Modal isVisible={isVisible} className="px-4 rounded bg-base-100 dark:bg-base-100-dark">
+        <Modal isVisible={isVisible} className="p-4 rounded bg-base-100 dark:bg-base-100-dark">
             <View className="flex-1">
-                <View className="py-4 flex-row justify-end">
+                <View className="flex-row justify-end">
                     <Button variant="ghost" onPress={() => closeModal("addBulkUser")}>
                         <IconX size={24} color="grey" />
                     </Button>
