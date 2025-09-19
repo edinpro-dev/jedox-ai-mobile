@@ -3,6 +3,7 @@ import { sortTableData } from "@/lib/sortTableData";
 import {
     IconArrowRight,
     IconCheck,
+    IconDotsVertical,
     IconEdit,
     IconMinus,
     IconTriangleFilled,
@@ -40,6 +41,25 @@ interface TableProps {
 type SortConfig = {
     columnIndex: number | null;
     direction: "desc" | "asc";
+};
+
+type CheckBoxProps = {
+    checked: boolean;
+    checkedLength?: number;
+    onPress: () => void;
+};
+
+const CheckBoxComponent = ({ checked, checkedLength, onPress }: CheckBoxProps) => {
+    return (
+        <Pressable className="active:opacity-40" onPress={onPress}>
+            <View
+                className={`w-4 h-4 border border-white flex-row items-center justify-center ${checked ? "bg-primary" : ""} ${checkedLength ? "bg-primary" : ""}`}
+            >
+                {checked && <IconCheck size={14} color={"white"} />}
+                {(checkedLength ?? 0) > 0 && !checked && <IconMinus size={14} color={"white"} />}
+            </View>
+        </Pressable>
+    );
 };
 
 const Table = ({
@@ -91,23 +111,17 @@ const Table = ({
                 <View className="px-4 flex-row items-center justify-start gap-4 border-b border-base-100 bg-base-100 dark:bg-base-100-dark">
                     {/* Checkbox column */}
                     {checkbox && (
-                        <Pressable className="active:opacity-40" onPress={() => toggleAll?.(rows)}>
-                            <View
-                                className={`w-4 h-4 border border-white flex-row items-center justify-center ${checked?.length === rows.length ? "bg-primary" : ""} ${checked?.length ? "bg-primary" : ""}`}
-                            >
-                                {checked?.length === rows.length ? (
-                                    <IconCheck size={14} color={"white"} />
-                                ) : checked && checked.length > 0 ? (
-                                    <IconMinus size={14} color={"white"} />
-                                ) : null}
-                            </View>
-                        </Pressable>
+                        <CheckBoxComponent
+                            checked={checked?.length === rows.length}
+                            checkedLength={checked?.length}
+                            onPress={() => toggleAll?.(rows)}
+                        />
                     )}
 
                     {/* Column label */}
                     <View className="flex-row items-center justify-start gap-4">
                         {activeColumns?.map((column) => (
-                            <View key={column.id} className="p-4 w-52 flex-row items-center justify-start gap-4">
+                            <View key={column.id} className="px-6 py-4 w-56 flex-row items-center justify-start gap-4">
                                 <Text variant={"label-large"}>{column.label}</Text>
                                 {sortable && sortableColumns?.includes(column.id) && (
                                     <>
@@ -137,21 +151,42 @@ const Table = ({
                     <View key={rowIndex} className="px-4 flex-row items-center justify-start gap-4">
                         {/* Checkbox row */}
                         {checkbox && (
-                            <Pressable className="active:opacity-40" onPress={() => toggleIndividualRow?.(rowIndex)}>
-                                <View
-                                    className={`w-4 h-4 border border-white flex-row items-center justify-center ${checked?.includes(rowIndex) ? "bg-primary" : ""}`}
-                                >
-                                    {checked?.includes(rowIndex) && <IconCheck size={14} color={"white"} />}
-                                </View>
-                            </Pressable>
+                            <CheckBoxComponent
+                                checked={checked?.includes(rowIndex) ?? false}
+                                onPress={() => toggleIndividualRow?.(rowIndex)}
+                            />
                         )}
 
                         <View key={rowIndex} className=" flex-row items-center justify-start gap-4">
                             {row.map((cell: any, colIndex: any) => {
                                 const column = activeColumns[colIndex];
                                 return (
-                                    <View key={colIndex} className="w-52 p-4">
-                                        {column.label === "History" ? (
+                                    <View key={colIndex} className="w-56 py-4 px-6">
+                                        {column.label === "Alert Status" ? (
+                                            <View className="flex-row items-center justify-between gap-4">
+                                                <View className="rounded bg-orange-300/70">
+                                                    <Text className="text-center p-1">{cell}</Text>
+                                                </View>
+                                                <Pressable className="active:opacity-40">
+                                                    <IconDotsVertical size={24} color={"grey"} />
+                                                </Pressable>
+                                            </View>
+                                        ) : column.label === "Status" && colIndex === 2 ? (
+                                            <View className="w-1/2 rounded bg-green-300/70">
+                                                <Text className="text-center p-1">{cell}</Text>
+                                            </View>
+                                        ) : column.label === "Emailer types" ? (
+                                            <Text className="py-1 rounded bg-red-300 text-center">{cell}</Text>
+                                        ) : column.label === "Location" ? (
+                                            <View className="flex-row items-center justify-between gap-4">
+                                                <Text className="px-2 py-1 rounded bg-base-100 dark:bg-base-100-dark">
+                                                    {cell}
+                                                </Text>
+                                                <Pressable className="active:opacity-40">
+                                                    <IconDotsVertical size={24} color={"grey"} />
+                                                </Pressable>
+                                            </View>
+                                        ) : column.label === "History" ? (
                                             <Pressable onPress={() => onHistoryClick?.(rowIndex)}>
                                                 <IconArrowRight size={24} color={"#7367f0"} />
                                             </Pressable>
@@ -159,7 +194,7 @@ const Table = ({
                                             <Pressable onPress={() => onEditClick?.(rowIndex)}>
                                                 <IconEdit size={24} color={"#7367f0"} />
                                             </Pressable>
-                                        ) : column.label === "Status" ? (
+                                        ) : column.label === "Status" && colIndex === 8 ? (
                                             <View className="flex-row items-center gap-4">
                                                 <Pressable
                                                     onPress={() => toggleRowStatus?.(rowIndex)}

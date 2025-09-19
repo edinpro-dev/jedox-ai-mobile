@@ -197,7 +197,7 @@ const Search = () => {
                             rows={displayRows}
                             sortable={true}
                             useIsActive
-                            sortableColumns={[1, 3, 9, 10, 11, 12]}
+                            sortableColumns={[1, 3, 9, 10, 11, 12, 13]}
                         />
                     </ScrollView>
 

@@ -1,5 +1,6 @@
 import { Button } from "@/components/button";
 import { Text } from "@/components/text";
+import { ModalKey } from "@/features/more/hooks/useDriverSchedule";
 import {
     IconDownload,
     IconExclamationCircle,
@@ -13,7 +14,7 @@ import Modal from "react-native-modal";
 
 type DriverScheduleProps = {
     isVisible: boolean;
-    closeModal: () => void;
+    closeModal: (key: ModalKey) => void;
     handlePickFile: () => Promise<void>;
 };
 
@@ -23,7 +24,7 @@ const DriverSchedule = ({ isVisible, closeModal, handlePickFile }: DriverSchedul
             <View className="flex-1">
                 <View className="flex-row items-center justify-between border-b border-gray-500">
                     <Text variant={"h3"}>Driver Schedule</Text>
-                    <Button variant="ghost" onPress={closeModal}>
+                    <Button variant="ghost" onPress={() => closeModal("addBulkAssignment")}>
                         <IconX size={24} color={"grey"} />
                     </Button>
                 </View>
