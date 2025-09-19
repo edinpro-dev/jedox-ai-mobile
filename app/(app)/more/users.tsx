@@ -6,6 +6,7 @@ import { Text } from "@/components/text";
 import { AddNewUser } from "@/features/more/components/modals/users/add-new-user-form";
 import { AddBulkUser } from "@/features/more/components/modals/users/bulk-user-form";
 import { DeactivateUser } from "@/features/more/components/modals/users/deactivate-user";
+import { EditUser } from "@/features/more/components/modals/users/edit-user";
 import { useUsers } from "@/features/more/hooks/useUsers";
 import { IconSearch, IconUserPlus, IconUsersPlus } from "@tabler/icons-react-native";
 import React from "react";
@@ -22,12 +23,15 @@ const users = () => {
         openModal,
         addNewUserRole,
         pdfFormatData,
-        columns,
+        dummyUsersData,
         rows,
         deactivateUser,
         toggleAllRow,
         toggleIndividualRow,
         selectedUser,
+        isStatusActive,
+        toggleEditUserStatus,
+        translateX,
     } = useUsers();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -78,7 +82,7 @@ const users = () => {
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <Table
                             title="Users"
-                            columns={columns}
+                            columns={dummyUsersData}
                             rows={rows}
                             sortable={true}
                             sortableColumns={[0, 1, 2]}
@@ -86,6 +90,7 @@ const users = () => {
                             checked={deactivateUser}
                             toggleAll={toggleAllRow}
                             toggleIndividualRow={toggleIndividualRow}
+                            onEditClick={() => openModal("editUser")}
                         />
                     </ScrollView>
 
@@ -94,6 +99,17 @@ const users = () => {
                         <View className="absolute bottom-0 left-0 right-0 items-center justify-center bg-transparent">
                             <DeactivateUser closeModal={closeModal} selectedUser={selectedUser} />
                         </View>
+                    )}
+
+                    {/* Edit User modal */}
+                    {isUserModalOpen.editUser && (
+                        <EditUser
+                            isVisible={isUserModalOpen.editUser}
+                            closeModal={closeModal}
+                            toggleEditUserStatus={toggleEditUserStatus}
+                            translateX={translateX}
+                            isStatusActive={isStatusActive}
+                        />
                     )}
                 </View>
             </View>

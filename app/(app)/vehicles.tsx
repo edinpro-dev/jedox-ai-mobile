@@ -1,13 +1,17 @@
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
+import { Table } from "@/components/table";
 import { Text } from "@/components/text";
 import { AddBulkVehicle } from "@/features/vehicles/components/modals/add-bulk-vehicle";
 import { AddNewVehicle } from "@/features/vehicles/components/modals/add-new-vehicle";
+import { DeactivateVehicle } from "@/features/vehicles/components/modals/deactivate-vehicle";
+import { EditVehicle } from "@/features/vehicles/components/modals/edit-vehicle";
+import { VehicleHistory } from "@/features/vehicles/components/modals/history";
 import { useVehicle } from "@/features/vehicles/hooks/useVehicle";
 import { IconCsv, IconSearch, IconTruck, IconTruckDelivery } from "@tabler/icons-react-native";
 import React from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Vehicles = () => {
@@ -20,12 +24,21 @@ const Vehicles = () => {
         closeModal,
         openModal,
         isStatusActive,
-        toggleStatus,
+        toggleAddNewVehicleStatus,
+        toggleEditVehicleModalStatus,
         translateX,
+        vehicleDummyData,
+        rows,
+        toggleRowStatus,
+        translateXRow,
+        toggleIndividualRow,
+        deactivateVehicle,
+        toggleAllRow,
+        selectedVehicle,
     } = useVehicle();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
-            <View className="p-4">
+            <View className="flex-1 p-4">
                 <Text variant={"h4"}>Vehicles</Text>
                 <View className="mt-4 gap-4">
                     <Button variant="outline">
@@ -76,7 +89,7 @@ const Vehicles = () => {
                         isVisible={isVehicleModalOpen.addNewVehicle}
                         closeModal={closeModal}
                         isStatusActive={isStatusActive}
-                        toggleStatus={toggleStatus}
+                        toggleAddNewVehicleStatus={toggleAddNewVehicleStatus}
                         translateX={translateX}
                     />
                 )}
@@ -84,6 +97,52 @@ const Vehicles = () => {
                 {isVehicleModalOpen.addBulkVehicle && (
                     <AddBulkVehicle isVisible={isVehicleModalOpen.addBulkVehicle} closeModal={closeModal} />
                 )}
+
+                {/* Vehicle table */}
+                <View className="my-4 flex-1">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <Table
+                            title="Vehicles"
+                            columns={vehicleDummyData}
+                            rows={rows}
+                            sortable={true}
+                            sortableColumns={[0, 1, 2, 3, 4, 5, 6, 7, 8]}
+                            useIsActive={false}
+                            checked={deactivateVehicle}
+                            checkbox={true}
+                            isStatusActive={isStatusActive}
+                            translateXRow={translateXRow}
+                            toggleRowStatus={toggleRowStatus}
+                            toggleIndividualRow={toggleIndividualRow}
+                            toggleAll={toggleAllRow}
+                            onEditClick={() => openModal("editVehicle")}
+                            onHistoryClick={() => openModal("history")}
+                        />
+                    </ScrollView>
+
+                    {/* Deactivate modal */}
+                    {isVehicleModalOpen.deactivateVehicle && (
+                        <View className="absolute bottom-0 left-0 right-0 items-center justify-center bg-transparent">
+                            <DeactivateVehicle closeModal={closeModal} selectedVehicle={selectedVehicle} />
+                        </View>
+                    )}
+
+                    {/* Edit vehicle modal */}
+                    {isVehicleModalOpen.editVehicle && (
+                        <EditVehicle
+                            isVisible={isVehicleModalOpen.editVehicle}
+                            closeModal={closeModal}
+                            isStatusActive={isStatusActive}
+                            toggleEditVehicleModalStatus={toggleEditVehicleModalStatus}
+                            translateX={translateX}
+                        />
+                    )}
+
+                    {/* History modal */}
+                    {isVehicleModalOpen.history && (
+                        <VehicleHistory isVisible={isVehicleModalOpen.history} closeModal={closeModal} />
+                    )}
+                </View>
             </View>
         </SafeAreaView>
     );

@@ -1,5 +1,7 @@
+import { VehicleStatusState } from "@/features/vehicles/hooks/useVehicle";
 import { sortTableData } from "@/lib/sortTableData";
 import {
+    IconArrowRight,
     IconCheck,
     IconEdit,
     IconMinus,
@@ -7,7 +9,7 @@ import {
     IconTriangleInvertedFilled,
 } from "@tabler/icons-react-native";
 import React, { useMemo, useState } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Animated, Pressable, ScrollView, View } from "react-native";
 import { Text } from "../text";
 
 export type Column = {
@@ -20,14 +22,19 @@ export type Column = {
 interface TableProps {
     title: string;
     columns: Column[];
-    rows: (string | number)[][];
     sortable?: boolean;
-    sortableColumns?: number[];
     checkbox?: boolean;
     useIsActive?: boolean;
+    isStatusActive?: VehicleStatusState;
     checked?: number[];
+    sortableColumns?: number[];
+    rows: (string | number)[][];
+    onEditClick?: (index: number) => void;
+    onHistoryClick?: (index: number) => void;
     toggleAll?: (row: any[][]) => void;
+    toggleRowStatus?: (index: number) => void;
     toggleIndividualRow?: (rowIndex: number) => void;
+    translateXRow?: Animated.AnimatedInterpolation<string | number>[];
 }
 
 type SortConfig = {
@@ -46,6 +53,11 @@ const Table = ({
     toggleAll,
     toggleIndividualRow,
     checked,
+    toggleRowStatus,
+    isStatusActive,
+    translateXRow,
+    onEditClick,
+    onHistoryClick,
 }: TableProps) => {
     const [sortConfig, setSortConfig] = useState<SortConfig>({ columnIndex: null, direction: "asc" });
 
@@ -75,7 +87,7 @@ const Table = ({
 
     return (
         <View>
-            <ScrollView>
+            <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
                 <View className="px-4 flex-row items-center justify-start gap-4 border-b border-base-100 bg-base-100 dark:bg-base-100-dark">
                     {/* Checkbox column */}
                     {checkbox && (
@@ -94,16 +106,16 @@ const Table = ({
 
                     {/* Column label */}
                     <View className="flex-row items-center justify-start gap-4">
-                        {activeColumns?.map((column, index) => (
-                            <View key={index} className="p-4 w-52 flex-row items-center justify-start gap-4">
+                        {activeColumns?.map((column) => (
+                            <View key={column.id} className="p-4 w-52 flex-row items-center justify-start gap-4">
                                 <Text variant={"label-large"}>{column.label}</Text>
-                                {sortable && sortableColumns?.includes(index) && (
+                                {sortable && sortableColumns?.includes(column.id) && (
                                     <>
                                         <Pressable
-                                            onPress={() => handleSortConfig(index)}
+                                            onPress={() => handleSortConfig(column.id)}
                                             className="active:opacity-40"
                                         >
-                                            {sortConfig.columnIndex === index ? (
+                                            {sortConfig.columnIndex === column.id ? (
                                                 sortConfig.direction === "asc" ? (
                                                     <IconTriangleFilled size={12} color="grey" />
                                                 ) : (
@@ -121,28 +133,70 @@ const Table = ({
                 </View>
 
                 {/* Rows data */}
-                {sortedRows.map((row, index) => (
-                    <View key={index} className="px-4 flex-row items-center justify-start gap-4">
+                {sortedRows.map((row, rowIndex) => (
+                    <View key={rowIndex} className="px-4 flex-row items-center justify-start gap-4">
                         {/* Checkbox row */}
                         {checkbox && (
-                            <Pressable className="active:opacity-40" onPress={() => toggleIndividualRow?.(index)}>
+                            <Pressable className="active:opacity-40" onPress={() => toggleIndividualRow?.(rowIndex)}>
                                 <View
-                                    className={`w-4 h-4 border border-white flex-row items-center justify-center ${checked?.includes(index) ? "bg-primary" : ""}`}
+                                    className={`w-4 h-4 border border-white flex-row items-center justify-center ${checked?.includes(rowIndex) ? "bg-primary" : ""}`}
                                 >
-                                    {checked?.includes(index) && <IconCheck size={14} color={"white"} />}
+                                    {checked?.includes(rowIndex) && <IconCheck size={14} color={"white"} />}
                                 </View>
                             </Pressable>
                         )}
 
-                        <View key={index} className=" flex-row items-center justify-start gap-4">
-                            {row.map((cell: any, index: any) => {
-                                const column = activeColumns[index];
+                        <View key={rowIndex} className=" flex-row items-center justify-start gap-4">
+                            {row.map((cell: any, colIndex: any) => {
+                                const column = activeColumns[colIndex];
                                 return (
-                                    <View key={index} className="w-52 p-4">
-                                        {column.label === "Edit" ? (
-                                            <Pressable>
+                                    <View key={colIndex} className="w-52 p-4">
+                                        {column.label === "History" ? (
+                                            <Pressable onPress={() => onHistoryClick?.(rowIndex)}>
+                                                <IconArrowRight size={24} color={"#7367f0"} />
+                                            </Pressable>
+                                        ) : column.label === "Edit" ? (
+                                            <Pressable onPress={() => onEditClick?.(rowIndex)}>
                                                 <IconEdit size={24} color={"#7367f0"} />
                                             </Pressable>
+                                        ) : column.label === "Status" ? (
+                                            <View className="flex-row items-center gap-4">
+                                                <Pressable
+                                                    onPress={() => toggleRowStatus?.(rowIndex)}
+                                                    style={{
+                                                        width: 60,
+                                                        height: 30,
+                                                        borderRadius: 15,
+                                                        backgroundColor: isStatusActive?.editVehicleTableStatus[
+                                                            rowIndex
+                                                        ]
+                                                            ? "#10b981"
+                                                            : "#d1d5db",
+                                                        justifyContent: "center",
+                                                        padding: 2,
+                                                    }}
+                                                >
+                                                    <Animated.View
+                                                        style={{
+                                                            width: 26,
+                                                            height: 26,
+                                                            borderRadius: 13,
+                                                            backgroundColor: "white",
+                                                            transform: [
+                                                                {
+                                                                    translateX: (translateXRow?.[rowIndex] as any) ?? 0,
+                                                                },
+                                                            ],
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                        }}
+                                                    >
+                                                        {isStatusActive?.editVehicleTableStatus?.[rowIndex] && (
+                                                            <IconCheck size={18} color="#10b981" />
+                                                        )}
+                                                    </Animated.View>
+                                                </Pressable>
+                                            </View>
                                         ) : (
                                             <Text>{cell}</Text>
                                         )}
