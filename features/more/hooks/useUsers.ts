@@ -2,14 +2,14 @@ import { useTheme } from "@/lib/theme";
 import { useRef, useState } from "react";
 import { Animated, Easing } from "react-native";
 
-export type ModalKey = keyof UserModalState;
-
 export interface UserModalState {
     addNewUser: boolean;
     addBulkUser: boolean;
     deactivateUser: boolean;
     editUser: boolean;
 }
+
+export type ModalKey = keyof UserModalState;
 
 export interface UserStatusState {
     editUser: boolean;
@@ -106,47 +106,33 @@ export const useUsers = () => {
         outputRange: [1, 30]
     });
 
+    //get individual rows
+    const getIndividualRow = (prev: number[]) => (rowIndex: number): number[] => {
+        return prev.includes(rowIndex)
+            ? prev.filter((index) => index !== rowIndex)
+            : [...prev, rowIndex];
+    };
+
+    //get all rows
+    const getAllRows = (prev: number[]) => (rows: number[][]): number[] => prev.length === rows.length ? [] : rows.map((_, i) => i);
+
+    //toggle checkbox modal in users table
+    const toggleCheckboxModal = (updated: number[]) => updated.length > 0 ? openModal("deactivateUser") : closeModal("deactivateUser");
 
     //toggle checkbox in users table
     const toggleIndividualRow = (rowIndex: number) => {
         setDeactivateUser((prev) => {
-            let updated: number[];
-
-            if (prev.includes(rowIndex)) {
-                updated = prev.filter((index) => index !== rowIndex)
-            } else {
-                updated = [...prev, rowIndex]
-            }
-
-            if (updated.length > 0) {
-                openModal("deactivateUser");
-            } else {
-                closeModal("deactivateUser");
-            }
-
+            const updated = getIndividualRow(prev)(rowIndex);
+            toggleCheckboxModal(updated);
             return updated;
         });
     }
 
     //toggle checkbox in users table
-    const toggleAllRow = (row: any[][]) => {
+    const toggleAllRow = (rows: any[][]) => {
         setDeactivateUser((prev) => {
-            let updated: number[];
-
-            if (prev.length === row.length) {
-                closeModal("deactivateUser")
-                updated = [];
-            } else {
-                openModal("deactivateUser")
-                updated = row.map((_, i) => i)
-            }
-
-            if (updated.length > 0) {
-                openModal("deactivateUser");
-            } else {
-                closeModal("deactivateUser");
-            }
-
+            const updated = getAllRows(prev)(rows)
+            toggleCheckboxModal(updated);
             return updated;
         });
     }

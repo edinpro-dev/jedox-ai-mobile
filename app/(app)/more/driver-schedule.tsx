@@ -36,7 +36,7 @@ const driverSchedule = () => {
                                 </View>
                             </Button>
 
-                            <Button variant="primary" onPress={openModal}>
+                            <Button variant="primary" onPress={() => openModal("addBulkAssignment")}>
                                 <View className="flex-row items-center gap-2">
                                     <IconPlus size={20} color="white" />
                                     <Text>Bulk Assignment</Text>

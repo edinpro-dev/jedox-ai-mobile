@@ -7,6 +7,8 @@ interface DriverScheduleModalState {
     addBulkAssignment: boolean;
 }
 
+export type ModalKey = keyof DriverScheduleModalState;
+
 const vehiclePieData = [{ label: "No of Vehicles", value: 24, color: "#06b6d4" }];
 
 export const useDriverSchedule = () => {
@@ -18,14 +20,12 @@ export const useDriverSchedule = () => {
     const theme = useColorScheme();
     const bg = theme === "dark" ? colors.base300 : colors.base100;
 
-    const closeModal = () => setIsDriverScheduleModalOpen({ addBulkAssignment: false });
-    const openModal = () => setIsDriverScheduleModalOpen({ addBulkAssignment: true });
+    const closeModal = (key: ModalKey) => setIsDriverScheduleModalOpen((prev) => ({ ...prev, [key]: false }));
+    const openModal = (key: ModalKey) => setIsDriverScheduleModalOpen((prev) => ({ ...prev, [key]: true }));
 
     const handlePickFile = async () => {
         const uri = await pickFile();
-        if (!uri) return;
-        console.log(uri);
-        setDriverScheduleFile(uri);
+        setDriverScheduleFile(uri ?? null);
     }
 
     return {

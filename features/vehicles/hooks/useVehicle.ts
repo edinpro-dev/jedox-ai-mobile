@@ -76,27 +76,26 @@ export const useVehicle = () => {
     const closeModal = (key: ModalKey) => setIsVehicleModalOpen((prev) => ({ ...prev, [key]: false }));
     const openModal = (key: ModalKey) => setIsVehicleModalOpen((prev) => ({ ...prev, [key]: true }));
 
+    //-------------------- Vehicle checkbox logic --------------------//
 
+    //get IndividualRow
+    const getIndividualRow = (prev: number[]) => (rowIndex: number): number[] => {
+        return prev.includes(rowIndex)
+            ? prev.filter((index) => index !== rowIndex)
+            : [...prev, rowIndex];
+    }
+
+    //get all rows
+    const getAllRows = (prev: number[]) => (row: number[][]): number[] => prev.length === row.length ? [] : row.map((_, i) => i);
+
+    //toggle deactivate/activate vehicle modal
+    const toggleDeactivateActivateVehicleModal = (updated: number[]) => updated.length > 0 ? openModal("deactivateVehicle") : closeModal("deactivateVehicle");
 
     //checkbox in vehicle table
     const toggleIndividualRow = (rowIndex: number) => {
         setDeactivateVehicle((prev) => {
-            let updated: number[];
-
-            if (prev.includes(rowIndex)) {
-                updated = prev.filter((index) => index !== rowIndex)
-            } else {
-                updated = [...prev, rowIndex]
-            }
-
-            if (updated.length > 0) {
-                openModal("deactivateVehicle");
-
-            } else {
-                closeModal("deactivateVehicle");
-
-            }
-
+            const updated = getIndividualRow(prev)(rowIndex);
+            toggleDeactivateActivateVehicleModal(updated);
             return updated;
         });
     }
@@ -104,27 +103,16 @@ export const useVehicle = () => {
     //checkbox in vehicle table
     const toggleAllRow = (row: any[][]) => {
         setDeactivateVehicle((prev) => {
-            let updated: number[];
-
-            if (prev.length === row.length) {
-                closeModal("deactivateVehicle")
-                updated = [];
-            } else {
-                openModal("deactivateVehicle")
-                updated = row.map((_, i) => i)
-            }
-
-            if (updated.length > 0) {
-                openModal("deactivateVehicle");
-            } else {
-                closeModal("deactivateVehicle");
-            }
-
+            const updated = getAllRows(prev)(row);
+            toggleDeactivateActivateVehicleModal(updated);
             return updated;
         });
     }
 
+    const selectedVehicle = deactivateVehicle.length;
 
+
+    //-------------------- Vehicle add new vehicle status button logic --------------------//
     //toggle add new vehicle active status
     const toggleAddNewVehicleStatus = () => {
         setIsStatusActive((prev) => ({ ...prev, addNewVehicleStatus: !prev.addNewVehicleStatus }));
@@ -136,30 +124,17 @@ export const useVehicle = () => {
         }).start();
     };
 
-    //toggle individual vehicle table row active status
-    const toggleRowStatus = (index: number) => {
-        setIsStatusActive((prev) => {
-            let updated = [...prev.editVehicleTableStatus];
-            updated[index] = !updated[index];
-
-            return {
-                ...prev,
-                editVehicleTableStatus: updated
-            }
-        });
-        Animated.timing(animations[index], {
-            toValue: isStatusActive.editVehicleTableStatus[index] ? 0 : 1,
-            duration: 500,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: false,
-        }).start();
+    //-------------------- Vehicle table status button logic --------------------//
+    //get row status
+    const getRowStatus = (prev: VehicleStatusState) => (rowIndex: number) => {
+        return prev.editVehicleTableStatus.map((rowStatus, index) => index === rowIndex ? !rowStatus : rowStatus)
     }
 
-    //toggle edit vehicle modal active status
-    const toggleEditVehicleModalStatus = () => {
-        setIsStatusActive((prev) => ({ ...prev, editVehicleModalStatus: !prev.editVehicleModalStatus }));
-        Animated.timing(animation, {
-            toValue: isStatusActive.editVehicleModalStatus ? 0 : 1,
+    //toggle individual vehicle table row active status
+    const toggleRowStatus = (index: number) => {
+        setIsStatusActive((prev) => ({ ...prev, editVehicleTableStatus: getRowStatus(prev)(index) }));
+        Animated.timing(animations[index], {
+            toValue: isStatusActive.editVehicleTableStatus[index] ? 0 : 1,
             duration: 500,
             easing: Easing.inOut(Easing.ease),
             useNativeDriver: false,
@@ -180,7 +155,18 @@ export const useVehicle = () => {
         })
     );
 
-    const selectedVehicle = deactivateVehicle.length;
+    //-------------------- Vehicle edit button logic --------------------//
+
+    //toggle edit vehicle modal active status
+    const toggleEditVehicleModalStatus = () => {
+        setIsStatusActive((prev) => ({ ...prev, editVehicleModalStatus: !prev.editVehicleModalStatus }));
+        Animated.timing(animation, {
+            toValue: isStatusActive.editVehicleModalStatus ? 0 : 1,
+            duration: 500,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: false,
+        }).start();
+    }
 
     return {
         colors,

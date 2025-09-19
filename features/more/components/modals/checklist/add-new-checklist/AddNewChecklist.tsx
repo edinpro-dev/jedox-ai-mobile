@@ -1,6 +1,7 @@
 import { Button } from "@/components/button";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
+import { ModalKey } from "@/features/more/hooks/useChecklist";
 import { IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { View } from "react-native";
@@ -8,7 +9,7 @@ import Modal from "react-native-modal";
 
 type AddNewChecklistProps = {
     isVisible: boolean;
-    closeModal: () => void;
+    closeModal: (key: ModalKey) => void;
     inspectionTypeData: {
         label: string;
         value: string;
@@ -21,7 +22,7 @@ const AddNewChecklist = ({ isVisible, closeModal, inspectionTypeData }: AddNewCh
             <View className="flex-1">
                 <View className="flex-row items-center justify-between">
                     <Text variant={"h3"}>Add new checklist</Text>
-                    <Button variant="ghost" onPress={closeModal}>
+                    <Button variant="ghost" onPress={() => closeModal("addNewChecklist")}>
                         <IconX size={24} color={"grey"} />
                     </Button>
                 </View>

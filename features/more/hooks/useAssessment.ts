@@ -18,8 +18,7 @@ export const useAssessment = () => {
 
     const handlePickImage = async () => {
         const uri = await pickImage();
-        if (!uri) return;
-        setLicensePlateImage(uri);
+        setLicensePlateImage(uri ?? null);
     }
 
     return {
