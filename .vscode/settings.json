@@ -12,5 +12,8 @@
         "overrideConfig": {
             "root": true
         }
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     }
 }
