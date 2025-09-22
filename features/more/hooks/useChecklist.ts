@@ -1,6 +1,8 @@
+import { useTheme } from "@/lib/theme";
 import { useState } from "react";
 export interface ChecklistModalState {
     addNewChecklist: boolean;
+    verticalDotModal: boolean;
 }
 
 export type ModalKey = keyof ChecklistModalState;
@@ -48,13 +50,17 @@ export const useChecklist = () => {
 
     const [isChecklistModalOpen, setIsChecklistModalOpen] = useState<ChecklistModalState>({
         addNewChecklist: false,
+        verticalDotModal: false,
     });
+
+    const { colors } = useTheme();
 
     //toggle Modal
     const closeModal = (key: ModalKey) => setIsChecklistModalOpen((prev) => ({ ...prev, [key]: false }));
     const openModal = (key: ModalKey) => setIsChecklistModalOpen((prev) => ({ ...prev, [key]: true }));
 
     return {
+        colors,
         isChecklistModalOpen,
         closeModal,
         openModal,

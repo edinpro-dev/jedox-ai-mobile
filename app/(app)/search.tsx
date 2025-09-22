@@ -192,12 +192,12 @@ const Search = () => {
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <Table
-                            title="Assessment"
+                            title="Search"
                             columns={columns}
                             rows={displayRows}
                             sortable={true}
                             useIsActive
-                            sortableColumns={[1, 3, 9, 10, 11, 12, 13]}
+                            sortableColumns={[2, 3, 4, 10, 11, 12, 13]}
                         />
                     </ScrollView>
 

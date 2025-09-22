@@ -5,6 +5,7 @@ import {
     IconCheck,
     IconDotsVertical,
     IconEdit,
+    IconHourglassHigh,
     IconMinus,
     IconTriangleFilled,
     IconTriangleInvertedFilled,
@@ -35,6 +36,7 @@ interface TableProps {
     toggleAll?: (row: any[][]) => void;
     toggleRowStatus?: (index: number) => void;
     toggleIndividualRow?: (rowIndex: number) => void;
+    onVerticalDotClick?: (index: number) => void;
     translateXRow?: Animated.AnimatedInterpolation<string | number>[];
 }
 
@@ -49,6 +51,13 @@ type CheckBoxProps = {
     onPress: () => void;
 };
 
+interface RowComponentProps extends Partial<TableProps> {
+    rowIndex: number;
+    colIndex: number;
+    cell: string | number;
+    column: Column;
+}
+
 const CheckBoxComponent = ({ checked, checkedLength, onPress }: CheckBoxProps) => {
     return (
         <Pressable className="active:opacity-40" onPress={onPress}>
@@ -60,6 +69,109 @@ const CheckBoxComponent = ({ checked, checkedLength, onPress }: CheckBoxProps) =
             </View>
         </Pressable>
     );
+};
+
+const RowComponent = ({
+    rowIndex,
+    title,
+    cell,
+    column,
+    toggleRowStatus,
+    isStatusActive,
+    translateXRow,
+    onEditClick,
+    onHistoryClick,
+}: RowComponentProps) => {
+    switch (column.label) {
+        //------------------- History Table ------------------//
+        case "Status":
+            if (title !== "Checklist") {
+                return (
+                    <View className="flex-row items-center gap-4">
+                        <Pressable
+                            onPress={() => toggleRowStatus?.(rowIndex)}
+                            style={{
+                                width: 60,
+                                height: 30,
+                                borderRadius: 15,
+                                backgroundColor: isStatusActive?.editVehicleTableStatus[rowIndex]
+                                    ? "#10b981"
+                                    : "#d1d5db",
+                                justifyContent: "center",
+                                padding: 2,
+                            }}
+                        >
+                            <Animated.View
+                                style={{
+                                    width: 26,
+                                    height: 26,
+                                    borderRadius: 13,
+                                    backgroundColor: "white",
+                                    transform: [
+                                        {
+                                            translateX: (translateXRow?.[rowIndex] as any) ?? 0,
+                                        },
+                                    ],
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                {isStatusActive?.editVehicleTableStatus?.[rowIndex] && (
+                                    <IconCheck size={18} color="#10b981" />
+                                )}
+                            </Animated.View>
+                        </Pressable>
+                    </View>
+                );
+            }
+            return (
+                <View className="w-1/2 rounded bg-green-300/70">
+                    <Text className="text-center p-1">{cell}</Text>
+                </View>
+            );
+
+        case "Edit":
+            return (
+                <Pressable onPress={() => onEditClick?.(rowIndex)}>
+                    <IconEdit size={24} color={"#7367f0"} />
+                </Pressable>
+            );
+        case "History":
+            return (
+                <Pressable onPress={() => onHistoryClick?.(rowIndex)}>
+                    <IconArrowRight size={24} color={"#7367f0"} />
+                </Pressable>
+            );
+        //------------------- Auto Emailer Table ------------------//
+        case "Location":
+            return (
+                <View className="items-start">
+                    <Text className="px-2 py-1 rounded bg-base-100 dark:bg-base-100-dark">{cell}</Text>
+                </View>
+            );
+        case "Emailer types":
+            return <Text className="py-1 rounded bg-red-300 text-center">{cell}</Text>;
+        //------------------- Checklist Table ------------------//
+        case "Alert Status":
+            return (
+                <View className="flex-row items-center gap-4">
+                    <View className="rounded bg-orange-300/70">
+                        <Text className="text-center p-1">{cell}</Text>
+                    </View>
+                </View>
+            );
+        //------------------- Search Table ------------------//
+        case "Approval":
+            return <IconHourglassHigh size={24} color={"#f59e0b"} />;
+        case "Inspection Status":
+            return (
+                <View className="flex-row items-center justify-center bg-green-300/70 rounded">
+                    <Text>{cell}</Text>
+                </View>
+            );
+        default:
+            return <Text>{cell}</Text>;
+    }
 };
 
 const Table = ({
@@ -78,6 +190,7 @@ const Table = ({
     translateXRow,
     onEditClick,
     onHistoryClick,
+    onVerticalDotClick,
 }: TableProps) => {
     const [sortConfig, setSortConfig] = useState<SortConfig>({ columnIndex: null, direction: "asc" });
 
@@ -148,7 +261,7 @@ const Table = ({
 
                 {/* Rows data */}
                 {sortedRows.map((row, rowIndex) => (
-                    <View key={rowIndex} className="px-4 flex-row items-center justify-start gap-4">
+                    <View key={rowIndex} className="relative px-4 flex-row items-center justify-between gap-4">
                         {/* Checkbox row */}
                         {checkbox && (
                             <CheckBoxComponent
@@ -156,89 +269,32 @@ const Table = ({
                                 onPress={() => toggleIndividualRow?.(rowIndex)}
                             />
                         )}
-
                         <View key={rowIndex} className=" flex-row items-center justify-start gap-4">
-                            {row.map((cell: any, colIndex: any) => {
+                            {row.map((cell: string | number, colIndex: number) => {
                                 const column = activeColumns[colIndex];
                                 return (
                                     <View key={colIndex} className="w-56 py-4 px-6">
-                                        {column.label === "Alert Status" ? (
-                                            <View className="flex-row items-center justify-between gap-4">
-                                                <View className="rounded bg-orange-300/70">
-                                                    <Text className="text-center p-1">{cell}</Text>
-                                                </View>
-                                                <Pressable className="active:opacity-40">
-                                                    <IconDotsVertical size={24} color={"grey"} />
-                                                </Pressable>
-                                            </View>
-                                        ) : column.label === "Status" && colIndex === 2 ? (
-                                            <View className="w-1/2 rounded bg-green-300/70">
-                                                <Text className="text-center p-1">{cell}</Text>
-                                            </View>
-                                        ) : column.label === "Emailer types" ? (
-                                            <Text className="py-1 rounded bg-red-300 text-center">{cell}</Text>
-                                        ) : column.label === "Location" ? (
-                                            <View className="flex-row items-center justify-between gap-4">
-                                                <Text className="px-2 py-1 rounded bg-base-100 dark:bg-base-100-dark">
-                                                    {cell}
-                                                </Text>
-                                                <Pressable className="active:opacity-40">
-                                                    <IconDotsVertical size={24} color={"grey"} />
-                                                </Pressable>
-                                            </View>
-                                        ) : column.label === "History" ? (
-                                            <Pressable onPress={() => onHistoryClick?.(rowIndex)}>
-                                                <IconArrowRight size={24} color={"#7367f0"} />
-                                            </Pressable>
-                                        ) : column.label === "Edit" ? (
-                                            <Pressable onPress={() => onEditClick?.(rowIndex)}>
-                                                <IconEdit size={24} color={"#7367f0"} />
-                                            </Pressable>
-                                        ) : column.label === "Status" && colIndex === 8 ? (
-                                            <View className="flex-row items-center gap-4">
-                                                <Pressable
-                                                    onPress={() => toggleRowStatus?.(rowIndex)}
-                                                    style={{
-                                                        width: 60,
-                                                        height: 30,
-                                                        borderRadius: 15,
-                                                        backgroundColor: isStatusActive?.editVehicleTableStatus[
-                                                            rowIndex
-                                                        ]
-                                                            ? "#10b981"
-                                                            : "#d1d5db",
-                                                        justifyContent: "center",
-                                                        padding: 2,
-                                                    }}
-                                                >
-                                                    <Animated.View
-                                                        style={{
-                                                            width: 26,
-                                                            height: 26,
-                                                            borderRadius: 13,
-                                                            backgroundColor: "white",
-                                                            transform: [
-                                                                {
-                                                                    translateX: (translateXRow?.[rowIndex] as any) ?? 0,
-                                                                },
-                                                            ],
-                                                            alignItems: "center",
-                                                            justifyContent: "center",
-                                                        }}
-                                                    >
-                                                        {isStatusActive?.editVehicleTableStatus?.[rowIndex] && (
-                                                            <IconCheck size={18} color="#10b981" />
-                                                        )}
-                                                    </Animated.View>
-                                                </Pressable>
-                                            </View>
-                                        ) : (
-                                            <Text>{cell}</Text>
-                                        )}
+                                        <RowComponent
+                                            rowIndex={rowIndex}
+                                            colIndex={colIndex}
+                                            title={title}
+                                            cell={cell}
+                                            column={column}
+                                            toggleRowStatus={toggleRowStatus}
+                                            isStatusActive={isStatusActive}
+                                            translateXRow={translateXRow}
+                                            onEditClick={onEditClick}
+                                            onHistoryClick={onHistoryClick}
+                                        />
                                     </View>
                                 );
                             })}
                         </View>
+                        {title !== "Checklist" && title !== "Search" ? null : (
+                            <Pressable className="active:opacity-40" onPress={() => onVerticalDotClick?.(rowIndex)}>
+                                <IconDotsVertical size={24} color={"grey"} />
+                            </Pressable>
+                        )}
                     </View>
                 ))}
             </ScrollView>
