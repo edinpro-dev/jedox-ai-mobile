@@ -270,8 +270,8 @@ const Table = ({
                             />
                         )}
                         <View key={rowIndex} className=" flex-row items-center justify-start gap-4">
-                            {row.map((cell: string | number, colIndex: number) => {
-                                const column = activeColumns[colIndex];
+                            {activeColumns.map((column, colIndex: number) => {
+                                const cell = row[column.id - 1];
                                 return (
                                     <View key={colIndex} className="w-56 py-4 px-6">
                                         <RowComponent
@@ -290,7 +290,7 @@ const Table = ({
                                 );
                             })}
                         </View>
-                        {title !== "Checklist" && title !== "Search" ? null : (
+                        {title !== "Checklist" && title !== "Search" && title !== "Auto Emailer" ? null : (
                             <Pressable className="active:opacity-40" onPress={() => onVerticalDotClick?.(rowIndex)}>
                                 <IconDotsVertical size={24} color={"grey"} />
                             </Pressable>
