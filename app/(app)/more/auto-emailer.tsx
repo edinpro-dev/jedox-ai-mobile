@@ -3,7 +3,8 @@ import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Table } from "@/components/table";
 import { Text } from "@/components/text";
-import { AddNewEmail } from "@/features/more/components/modals/auto-emailer";
+import { AddNewEmail } from "@/features/more/components/modals/auto-emailer/add-new-email";
+import { AutoEmailerOptions } from "@/features/more/components/modals/auto-emailer/vertical-dot";
 import { useAutoEmailer } from "@/features/more/hooks/useAutoEmailer";
 import { IconArrowLeft, IconPlus, IconSearch } from "@tabler/icons-react-native";
 import { router } from "expo-router";
@@ -45,7 +46,20 @@ const autoEmailer = () => {
 
                     <View className="py-4">
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            <Table title="Auto Emailer" columns={autoEmailerTableDummyData} rows={rows} checkbox />
+                            <Table
+                                title="Auto Emailer"
+                                columns={autoEmailerTableDummyData}
+                                rows={rows}
+                                checkbox
+                                onVerticalDotClick={() => openModal("verticalDotModal")}
+                            />
+                            {/* Vertical Dot Modal */}
+                            {isAutoEmailerModalOpen.verticalDotModal && (
+                                <AutoEmailerOptions
+                                    isVisible={isAutoEmailerModalOpen.verticalDotModal}
+                                    closeModal={closeModal}
+                                />
+                            )}
                         </ScrollView>
                     </View>
                 </View>

@@ -11,6 +11,14 @@ export interface Data extends SelectDataItem {
     icon?: React.ReactNode;
 }
 
+export interface SearchModalState {
+    settingsModal: boolean;
+    calendarModal: boolean;
+    deleteModal: boolean;
+}
+
+export type ModalKey = keyof SearchModalState;
+
 const createdData: Data[] = [
     { label: "Dummy data 1", value: "data1" },
     { label: "Dummy data 2", value: "data2" },
@@ -80,10 +88,10 @@ const paginationData = [
         title: "Make & Model",
         data: ["Mercedes-Benz Sprinter", "Totota Corolla", "Ford Transit", "Honda Civic"],
     },
-    { title: "Created by ", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
-    { title: "Inspection Status ", data: ["Completed", "Completed", "Completed", "Completed"] },
-    { title: "Defects/Damages ", data: ["!", "!", "!", "!"] },
-    { title: "Previous Driver ", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
+    { title: "Created by", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
+    { title: "Inspection Status", data: ["Completed", "Completed", "Completed", "Completed"] },
+    { title: "Defects/Damages", data: ["!", "!", "!", "!"] },
+    { title: "Previous Driver", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
     { title: "Approval", data: [] },
     { title: "Location Name", data: ["Jedox Couriers", "Jedox Couriers", "Jedox Couriers", "Jedox Couriers"] },
     { title: "Sub Location", data: ["DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate"] },
@@ -105,9 +113,9 @@ const searchColumnsData = [
     { id: 2, label: "Date", isActive: true },
     { id: 3, label: "Make & Model", isActive: true },
     { id: 4, label: "Created by", isActive: true },
-    { id: 5, label: "Inspection Status", isActive: true },
-    { id: 6, label: "Defects/Damages", isActive: true },
-    { id: 7, label: "Previous Driver", isActive: true },
+    { id: 5, label: "Inspection Status", isActive: false },
+    { id: 6, label: "Defects/Damages", isActive: false },
+    { id: 7, label: "Previous Driver", isActive: false },
     { id: 8, label: "Approval", isActive: true },
     { id: 9, label: "Location Name", isActive: true },
     { id: 10, label: "Sub Location", isActive: true },
@@ -118,8 +126,11 @@ const searchColumnsData = [
 
 export const useSearch = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-    const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
-    const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState<SearchModalState>({
+        settingsModal: false,
+        calendarModal: false,
+        deleteModal: false,
+    });
     const [columns, setColumns] = useState<Column[]>(searchColumnsData);
     const [filteredData, setFilteredData] = useState({
         createdBy: [] as (string | number)[],
@@ -130,6 +141,10 @@ export const useSearch = () => {
         inspectionType: [] as (string | number)[],
         subLocation: [] as (string | number)[],
     });
+
+    //toggleModal
+    const closeModal = (key: ModalKey) => setIsSearchModalOpen((prev) => ({ ...prev, [key]: false }));
+    const openModal = (key: ModalKey) => setIsSearchModalOpen((prev) => ({ ...prev, [key]: true }));
 
     //Transform data into (string | number)[][]
     const rows: (string | number)[][] = Array.from({ length: paginationData[0].data.length }, (_, rowIndex) =>
@@ -170,7 +185,7 @@ export const useSearch = () => {
     //Apply filter
     const handleApply = () => {
         setColumns(columns);
-        setIsSettingsOpen(false);
+        setIsSearchModalOpen((prev) => ({ ...prev, settingsModal: false }));
     };
 
     //Save and Apply filter
@@ -179,7 +194,7 @@ export const useSearch = () => {
 
         //persist save filtered columns
         await AsyncStorage.setItem("filteredColumns", JSON.stringify(columns));
-        setIsSettingsOpen(false);
+        setIsSearchModalOpen((prev) => ({ ...prev, settingsModal: false }));
     };
 
     const nextPage = () => setPage((page) => Math.min(page + 1, totalPage - 1));
@@ -190,8 +205,7 @@ export const useSearch = () => {
         colors,
         selectedDate,
         setSelectedDate,
-        isCalendarOpen,
-        setIsCalendarOpen,
+        isSearchModalOpen,
         inspectionStatusData,
         damageStatusData,
         filteredData,
@@ -204,8 +218,6 @@ export const useSearch = () => {
         page,
         displayRows,
         totalPage,
-        isSettingsOpen,
-        setIsSettingsOpen,
         columns,
         setColumns,
         toggleActive,
@@ -214,5 +226,7 @@ export const useSearch = () => {
         handleSaveAndApply,
         nextPage,
         prevPage,
+        closeModal,
+        openModal,
     };
 };

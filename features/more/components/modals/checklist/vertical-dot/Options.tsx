@@ -5,12 +5,12 @@ import React from "react";
 import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 
-type OptionsProps = {
+type ChecklistOptionsProps = {
     isVisible: boolean;
     closeModal: (key: ModalKey) => void;
 };
 
-const Options = ({ isVisible, closeModal }: OptionsProps) => {
+const Options = ({ isVisible, closeModal }: ChecklistOptionsProps) => {
     return (
         <Modal
             isVisible={isVisible}

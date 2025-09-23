@@ -2,7 +2,7 @@ import { Button } from "@/components/button";
 import { Table } from "@/components/table";
 import { Text } from "@/components/text";
 import { AddNewChecklist } from "@/features/more/components/modals/checklist/add-new-checklist";
-import { Options } from "@/features/more/components/modals/checklist/vertical-dot";
+import { ChecklistOptions } from "@/features/more/components/modals/checklist/vertical-dot";
 import { useChecklist } from "@/features/more/hooks/useChecklist";
 import { IconArrowLeft, IconPlus } from "@tabler/icons-react-native";
 import { router } from "expo-router";
@@ -42,7 +42,10 @@ const checklist = () => {
                             />
                         </ScrollView>
                         {isChecklistModalOpen.verticalDotModal && (
-                            <Options isVisible={isChecklistModalOpen.verticalDotModal} closeModal={closeModal} />
+                            <ChecklistOptions
+                                isVisible={isChecklistModalOpen.verticalDotModal}
+                                closeModal={closeModal}
+                            />
                         )}
                     </View>
                 </View>
