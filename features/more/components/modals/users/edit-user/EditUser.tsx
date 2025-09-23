@@ -11,13 +11,23 @@ import Modal from "react-native-modal";
 
 type EditUserProps = {
     isVisible: boolean;
+    sendEmailToTheUser: boolean;
     closeModal: (key: keyof UserModalState) => void;
     toggleEditUserStatus: () => void;
+    toggleSendEmailCheckbox: () => void;
     translateX: Animated.AnimatedInterpolation<string | number>;
     isStatusActive: UserStatusState;
 };
 
-const EditUser = ({ isVisible, closeModal, toggleEditUserStatus, translateX, isStatusActive }: EditUserProps) => {
+const EditUser = ({
+    isVisible,
+    closeModal,
+    toggleEditUserStatus,
+    translateX,
+    isStatusActive,
+    toggleSendEmailCheckbox,
+    sendEmailToTheUser,
+}: EditUserProps) => {
     return (
         <Modal isVisible={isVisible} className="p-4 rounded bg-base-100 dark:bg-base-100-dark">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
@@ -100,7 +110,7 @@ const EditUser = ({ isVisible, closeModal, toggleEditUserStatus, translateX, isS
                         </View>
                     </Card>
 
-                    {/* Status button */}
+                    {/* Form */}
                     <View className="my-4">
                         <Text>User Role *</Text>
                         <Select search={false} data={[]} placeholder="Select User Role" />
@@ -127,7 +137,7 @@ const EditUser = ({ isVisible, closeModal, toggleEditUserStatus, translateX, isS
                             </View>
 
                             {/* Status button */}
-                            <View className="py-4">
+                            <View>
                                 <Text variant={"label"} className="mb-2">
                                     Status
                                 </Text>
@@ -161,17 +171,28 @@ const EditUser = ({ isVisible, closeModal, toggleEditUserStatus, translateX, isS
                                 </View>
                             </View>
 
+                            <View className="flex-row items-center justify-start gap-2">
+                                <Pressable className="active:opacity-40" onPress={toggleSendEmailCheckbox}>
+                                    <View
+                                        className={`w-5 h-5 border border-gray-300 rounded flex-row items-center justify-center ${sendEmailToTheUser ? "bg-accent" : ""}`}
+                                    >
+                                        {sendEmailToTheUser && <IconCheck size={18} color="white" />}
+                                    </View>
+                                </Pressable>
+                                <Text variant={"label"}>Send an email to the user</Text>
+                            </View>
+
                             <View className="gap-4">
                                 <Button
                                     onPress={() => {
                                         // save
                                     }}
                                 >
-                                    <Text>Save</Text>
+                                    <Text variant={"button"}>Save</Text>
                                 </Button>
 
                                 <Button variant="outline" onPress={() => closeModal("editUser")}>
-                                    <Text>Cancel</Text>
+                                    <Text variant={"button"}>Cancel</Text>
                                 </Button>
                             </View>
                         </View>

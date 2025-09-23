@@ -11,7 +11,6 @@ type Props = {
     isVisible: boolean;
     columns: Column[];
     toggleActive: (id: number) => void;
-    setIsSettingsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     handleDragEnd: (params: { data: Column[]; from: number; to: number }) => void;
     onApply: () => void;
     onSaveApply: () => Promise<void>;

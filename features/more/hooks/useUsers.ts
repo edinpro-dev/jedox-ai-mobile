@@ -61,27 +61,26 @@ const dummyUsersData = [
 
 export const useUsers = () => {
     // build rows data
-    const rows = dummyUsersData[0].data.map((_, rowIndex) =>
-        dummyUsersData.map(col => col.data?.[rowIndex] ?? "")
-    );
+    const rows = dummyUsersData[0].data.map((_, rowIndex) => dummyUsersData.map((col) => col.data?.[rowIndex] ?? ""));
 
+    const [sendEmailToTheUser, setSendEmailToTheUser] = useState<boolean>(false);
     const [deactivateUser, setDeactivateUser] = useState<number[]>([]);
     const [usersData, setUsersData] = useState<string[]>([]);
     const [userRole, setUserRole] = useState<string[]>([]);
     const [isStatusActive, setIsStatusActive] = useState<UserStatusState>({
-        editUser: false
+        editUser: false,
     });
     const [isUserModalOpen, setIsUserModalOpen] = useState<UserModalState>({
         addNewUser: false,
         addBulkUser: false,
         deactivateUser: false,
-        editUser: false
+        editUser: false,
     });
 
     const { colors } = useTheme();
 
     //status button animation in users
-    const animation = useRef(new Animated.Value((0))).current;
+    const animation = useRef(new Animated.Value(0)).current;
 
     //toggleModal
     const closeModal = (key: ModalKey) => setIsUserModalOpen((prev) => ({ ...prev, [key]: false }));
@@ -90,34 +89,44 @@ export const useUsers = () => {
     //toggle status button in edit user table
     const toggleEditUserStatus = () => {
         setIsStatusActive((prev) => ({
-            ...prev, editUser: !prev.editUser
+            ...prev,
+            editUser: !prev.editUser,
         }));
         Animated.timing(animation, {
             toValue: isStatusActive.editUser ? 0 : 1,
             duration: 500,
             easing: Easing.inOut(Easing.ease),
-            useNativeDriver: false
+            useNativeDriver: false,
         }).start();
     };
 
     //translate edit user modal
     const translateX = animation.interpolate({
         inputRange: [0, 1],
-        outputRange: [1, 30]
+        outputRange: [1, 30],
     });
 
     //get individual rows
-    const getIndividualRow = (prev: number[]) => (rowIndex: number): number[] => {
-        return prev.includes(rowIndex)
-            ? prev.filter((index) => index !== rowIndex)
-            : [...prev, rowIndex];
-    };
+    const getIndividualRow =
+        (prev: number[]) =>
+        (rowIndex: number): number[] => {
+            return prev.includes(rowIndex) ? prev.filter((index) => index !== rowIndex) : [...prev, rowIndex];
+        };
 
     //get all rows
-    const getAllRows = (prev: number[]) => (rows: number[][]): number[] => prev.length === rows.length ? [] : rows.map((_, i) => i);
+    const getAllRows =
+        (prev: number[]) =>
+        (rows: number[][]): number[] =>
+            prev.length === rows.length ? [] : rows.map((_, i) => i);
+
+    //toggle send email checkbox
+    const toggleSendEmailCheckbox = () => {
+        setSendEmailToTheUser((prev) => !prev);
+    };
 
     //toggle checkbox modal in users table
-    const toggleCheckboxModal = (updated: number[]) => updated.length > 0 ? openModal("deactivateUser") : closeModal("deactivateUser");
+    const toggleCheckboxModal = (updated: number[]) =>
+        updated.length > 0 ? openModal("deactivateUser") : closeModal("deactivateUser");
 
     //toggle checkbox in users table
     const toggleIndividualRow = (rowIndex: number) => {
@@ -126,16 +135,16 @@ export const useUsers = () => {
             toggleCheckboxModal(updated);
             return updated;
         });
-    }
+    };
 
     //toggle checkbox in users table
     const toggleAllRow = (rows: any[][]) => {
         setDeactivateUser((prev) => {
-            const updated = getAllRows(prev)(rows)
+            const updated = getAllRows(prev)(rows);
             toggleCheckboxModal(updated);
             return updated;
         });
-    }
+    };
 
     const selectedUser = deactivateUser.length;
 
@@ -160,6 +169,8 @@ export const useUsers = () => {
         selectedUser,
         isStatusActive,
         toggleEditUserStatus,
-        translateX
+        translateX,
+        toggleSendEmailCheckbox,
+        sendEmailToTheUser,
     };
 };

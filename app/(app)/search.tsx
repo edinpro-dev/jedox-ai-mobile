@@ -5,7 +5,8 @@ import { Pagination } from "@/components/pagination";
 import { Select } from "@/components/select";
 import { Table } from "@/components/table";
 import { Text } from "@/components/text";
-import Settings from "@/features/search/components/search-settings/Settings";
+import { DeleteRowOptions } from "@/features/search/components/modals/delete-row";
+import Settings from "@/features/search/components/modals/search-settings/Settings";
 import { useSearch } from "@/features/search/hooks/useSearch";
 import { IconCalendar, IconSearch, IconSettings } from "@tabler/icons-react-native";
 import React from "react";
@@ -16,8 +17,6 @@ const Search = () => {
     const {
         createdData,
         colors,
-        isCalendarOpen,
-        setIsCalendarOpen,
         selectedDate,
         setSelectedDate,
         inspectionStatusData,
@@ -28,8 +27,6 @@ const Search = () => {
         approvalStatusData,
         inspectionTypeData,
         subLocationData,
-        setIsSettingsOpen,
-        isSettingsOpen,
         columns,
         toggleActive,
         handleDragEnd,
@@ -40,6 +37,9 @@ const Search = () => {
         page,
         totalPage,
         displayRows,
+        isSearchModalOpen,
+        closeModal,
+        openModal,
     } = useSearch();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -77,14 +77,18 @@ const Search = () => {
                         {/* Date Input */}
                         <Input
                             iconRight={
-                                <IconCalendar size={24} color={colors.accent} onPress={() => setIsCalendarOpen(true)} />
+                                <IconCalendar
+                                    size={24}
+                                    color={colors.accent}
+                                    onPress={() => openModal("calendarModal")}
+                                />
                             }
                             value={selectedDate.toDateString()}
                         />
-                        {isCalendarOpen && (
+                        {isSearchModalOpen.calendarModal && (
                             <CalendarModal
-                                visible={isCalendarOpen}
-                                setVisible={setIsCalendarOpen}
+                                visible={isSearchModalOpen.calendarModal}
+                                setVisible={(show) => (show ? openModal("calendarModal") : closeModal("calendarModal"))}
                                 value={selectedDate}
                                 onSelectDate={setSelectedDate}
                             />
@@ -173,15 +177,14 @@ const Search = () => {
                 <View className="flex-1 p-4">
                     <View className="flex-row items-center justify-between">
                         <Text variant={"body"}>Total Count: 24</Text>
-                        <Button variant="ghost" onPress={() => setIsSettingsOpen(true)}>
+                        <Button variant="ghost" onPress={() => openModal("settingsModal")}>
                             <IconSettings size={20} color={colors.baseContent} />
                         </Button>
                     </View>
 
-                    {isSettingsOpen && (
+                    {isSearchModalOpen.settingsModal && (
                         <Settings
-                            isVisible={isSettingsOpen}
-                            setIsSettingsOpen={setIsSettingsOpen}
+                            isVisible={isSearchModalOpen.settingsModal}
                             columns={columns}
                             toggleActive={toggleActive}
                             handleDragEnd={handleDragEnd}
@@ -198,8 +201,13 @@ const Search = () => {
                             sortable={true}
                             useIsActive
                             sortableColumns={[2, 3, 4, 10, 11, 12, 13]}
+                            onVerticalDotClick={() => openModal("deleteModal")}
                         />
                     </ScrollView>
+
+                    {isSearchModalOpen.deleteModal && (
+                        <DeleteRowOptions isVisible={isSearchModalOpen.deleteModal} closeModal={closeModal} />
+                    )}
 
                     {/* Data Table Pagination */}
                     <Pagination page={page} totalPage={totalPage} onNext={nextPage} onPrev={prevPage} />

@@ -1,16 +1,15 @@
 import { Text } from "@/components/text";
-import { ModalKey } from "@/features/more/hooks/useChecklist";
+import { ModalKey } from "@/features/more/hooks/useAutoEmailer";
 import { IconCopy, IconTrash } from "@tabler/icons-react-native";
 import React from "react";
 import { Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 
-type ChecklistOptionsProps = {
+type AutoEmailerOptionsProps = {
     isVisible: boolean;
     closeModal: (key: ModalKey) => void;
 };
-
-const Options = ({ isVisible, closeModal }: ChecklistOptionsProps) => {
+const Options = ({ isVisible, closeModal }: AutoEmailerOptionsProps) => {
     return (
         <Modal
             isVisible={isVisible}

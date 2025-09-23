@@ -33,6 +33,8 @@ const users = () => {
         isStatusActive,
         toggleEditUserStatus,
         translateX,
+        sendEmailToTheUser,
+        toggleSendEmailCheckbox,
     } = useUsers();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -100,7 +102,7 @@ const users = () => {
                                 columns={dummyUsersData}
                                 rows={rows}
                                 sortable={true}
-                                sortableColumns={[0, 1, 2]}
+                                sortableColumns={[1, 2, 3]}
                                 checkbox
                                 checked={deactivateUser}
                                 toggleAll={toggleAllRow}
@@ -112,7 +114,11 @@ const users = () => {
                         {/* Deactivate modal */}
                         {isUserModalOpen.deactivateUser && (
                             <View className="absolute bottom-0 left-0 right-0 items-center justify-center bg-transparent">
-                                <DeactivateUser closeModal={closeModal} selectedUser={selectedUser} />
+                                <DeactivateUser
+                                    isVisible={isUserModalOpen.deactivateUser}
+                                    closeModal={closeModal}
+                                    selectedUser={selectedUser}
+                                />
                             </View>
                         )}
 
@@ -124,6 +130,8 @@ const users = () => {
                                 toggleEditUserStatus={toggleEditUserStatus}
                                 translateX={translateX}
                                 isStatusActive={isStatusActive}
+                                toggleSendEmailCheckbox={toggleSendEmailCheckbox}
+                                sendEmailToTheUser={sendEmailToTheUser}
                             />
                         )}
                     </View>

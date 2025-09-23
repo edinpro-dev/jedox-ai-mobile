@@ -3,6 +3,7 @@ import { useState } from "react";
 
 export interface AutoEmailerModalState {
     addNewEmail: boolean;
+    verticalDotModal: boolean;
 }
 
 export type ModalKey = keyof AutoEmailerModalState;
@@ -37,8 +38,9 @@ export const useAutoEmailer = () => {
 
     const [emailerType, setEmailerType] = useState<string[]>([]);
     const [isAutoEmailerModalOpen, setIsAutoEmailerModalOpen] = useState<AutoEmailerModalState>({
-        addNewEmail: false
-    })
+        addNewEmail: false,
+        verticalDotModal: false,
+    });
     const { colors } = useTheme();
 
     //toggle auto email modal
