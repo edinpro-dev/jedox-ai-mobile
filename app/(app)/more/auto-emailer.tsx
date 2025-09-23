@@ -1,22 +1,30 @@
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
+import { Table } from "@/components/table";
 import { Text } from "@/components/text";
 import { AddNewEmail } from "@/features/more/components/modals/auto-emailer";
 import { useAutoEmailer } from "@/features/more/hooks/useAutoEmailer";
-import { IconPlus, IconSearch } from "@tabler/icons-react-native";
+import { IconArrowLeft, IconPlus, IconSearch } from "@tabler/icons-react-native";
+import { router } from "expo-router";
 import React from "react";
-import { View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const autoEmailer = () => {
-    const { colors, emailerTypeData, isAutoEmailerModalOpen, closeModal, openModal } = useAutoEmailer();
+    const { colors, emailerTypeData, isAutoEmailerModalOpen, closeModal, openModal, autoEmailerTableDummyData, rows } =
+        useAutoEmailer();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
-            <View className="p-4">
-                <View className="py-2 border-b border-base-100 dark:border-base-100-dark">
-                    <View className="flex-row items-center justify-between">
-                        <Text>Emailer Setup</Text>
+            <View className="p-4 flex-row items-center gap-4">
+                <Pressable className="active:opacity-40" onPress={() => router.back()}>
+                    <IconArrowLeft size={24} color={colors.accent} />
+                </Pressable>
+                <Text variant={"h2"}>Emailer Setup</Text>
+            </View>
+            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+                <View className="p-4">
+                    <View className="py-2 border-b border-base-100 dark:border-base-100-dark">
                         <Button variant="primary" onPress={() => openModal("addNewEmail")}>
                             <View className="flex-row items-center gap-2">
                                 <IconPlus size={20} color="white" />
@@ -24,13 +32,24 @@ const autoEmailer = () => {
                             </View>
                         </Button>
                     </View>
-                </View>
 
-                <View className="mt-4 gap-4">
-                    <Input placeholder="Search" iconLeft={<IconSearch size={18} color={colors.infoContent} />} />
-                    <Select search={false} data={emailerTypeData} placeholder="Emailer Type" renderMode="checkbox" />
+                    <View className="mt-4 gap-4">
+                        <Input placeholder="Search" iconLeft={<IconSearch size={18} color={colors.infoContent} />} />
+                        <Select
+                            search={false}
+                            data={emailerTypeData}
+                            placeholder="Emailer Type"
+                            renderMode="checkbox"
+                        />
+                    </View>
+
+                    <View className="py-4">
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <Table title="Auto Emailer" columns={autoEmailerTableDummyData} rows={rows} checkbox />
+                        </ScrollView>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
 
             {/* New Email Config Modal */}
             {isAutoEmailerModalOpen.addNewEmail && (

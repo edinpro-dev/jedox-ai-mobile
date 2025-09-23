@@ -11,7 +11,7 @@ type DeactivateVehicleProps = {
 
 const DeactivateVehicle = ({ closeModal, selectedVehicle }: DeactivateVehicleProps) => {
     return (
-        <View className="w-1/2 p-3 mx-auto flex-row items-center justify-center bg-black rounded border border-gray-400">
+        <View className="w-10/12 p-3 mx-auto flex-row items-center justify-center bg-black rounded border border-gray-400">
             <View className="flex-row items-center justify-center gap-1">
                 <View className="flex-row items-center justify-center gap-2">
                     <Text variant={"caption"} color={"white"}>

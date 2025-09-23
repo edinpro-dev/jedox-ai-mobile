@@ -4,7 +4,8 @@ import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
 import { useAssessment } from "@/features/more/hooks/useAssessment";
-import { IconCamera, IconCloudUpload } from "@tabler/icons-react-native";
+import { IconArrowLeft, IconCamera, IconCloudUpload } from "@tabler/icons-react-native";
+import { router } from "expo-router";
 import React from "react";
 import { Image, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +14,13 @@ const assessment = () => {
     const { colors, inspectionTypeData, licensePlateImage, handlePickImage } = useAssessment();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
-            <ScrollView className="flex-1">
+            <View className="p-4 flex-row items-center gap-4">
+                <Pressable className="active:opacity-40" onPress={() => router.back()}>
+                    <IconArrowLeft size={24} color={colors.accent} />
+                </Pressable>
+                <Text variant={"h2"}>Assessment</Text>
+            </View>
+            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 <View className="p-4 gap-4">
                     <Card className="gap-4">
                         <View>

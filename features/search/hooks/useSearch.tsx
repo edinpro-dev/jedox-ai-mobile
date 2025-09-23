@@ -84,7 +84,7 @@ const paginationData = [
     { title: "Inspection Status ", data: ["Completed", "Completed", "Completed", "Completed"] },
     { title: "Defects/Damages ", data: ["!", "!", "!", "!"] },
     { title: "Previous Driver ", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
-    { title: "Approval", data: ["Pending", "Pending", "Pending", "Pending"] },
+    { title: "Approval", data: [] },
     { title: "Location Name", data: ["Jedox Couriers", "Jedox Couriers", "Jedox Couriers", "Jedox Couriers"] },
     { title: "Sub Location", data: ["DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate"] },
     {
