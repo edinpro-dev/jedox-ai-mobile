@@ -2,7 +2,7 @@ import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Select } from "@/components/select";
 import { Text } from "@/components/text";
-import { VehicleStatusState } from "@/features/vehicles/hooks/useVehicle";
+import { ModalKey, VehicleStatusState } from "@/features/vehicles/hooks/useVehicle";
 import { IconCheck, IconX } from "@tabler/icons-react-native";
 import React from "react";
 import { Animated, Pressable, ScrollView, View } from "react-native";
@@ -12,7 +12,7 @@ type AddNewVehicleProps = {
     isVisible: boolean;
     isStatusActive: VehicleStatusState;
     toggleAddNewVehicleStatus: () => void;
-    closeModal: (key: "addNewVehicle" | "addBulkVehicle") => void;
+    closeModal: (key: ModalKey) => void;
     translateX: Animated.AnimatedInterpolation<string | number>;
 };
 
