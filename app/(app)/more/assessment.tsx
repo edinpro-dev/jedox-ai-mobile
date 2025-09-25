@@ -23,6 +23,8 @@ const assessment = () => {
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 <View className="p-4 gap-4">
                     <Card className="gap-4">
+                        {/* Vehicle details */}
+
                         <View>
                             <View className="flex-row items-center justify-between border-b border-base-100 dark:border-base-100-dark">
                                 <Text variant={"h4"}>Vehicle details</Text>
@@ -33,6 +35,7 @@ const assessment = () => {
                                     </Text>
                                 </Button>
                             </View>
+
                             <View className="mt-4 gap-4">
                                 {/* License plate */}
                                 <Input
@@ -54,16 +57,22 @@ const assessment = () => {
 
                                 {/* Inspection type */}
 
-                                <Select search={false} data={inspectionTypeData} placeholder="Inspection type*" />
+                                <Select
+                                    variant="primary"
+                                    search={false}
+                                    data={inspectionTypeData}
+                                    placeholder="Inspection type*"
+                                />
 
                                 {/* Make and Model */}
-                                <Select search={false} data={[]} placeholder="Enter make & model*" />
+                                <Select variant="primary" search={false} data={[]} placeholder="Enter make & model*" />
 
                                 {/* Bloodstyle */}
                                 <Input disabled={true} placeholder="Bloodstyle*" />
                             </View>
                         </View>
 
+                        {/* Customer details */}
                         <View>
                             <View className="flex-row items-center justify-between border-b border-base-100 dark:border-base-100-dark">
                                 <Text variant={"h4"}>Customer details</Text>

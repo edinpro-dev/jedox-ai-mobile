@@ -18,7 +18,7 @@ const AddNewEmail = ({ isVisible, closeModal }: AddNewEmailProps) => {
         <Modal isVisible={isVisible} className="p-4 bg-base-100 dark:bg-base-100-dark">
             <View className="flex-1">
                 <View className="flex-row items-center justify-between">
-                    <Text>Add new email config</Text>
+                    <Text variant={"h3"}>Add new email config</Text>
                     <Pressable onPress={() => closeModal("addNewEmail")}>
                         <IconX size={24} color={"grey"} />
                     </Pressable>
@@ -26,17 +26,17 @@ const AddNewEmail = ({ isVisible, closeModal }: AddNewEmailProps) => {
                 <View className="py-4 gap-4">
                     <View className="gap-1">
                         <View className="flex-row items-center justify-start gap-2">
-                            <Text>Emailer type</Text>
+                            <Text variant={"label"}>Emailer type</Text>
                             <IconExclamationCircleFilled />
                         </View>
-                        <Select search={false} data={[]} />
+                        <Select variant="primary" search={false} data={[]} />
                     </View>
 
                     <View>
                         <View className="flex-row items-center justify-start gap-2">
-                            <Text>Recipient List</Text>
+                            <Text variant={"label"}>Recipient List</Text>
                         </View>
-                        <Input placeholder="Enter email Id" />
+                        <Input variant="primary" placeholder="Enter email Id" />
                     </View>
                 </View>
 

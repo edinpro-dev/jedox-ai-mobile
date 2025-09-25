@@ -133,12 +133,14 @@ const driverSchedule = () => {
 
                     <View className="mt-4 gap-4">
                         <Select
+                            variant="primary"
                             data={[]}
                             placeholder="Search Registration Number"
                             leftIcon={<IconSearch size={18} color={colors.primary} />}
                         />
 
                         <Select
+                            variant="primary"
                             data={[]}
                             placeholder="Search Driver"
                             leftIcon={<IconSearch size={18} color={colors.primary} />}
@@ -150,6 +152,7 @@ const driverSchedule = () => {
                             </Button>
                             <View className="flex-1">
                                 <Select
+                                    variant="primary"
                                     data={[]}
                                     placeholder="Sub Location"
                                     leftIcon={<IconSearch size={18} color={colors.primary} />}

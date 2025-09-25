@@ -26,51 +26,51 @@ const AddNewVehicle = ({
     return (
         <Modal isVisible={isVisible} className="p-4 rounded bg-base-100 dark:bg-base-100-dark">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-                <View className="gap-3">
-                    <View className="flex-row items-center justify-between">
-                        <Text variant={"h3"}>Add New Vehicle</Text>
-                        <Button variant="ghost" onPress={() => closeModal("addNewVehicle")}>
-                            <IconX size={24} color="grey" />
-                        </Button>
-                    </View>
+                <View className="flex-row items-center justify-between">
+                    <Text variant={"h3"}>Add New Vehicle</Text>
+                    <Button variant="ghost" onPress={() => closeModal("addNewVehicle")}>
+                        <IconX size={24} color="grey" />
+                    </Button>
+                </View>
 
+                <View className="flex-1 mt-4 gap-4">
                     <View>
-                        <Text>Registration Number*</Text>
+                        <Text variant={"label"}>Registration Number*</Text>
                         <Input placeholder="Enter*" />
                     </View>
 
                     <View>
-                        <Text>Model*</Text>
+                        <Text variant={"label"}>Model*</Text>
                         <Select data={[]} placeholder="Select*" />
                     </View>
 
                     <View>
-                        <Text>VIN</Text>
+                        <Text variant={"label"}>VIN</Text>
                         <Input placeholder="Enter*" />
                     </View>
 
                     <View>
-                        <Text>Current Location*</Text>
+                        <Text variant={"label"}>Current Location*</Text>
                         <Select data={[]} placeholder="Select*" />
                     </View>
 
                     <View>
-                        <Text>Make*</Text>
+                        <Text variant={"label"}>Make*</Text>
                         <Select data={[]} placeholder="Select*" />
                     </View>
 
                     <View>
-                        <Text>Bloodstyle</Text>
+                        <Text variant={"label"}>Bloodstyle</Text>
                         <Input placeholder="Enter*" />
                     </View>
 
                     <View>
-                        <Text>Fuel Type*</Text>
+                        <Text variant={"label"}>Fuel Type*</Text>
                         <Select data={[]} placeholder="Select*" />
                     </View>
 
                     <View>
-                        <Text>Ownership type</Text>
+                        <Text variant={"label"}>Ownership type</Text>
                         <Select data={[]} placeholder="Select*" />
                     </View>
 
@@ -111,9 +111,11 @@ const AddNewVehicle = ({
                         </View>
                     </View>
 
-                    <Button variant="primary">
-                        <Text>Create Vehicle</Text>
-                    </Button>
+                    <View className="mt-4">
+                        <Button variant="primary">
+                            <Text variant={"button"}>Create Vehicle</Text>
+                        </Button>
+                    </View>
                 </View>
             </ScrollView>
         </Modal>

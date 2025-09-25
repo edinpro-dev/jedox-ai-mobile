@@ -52,6 +52,7 @@ const Search = () => {
                     {/* Search Inputs */}
                     <View className="p-4 gap-4">
                         <Input
+                            variant="primary"
                             placeholder="Search License plate/Vehicle number/VIN/Customer name/Quote ID"
                             iconLeft={<IconSearch size={18} color={colors.primary} />}
                         />
@@ -65,6 +66,7 @@ const Search = () => {
 
                         {/* Created by select */}
                         <Select
+                            variant="primary"
                             data={createdData}
                             renderMode="checkbox"
                             placeholder="Created by"
@@ -76,6 +78,7 @@ const Search = () => {
 
                         {/* Date Input */}
                         <Input
+                            variant="primary"
                             iconRight={
                                 <IconCalendar
                                     size={24}
@@ -96,6 +99,7 @@ const Search = () => {
 
                         {/* Inspection status select */}
                         <Select
+                            variant="primary"
                             search={false}
                             data={inspectionStatusData}
                             value={filteredData.inspectionStatus}
@@ -108,6 +112,7 @@ const Search = () => {
 
                         {/* Damage Status select */}
                         <Select
+                            variant="primary"
                             data={damageStatusData}
                             value={filteredData.damageStatus}
                             onChange={(val) => {
@@ -119,6 +124,7 @@ const Search = () => {
 
                         {/* Defects select */}
                         <Select
+                            variant="primary"
                             data={defectsData}
                             value={filteredData.defects}
                             onChange={(val) => {
@@ -131,6 +137,7 @@ const Search = () => {
 
                         {/* Approval status select */}
                         <Select
+                            variant="primary"
                             data={approvalStatusData}
                             value={filteredData.approvalStatus}
                             onChange={(val) => {
@@ -142,6 +149,7 @@ const Search = () => {
 
                         {/* Inspection type select */}
                         <Select
+                            variant="primary"
                             data={inspectionTypeData}
                             value={filteredData.inspectionType}
                             onChange={(val) => {
@@ -154,6 +162,7 @@ const Search = () => {
 
                         {/* Sub location select */}
                         <Select
+                            variant="primary"
                             data={subLocationData}
                             value={filteredData.subLocation}
                             onChange={(val) => {
