@@ -36,10 +36,14 @@ const Search = () => {
         prevPage,
         page,
         totalPage,
-        displayRows,
         isSearchModalOpen,
         closeModal,
         openModal,
+        applyFilter,
+        filteredRows,
+        startPage,
+        endPage,
+        clearFilters,
     } = useSearch();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -86,13 +90,13 @@ const Search = () => {
                                     onPress={() => openModal("calendarModal")}
                                 />
                             }
-                            value={selectedDate.toDateString()}
+                            value={selectedDate?.toDateString()}
                         />
                         {isSearchModalOpen.calendarModal && (
                             <CalendarModal
                                 visible={isSearchModalOpen.calendarModal}
                                 setVisible={(show) => (show ? openModal("calendarModal") : closeModal("calendarModal"))}
-                                value={selectedDate}
+                                value={selectedDate ?? new Date()}
                                 onSelectDate={setSelectedDate}
                             />
                         )}
@@ -173,10 +177,10 @@ const Search = () => {
                         />
                     </View>
                     <View className="p-4 flex-row items-center justify-end">
-                        <Button variant="ghost">
+                        <Button variant="ghost" onPress={clearFilters}>
                             <Text color={"accent"}>Clear All</Text>
                         </Button>
-                        <Button variant="accent">
+                        <Button variant="accent" onPress={applyFilter}>
                             <Text>Apply</Text>
                         </Button>
                     </View>
@@ -184,12 +188,30 @@ const Search = () => {
 
                 {/* Table */}
                 <View className="flex-1 p-4">
-                    <View className="flex-row items-center justify-between">
-                        <Text variant={"body"}>Total Count: 24</Text>
-                        <Button variant="ghost" onPress={() => openModal("settingsModal")}>
-                            <IconSettings size={20} color={colors.baseContent} />
-                        </Button>
-                    </View>
+                    {filteredRows.length === 0 ? (
+                        <Text>No records found</Text>
+                    ) : (
+                        <>
+                            <View className="flex-row items-center justify-between">
+                                <Text variant={"body"}>Total Count: {filteredRows.length}</Text>
+                                <Button variant="ghost" onPress={() => openModal("settingsModal")}>
+                                    <IconSettings size={20} color={colors.baseContent} />
+                                </Button>
+                            </View>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                <Table
+                                    title="Search"
+                                    columns={columns}
+                                    rows={filteredRows.slice(startPage, endPage)}
+                                    sortable={true}
+                                    useIsActive
+                                    sortableColumns={[2, 3, 4, 10, 11, 12, 13]}
+                                    onVerticalDotClick={() => openModal("deleteModal")}
+                                />
+                            </ScrollView>
+                            <Pagination page={page} totalPage={totalPage} onNext={nextPage} onPrev={prevPage} />
+                        </>
+                    )}
 
                     {isSearchModalOpen.settingsModal && (
                         <Settings
@@ -202,24 +224,11 @@ const Search = () => {
                         />
                     )}
 
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <Table
-                            title="Search"
-                            columns={columns}
-                            rows={displayRows}
-                            sortable={true}
-                            useIsActive
-                            sortableColumns={[2, 3, 4, 10, 11, 12, 13]}
-                            onVerticalDotClick={() => openModal("deleteModal")}
-                        />
-                    </ScrollView>
-
                     {isSearchModalOpen.deleteModal && (
                         <DeleteRowOptions isVisible={isSearchModalOpen.deleteModal} closeModal={closeModal} />
                     )}
 
                     {/* Data Table Pagination */}
-                    <Pagination page={page} totalPage={totalPage} onNext={nextPage} onPrev={prevPage} />
                 </View>
             </ScrollView>
         </SafeAreaView>

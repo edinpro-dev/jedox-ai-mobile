@@ -242,9 +242,16 @@ const Select: React.FC<SelectProps> = ({
                 maxHeight={maxHeight}
                 labelField={labelField}
                 valueField={valueField}
-                placeholder={placeholder}
+                placeholder={
+                    Array.isArray(value) && value.length > 0
+                        ? data
+                              .filter((item) => value.includes(item[valueField]))
+                              .map((item) => item[labelField])
+                              .join(", ")
+                        : placeholder
+                }
                 searchPlaceholder={searchPlaceholder}
-                value={renderMode === "checkbox" ? null : value}
+                value={renderMode === "checkbox" ? value : value}
                 disable={disabled}
                 onChange={handleChange}
                 onFocus={() => {

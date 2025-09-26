@@ -1,11 +1,13 @@
 import { SelectDataItem } from "@/components/select/Select";
 import { Column } from "@/components/table/Table";
+import { useLoader } from "@/context/LoaderProvider";
 import { useTheme } from "@/lib/theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 
 export interface Data extends SelectDataItem {
     icon?: React.ReactNode;
@@ -18,6 +20,16 @@ export interface SearchModalState {
 }
 
 export type ModalKey = keyof SearchModalState;
+
+interface FilteredData {
+    createdBy: (string | number)[];
+    inspectionStatus: (string | number)[];
+    damageStatus: (string | number)[];
+    defects: (string | number)[];
+    approvalStatus: (string | number)[];
+    inspectionType: (string | number)[];
+    subLocation: (string | number)[];
+}
 
 const createdData: Data[] = [
     { label: "Dummy data 1", value: "data1" },
@@ -82,14 +94,14 @@ const paginationData = [
     },
     {
         title: "Date",
-        data: ["1th Sep 2025 01:28", "4th Sep 2025 09:24", "12th Sep 2025 02:24", "14th Sep 2025 03:24"],
+        data: ["Thu Sep 04 2025", "Fri Sep 12 2025", "Fri Sep 26 2025", "Fri Sep 05 2025"],
     },
     {
         title: "Make & Model",
         data: ["Mercedes-Benz Sprinter", "Totota Corolla", "Ford Transit", "Honda Civic"],
     },
     { title: "Created by", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
-    { title: "Inspection Status", data: ["Completed", "Completed", "Completed", "Completed"] },
+    { title: "Inspection Status", data: ["Completed", "Completed", "Analysis in progress", "Incomplete"] },
     { title: "Defects/Damages", data: ["!", "!", "!", "!"] },
     { title: "Previous Driver", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
     { title: "Approval", data: [] },
@@ -113,9 +125,9 @@ const searchColumnsData = [
     { id: 2, label: "Date", isActive: true },
     { id: 3, label: "Make & Model", isActive: true },
     { id: 4, label: "Created by", isActive: true },
-    { id: 5, label: "Inspection Status", isActive: false },
-    { id: 6, label: "Defects/Damages", isActive: false },
-    { id: 7, label: "Previous Driver", isActive: false },
+    { id: 5, label: "Inspection Status", isActive: true },
+    { id: 6, label: "Defects/Damages", isActive: true },
+    { id: 7, label: "Previous Driver", isActive: true },
     { id: 8, label: "Approval", isActive: true },
     { id: 9, label: "Location Name", isActive: true },
     { id: 10, label: "Sub Location", isActive: true },
@@ -125,31 +137,37 @@ const searchColumnsData = [
 ];
 
 export const useSearch = () => {
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    //Transform data into (string | number)[][]
+    const rows: (string | number)[][] = Array.from({ length: paginationData[0].data.length }, (_, rowIndex) =>
+        paginationData.map((col) => col.data[rowIndex]),
+    );
+
+    const initialFilteredData: FilteredData = {
+        createdBy: [],
+        inspectionStatus: [],
+        damageStatus: [],
+        defects: [],
+        approvalStatus: [],
+        inspectionType: [],
+        subLocation: [],
+    };
+
+    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
     const [isSearchModalOpen, setIsSearchModalOpen] = useState<SearchModalState>({
         settingsModal: false,
         calendarModal: false,
         deleteModal: false,
     });
     const [columns, setColumns] = useState<Column[]>(searchColumnsData);
-    const [filteredData, setFilteredData] = useState({
-        createdBy: [] as (string | number)[],
-        inspectionStatus: [] as (string | number)[],
-        damageStatus: [] as (string | number)[],
-        defects: [] as (string | number)[],
-        approvalStatus: [] as (string | number)[],
-        inspectionType: [] as (string | number)[],
-        subLocation: [] as (string | number)[],
-    });
+    const [filteredData, setFilteredData] = useState<FilteredData>(initialFilteredData);
+    const [filteredRows, setFilteredRows] = useState<(string | number)[][]>(rows);
+
+    const params = useLocalSearchParams<{ value: string; key: string; t: string }>();
+    const { setLoading } = useLoader();
 
     //toggleModal
     const closeModal = (key: ModalKey) => setIsSearchModalOpen((prev) => ({ ...prev, [key]: false }));
     const openModal = (key: ModalKey) => setIsSearchModalOpen((prev) => ({ ...prev, [key]: true }));
-
-    //Transform data into (string | number)[][]
-    const rows: (string | number)[][] = Array.from({ length: paginationData[0].data.length }, (_, rowIndex) =>
-        paginationData.map((col) => col.data[rowIndex]),
-    );
 
     //Pagination
     const [page, setPage] = useState(0);
@@ -182,7 +200,7 @@ export const useSearch = () => {
         );
     };
 
-    //Apply filter
+    //Apply filter for settings icon
     const handleApply = () => {
         setColumns(columns);
         setIsSearchModalOpen((prev) => ({ ...prev, settingsModal: false }));
@@ -197,8 +215,65 @@ export const useSearch = () => {
         setIsSearchModalOpen((prev) => ({ ...prev, settingsModal: false }));
     };
 
+    //Apply filter for Apply button
+    const applyFilter = async () => {
+        setLoading(true);
+        setTimeout(() => {
+            try {
+                let updatedRows = [...rows];
+
+                if (selectedDate) {
+                    const colIndex = paginationData.findIndex((c) => c.title === "Date");
+                    updatedRows = updatedRows.filter((row) => {
+                        const rowDateStr = row[colIndex].toString();
+                        const rowDate = new Date(rowDateStr);
+
+                        return rowDate.toDateString() === selectedDate.toDateString();
+                    });
+                }
+
+                if (filteredData.inspectionStatus.length > 0) {
+                    const colIndex = paginationData.findIndex((c) => c.title === "Inspection Status");
+                    updatedRows = updatedRows.filter((row) =>
+                        filteredData.inspectionStatus.some((value) => {
+                            const label = inspectionStatusData.find((item) => item.value === value)?.label;
+                            return label?.toLowerCase() === row[colIndex].toString().toLowerCase();
+                        }),
+                    );
+                }
+
+                setFilteredRows(updatedRows);
+                setPage(0);
+            } finally {
+                setLoading(false);
+            }
+        }, 1000);
+    };
+
+    //clear filters
+    const clearFilters = () => {
+        setFilteredData(initialFilteredData);
+        setSelectedDate(new Date());
+        setFilteredRows(rows);
+        setPage(0);
+        router.replace("/(app)/search");
+    };
+
     const nextPage = () => setPage((page) => Math.min(page + 1, totalPage - 1));
     const prevPage = () => setPage((page) => Math.max(page - 1, 0));
+
+    useEffect(() => {
+        if (params.value && params.key) {
+            setFilteredData((prev) => ({
+                ...prev,
+                [params.key]: [params.value],
+            }));
+        }
+    }, [params.value, params.key]);
+
+    useEffect(() => {
+        applyFilter();
+    }, [filteredData, selectedDate]);
 
     return {
         createdData,
@@ -228,5 +303,10 @@ export const useSearch = () => {
         prevPage,
         closeModal,
         openModal,
+        applyFilter,
+        filteredRows,
+        startPage,
+        endPage,
+        clearFilters,
     };
 };
