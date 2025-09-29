@@ -79,7 +79,7 @@ const approvalStatusData: Data[] = [
 
 const inspectionTypeData: Data[] = [
     { label: "End of Shift Inspection", value: "end-of-shift" },
-    { label: "Off Hire Check", value: "of-hire-check" },
+    { label: "Off Hire Check", value: "off-hire-check" },
     { label: "On Hire Check", value: "on-hire-check" },
     { label: "Start of Shift Inspection", value: "start-of-shift" },
 ];
@@ -94,7 +94,7 @@ const paginationData = [
     },
     {
         title: "Date",
-        data: ["Thu Sep 04 2025", "Fri Sep 12 2025", "Fri Sep 26 2025", "Fri Sep 05 2025"],
+        data: ["Thu Sep 04 2025", "Fri Sep 12 2025", "Fri Sep 26 2025", "Mon Sep 29 2025"],
     },
     {
         title: "Make & Model",
@@ -108,13 +108,8 @@ const paginationData = [
     { title: "Location Name", data: ["Jedox Couriers", "Jedox Couriers", "Jedox Couriers", "Jedox Couriers"] },
     { title: "Sub Location", data: ["DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate"] },
     {
-        title: "Inspection type",
-        data: [
-            "End of Shift Inspection",
-            "End of Shift Inspection",
-            "End of Shift Inspection",
-            "End of Shift Inspection",
-        ],
+        title: "Inspection Type",
+        data: ["Start of Shift Inspection", "End of Shift Inspection", "Off Hire Check", "On Hire Check"],
     },
     { title: "Estimated Cost of repair", data: ["GBP 541,00", "GBP 542,00", "GBP 543,00", "GBP 544,00"] },
     { title: "Approved Cost of repair", data: ["N/A", "N/A", "N/A", "N/A"] },
@@ -152,7 +147,7 @@ export const useSearch = () => {
         subLocation: [],
     };
 
-    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [isSearchModalOpen, setIsSearchModalOpen] = useState<SearchModalState>({
         settingsModal: false,
         calendarModal: false,
@@ -242,6 +237,17 @@ export const useSearch = () => {
                     );
                 }
 
+                if (filteredData.inspectionType.length > 0) {
+                    const colIndex = paginationData.findIndex((c) => c.title === "Inspection Type");
+                    updatedRows = updatedRows.filter((row) =>
+                        filteredData.inspectionType.some((value) => {
+                            const label = inspectionTypeData.find((item) => item.value === value)?.label;
+                            console.log(label);
+                            return label?.toLowerCase() === row[colIndex].toString().toLowerCase();
+                        }),
+                    );
+                }
+
                 setFilteredRows(updatedRows);
                 setPage(0);
             } finally {
@@ -253,7 +259,7 @@ export const useSearch = () => {
     //clear filters
     const clearFilters = () => {
         setFilteredData(initialFilteredData);
-        setSelectedDate(new Date());
+        setSelectedDate(null);
         setFilteredRows(rows);
         setPage(0);
         router.replace("/(app)/search");
@@ -273,7 +279,7 @@ export const useSearch = () => {
 
     useEffect(() => {
         applyFilter();
-    }, [filteredData, selectedDate]);
+    }, [filteredData]);
 
     return {
         createdData,
