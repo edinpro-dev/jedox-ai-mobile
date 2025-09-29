@@ -105,34 +105,41 @@ const AddNewUser = ({ isVisible, addNewUserRole, pdfFormatData, closeModal }: Ad
                             </View>
                         </Card>
 
+                        {/* Form */}
                         <View className="my-4">
-                            <Text>User Role *</Text>
-                            <Select search={false} data={addNewUserRole} placeholder="Select User Role" />
+                            <Text variant={"label"}>User Role *</Text>
+                            <Select
+                                variant="primary"
+                                search={false}
+                                data={addNewUserRole}
+                                placeholder="Select User Role"
+                            />
 
                             <View className="gap-5">
                                 <View>
-                                    <Text>Name</Text>
+                                    <Text variant={"label"}>Name</Text>
                                     <Input variant="primary" placeholder="Name" />
                                 </View>
 
                                 <View>
-                                    <Text>Email *</Text>
+                                    <Text variant={"label"}>Email *</Text>
                                     <Input variant="primary" placeholder="Email" />
                                 </View>
 
                                 <View>
-                                    <Text>User ID *</Text>
+                                    <Text variant={"label"}>User ID *</Text>
                                     <Input variant="primary" placeholder="User ID*" />
                                 </View>
 
                                 <View>
-                                    <Text>Password *</Text>
+                                    <Text variant={"label"}>Password *</Text>
                                     <Input variant="primary" isPassword={true} placeholder="Password *" />
                                 </View>
 
                                 <View>
-                                    <Text> PDF Formats *</Text>
+                                    <Text variant={"label"}> PDF Formats *</Text>
                                     <Select
+                                        variant="primary"
                                         search={false}
                                         data={pdfFormatData}
                                         placeholder="Choose PDF Formats"
@@ -141,7 +148,7 @@ const AddNewUser = ({ isVisible, addNewUserRole, pdfFormatData, closeModal }: Ad
                                 </View>
 
                                 <Button>
-                                    <Text>Create User</Text>
+                                    <Text variant={"button"}>Create User</Text>
                                 </Button>
                             </View>
                         </View>

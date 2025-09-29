@@ -34,59 +34,59 @@ const EditVehicle = ({
                 </View>
                 <View className="py-4 gap-2 border-y border-base-200 dark:border-base-200-dark">
                     <View>
-                        <Text>Registration Number</Text>
-                        <Input placeholder="Enter" />
+                        <Text variant={"label-large"}>Registration Number</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     <View>
-                        <Text>Make</Text>
-                        <Input placeholder="Enter" />
+                        <Text variant={"label-large"}>Make</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     <View>
-                        <Text>Model</Text>
-                        <Input placeholder="Enter" />
+                        <Text variant={"label-large"}>Model</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     <View>
-                        <Text>VIN</Text>
-                        <Input placeholder="Enter" />
+                        <Text variant={"label-large"}>VIN</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     <View>
-                        <Text>Variant</Text>
-                        <Input placeholder="Enter" />
+                        <Text variant={"label-large"}>Variant</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     <View>
-                        <Text>Bloodstyle</Text>
-                        <Input placeholder="Enter" />
-                    </View>
-
-                    <View>
-                        <View className="flex-row gap-1">
-                            <Text>Fuel Type</Text>
-                            <Text color={"error"}>*</Text>
-                        </View>
-                        <Select search={false} data={[]} placeholder="Select" />
+                        <Text variant={"label-large"}>Bloodstyle</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     <View>
                         <View className="flex-row gap-1">
-                            <Text>Current Location</Text>
+                            <Text variant={"label-large"}>Fuel Type</Text>
                             <Text color={"error"}>*</Text>
                         </View>
-                        <Select search={false} data={[]} placeholder="Select" />
+                        <Select variant="primary" search={false} data={[]} placeholder="Select" />
                     </View>
 
                     <View>
-                        <Text>Ownership type Type</Text>
-                        <Select search={false} data={[]} placeholder="Select" />
+                        <View className="flex-row gap-1">
+                            <Text variant={"label-large"}>Current Location</Text>
+                            <Text color={"error"}>*</Text>
+                        </View>
+                        <Select variant="primary" search={false} data={[]} placeholder="Select" />
                     </View>
 
                     <View>
-                        <Text>Source(Leased from...)</Text>
-                        <Input placeholder="Enter" />
+                        <Text variant={"label-large"}>Ownership type Type</Text>
+                        <Select variant="primary" search={false} data={[]} placeholder="Select" />
+                    </View>
+
+                    <View>
+                        <Text variant={"label-large"}>Source(Leased from...)</Text>
+                        <Input variant="primary" placeholder="Enter" />
                     </View>
 
                     {/* Status button */}
@@ -127,9 +127,11 @@ const EditVehicle = ({
                     </View>
 
                     <View className="gap-4">
-                        <Button>Save</Button>
+                        <Button>
+                            <Text variant={"button"}>Save</Text>
+                        </Button>
                         <Button variant="outline" onPress={() => closeModal("editVehicle")}>
-                            Cancel
+                            <Text variant={"button"}>Cancel</Text>
                         </Button>
                     </View>
                 </View>

@@ -29,14 +29,19 @@ const autoEmailer = () => {
                         <Button variant="primary" onPress={() => openModal("addNewEmail")}>
                             <View className="flex-row items-center gap-2">
                                 <IconPlus size={20} color="white" />
-                                <Text>New Email Config</Text>
+                                <Text variant={"button"}>New Email Config</Text>
                             </View>
                         </Button>
                     </View>
 
                     <View className="mt-4 gap-4">
-                        <Input placeholder="Search" iconLeft={<IconSearch size={18} color={colors.infoContent} />} />
+                        <Input
+                            variant="primary"
+                            placeholder="Search"
+                            iconLeft={<IconSearch size={18} color={colors.infoContent} />}
+                        />
                         <Select
+                            variant="primary"
                             search={false}
                             data={emailerTypeData}
                             placeholder="Emailer Type"

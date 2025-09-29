@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import Card from "@/components/card/Card";
 import CalendarModal from "@/components/modals/calendar/CalendarModal";
 import { Select } from "@/components/select";
@@ -11,6 +12,7 @@ import {
     IconObjectScan,
     IconTruckDelivery,
 } from "@tabler/icons-react-native";
+import { router } from "expo-router";
 import { Pressable, ScrollView, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -72,18 +74,20 @@ const Index = () => {
                     />
 
                     {/* Inspection Summary */}
-                    <Card className="mt-4">
-                        <View className="p-4 flex-row items-center justify-between">
-                            <View className="flex-row items-start gap-2">
-                                <IconObjectScan size={30} color={colors.baseContent} />
-                                <Text variant={"h4"}>Inspection Summary</Text>
+                    <Card className="mt-4 py-4">
+                        <View className="gap-2">
+                            <View className="flex-row items-center justify-between">
+                                <View className="flex-row items-start gap-2">
+                                    <IconObjectScan size={30} color={colors.baseContent} />
+                                    <Text variant={"h4"}>Inspection Summary</Text>
+                                </View>
+                                <Pressable className="active:opacity-40">
+                                    <IconDownload size={20} color={colors.accent} />
+                                </Pressable>
                             </View>
-                            <Pressable className="active:opacity-40">
-                                <IconDownload size={20} color={colors.accent} />
-                            </Pressable>
-                        </View>
-                        <View className="px-4">
-                            <Text variant={"caption-large"}>Total Inspections: 202</Text>
+                            <View>
+                                <Text variant={"caption-large"}>Total Inspections: 202</Text>
+                            </View>
                         </View>
                         {/* Pie chart */}
                         <View className="p-4 items-center">
@@ -97,33 +101,71 @@ const Index = () => {
                         </View>
 
                         {/* Inspection count */}
-                        <View className="mt-4 flex-row flex-wrap justify-between gap-4">
-                            <Pressable className="active:opacity-40">
-                                <View className="flex-row items-center gap-1">
-                                    <View className="w-4 h-4 bg-accent rounded" />
-                                    <Text variant={"label"}>Complete</Text>
-                                    <IconArrowUpRight size={20} color={colors.baseContent} />
+                        <View className="flex-row flex-wrap justify-between gap-6">
+                            <Button
+                                variant="ghost"
+                                onPress={() =>
+                                    router.push({
+                                        pathname: "/(app)/search",
+                                        params: {
+                                            value: "completed",
+                                            key: "inspectionStatus",
+                                        },
+                                    })
+                                }
+                            >
+                                <View>
+                                    <View className="flex-row items-center gap-1">
+                                        <View className="w-4 h-4 bg-accent rounded" />
+                                        <Text variant={"label"}>Complete</Text>
+                                        <IconArrowUpRight size={20} color={colors.baseContent} />
+                                    </View>
+                                    <Text variant={"h1"}>231</Text>
                                 </View>
-                                <Text variant={"h1"}>231</Text>
-                            </Pressable>
+                            </Button>
 
-                            <Pressable className="active:opacity-40">
-                                <View className="flex-row items-center gap-1">
-                                    <View className="w-4 h-4 bg-warning rounded" />
-                                    <Text variant={"label"}>In Progress</Text>
-                                    <IconArrowUpRight size={20} color={colors.baseContent} />
+                            <Button
+                                variant="ghost"
+                                onPress={() =>
+                                    router.push({
+                                        pathname: "/(app)/search",
+                                        params: {
+                                            value: "analysis",
+                                            key: "inspectionStatus",
+                                        },
+                                    })
+                                }
+                            >
+                                <View>
+                                    <View className="flex-row items-center gap-1">
+                                        <View className="w-4 h-4 bg-warning rounded" />
+                                        <Text variant={"label"}>In Progress</Text>
+                                        <IconArrowUpRight size={20} color={colors.baseContent} />
+                                    </View>
+                                    <Text variant={"h1"}>4</Text>
                                 </View>
-                                <Text variant={"h1"}>4</Text>
-                            </Pressable>
-
-                            <Pressable className="active:opacity-40">
-                                <View className="flex-row items-center gap-1">
-                                    <View className="w-4 h-4 bg-error rounded" />
-                                    <Text>Incomplete</Text>
-                                    <IconArrowUpRight size={20} color={colors.baseContent} />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                onPress={() =>
+                                    router.push({
+                                        pathname: "/(app)/search",
+                                        params: {
+                                            value: "incomplete",
+                                            key: "inspectionStatus",
+                                        },
+                                    })
+                                }
+                            >
+                                <View>
+                                    <View className="flex-row items-center gap-1">
+                                        <View className="w-4 h-4 bg-error rounded" />
+                                        <Text>Incomplete</Text>
+                                        <IconArrowUpRight size={20} color={colors.baseContent} />
+                                    </View>
+                                    <Text variant={"h1"}>9</Text>
                                 </View>
-                                <Text variant={"h1"}>9</Text>
-                            </Pressable>
+                            </Button>
                         </View>
                     </Card>
 

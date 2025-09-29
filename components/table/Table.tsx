@@ -165,7 +165,15 @@ const RowComponent = ({
             return <IconHourglassHigh size={24} color={"#f59e0b"} />;
         case "Inspection Status":
             return (
-                <View className="flex-row items-center justify-center bg-green-300/70 rounded">
+                <View
+                    className={`flex-row items-center justify-center rounded ${
+                        cell === "Completed"
+                            ? "bg-green-300/70"
+                            : cell === "Incomplete"
+                              ? "bg-red-300/70"
+                              : "bg-yellow-300/70"
+                    }`}
+                >
                     <Text>{cell}</Text>
                 </View>
             );

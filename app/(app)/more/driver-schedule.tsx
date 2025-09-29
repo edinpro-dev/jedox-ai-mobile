@@ -1,6 +1,7 @@
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Select } from "@/components/select";
+import { Table } from "@/components/table";
 import { Text } from "@/components/text";
 import { DriverSchedule } from "@/features/more/components/modals/driver-schedule";
 import { useDriverSchedule } from "@/features/more/hooks/useDriverSchedule";
@@ -22,8 +23,17 @@ import { PieChart } from "react-native-gifted-charts";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const driverSchedule = () => {
-    const { colors, bg, vehiclePieData, isDriverScheduleModalOpen, closeModal, openModal, handlePickFile } =
-        useDriverSchedule();
+    const {
+        colors,
+        bg,
+        vehiclePieData,
+        isDriverScheduleModalOpen,
+        closeModal,
+        openModal,
+        handlePickFile,
+        driverScheduleDummyData,
+        rows,
+    } = useDriverSchedule();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
             <View className="p-4 flex-row items-center gap-4">
@@ -123,12 +133,14 @@ const driverSchedule = () => {
 
                     <View className="mt-4 gap-4">
                         <Select
+                            variant="primary"
                             data={[]}
                             placeholder="Search Registration Number"
                             leftIcon={<IconSearch size={18} color={colors.primary} />}
                         />
 
                         <Select
+                            variant="primary"
                             data={[]}
                             placeholder="Search Driver"
                             leftIcon={<IconSearch size={18} color={colors.primary} />}
@@ -140,6 +152,7 @@ const driverSchedule = () => {
                             </Button>
                             <View className="flex-1">
                                 <Select
+                                    variant="primary"
                                     data={[]}
                                     placeholder="Sub Location"
                                     leftIcon={<IconSearch size={18} color={colors.primary} />}
@@ -149,7 +162,6 @@ const driverSchedule = () => {
                     </View>
 
                     {/* Modal */}
-
                     {isDriverScheduleModalOpen.addBulkAssignment && (
                         <DriverSchedule
                             isVisible={isDriverScheduleModalOpen.addBulkAssignment}
@@ -157,6 +169,13 @@ const driverSchedule = () => {
                             handlePickFile={handlePickFile}
                         />
                     )}
+
+                    {/* Driver schedule table */}
+                    <View className="mt-4">
+                        <ScrollView horizontal>
+                            <Table title="Driver Schedule" columns={driverScheduleDummyData} rows={rows} />
+                        </ScrollView>
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>

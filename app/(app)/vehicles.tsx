@@ -58,7 +58,7 @@ const Vehicles = () => {
                             </View>
                         </Button>
 
-                        <Button variant="outline" onPress={() => openModal("addNewVehicle")}>
+                        <Button variant="outline" onPress={() => openModal("addBulkVehicle")}>
                             <View className="flex-row items-center gap-2">
                                 <IconTruckDelivery size={24} color={"white"} />
                                 <Text>Bulk Vehicle Upload</Text>
@@ -68,6 +68,7 @@ const Vehicles = () => {
 
                     <View className="mt-4 gap-4">
                         <Input
+                            variant="primary"
                             placeholder="Search Vehicle/Reg. No"
                             iconLeft={<IconSearch size={24} color={colors.primary} />}
                         />
@@ -82,9 +83,14 @@ const Vehicles = () => {
                     </View>
 
                     <View className="mt-4 gap-4">
-                        <Select search={false} data={fuelTypeData} placeholder="Fuel Type" />
-                        <Select search={false} data={ownershipTypeData} placeholder="Ownership Type" />
-                        <Select search={false} data={locationData} placeholder="Location" />
+                        <Select variant="primary" search={false} data={fuelTypeData} placeholder="Fuel Type" />
+                        <Select
+                            variant="primary"
+                            search={false}
+                            data={ownershipTypeData}
+                            placeholder="Ownership Type"
+                        />
+                        <Select variant="primary" search={false} data={locationData} placeholder="Location" />
                     </View>
 
                     {isVehicleModalOpen.addNewVehicle && (

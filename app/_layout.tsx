@@ -1,4 +1,5 @@
 import { ErrorModal } from "@/components/modals";
+import { LoaderProvider } from "@/context/LoaderProvider";
 import { ThemeProvider as AppThemeProvider } from "@/context/ThemeProvider";
 import { errorHandlers } from "@/lib/utils";
 import { setUser } from "@/redux/appSlice";
@@ -112,19 +113,21 @@ export default function RootLayout() {
 
     return (
         <AppThemeProvider>
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <QueryClientProvider client={queryClient}>
-                        <GestureHandlerRootView style={{ flex: 1 }}>
-                            <Stack initialRouteName="(app)">
-                                <Stack.Screen name="(app)" options={{ headerShown: false }} />
-                            </Stack>
-                            <StatusBar style="auto" />
-                        </GestureHandlerRootView>
-                    </QueryClientProvider>
-                </PersistGate>
-                <ErrorModalWrapper />
-            </Provider>
+            <LoaderProvider>
+                <Provider store={store}>
+                    <PersistGate loading={null} persistor={persistor}>
+                        <QueryClientProvider client={queryClient}>
+                            <GestureHandlerRootView style={{ flex: 1 }}>
+                                <Stack initialRouteName="(app)">
+                                    <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                                </Stack>
+                                <StatusBar style="auto" />
+                            </GestureHandlerRootView>
+                        </QueryClientProvider>
+                    </PersistGate>
+                    <ErrorModalWrapper />
+                </Provider>
+            </LoaderProvider>
         </AppThemeProvider>
     );
 }

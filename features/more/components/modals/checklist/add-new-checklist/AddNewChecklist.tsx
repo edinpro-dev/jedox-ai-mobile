@@ -29,7 +29,7 @@ const AddNewChecklist = ({ isVisible, closeModal, inspectionTypeData }: AddNewCh
 
                 <View className="my-4 gap-4">
                     <Text variant={"label-large"}>Inspection Type</Text>
-                    <Select search={false} renderMode="checkbox" data={inspectionTypeData} />
+                    <Select variant="primary" search={false} renderMode="checkbox" data={inspectionTypeData} />
                     <Button>
                         <Text variant={"button"}>Select</Text>
                     </Button>
