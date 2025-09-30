@@ -29,7 +29,7 @@ export interface SelectDataItem {
 
 export interface SelectProps extends SelectVariant {
     data: SelectDataItem[];
-    value?: SelectDataItem | (string | number)[];
+    value?: SelectDataItem | (string | number)[] | string | number;
     onChange?: (value: SelectDataItem | (string | number)[]) => void;
     onFocus?: () => void;
     onBlur?: () => void;
@@ -159,7 +159,7 @@ const Select: React.FC<SelectProps> = ({
 
             onChange?.(newValue);
         } else {
-            onChange?.(item);
+            onChange?.(item[valueField]);
         }
     };
 

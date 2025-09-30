@@ -3,8 +3,11 @@ import { sortTableData } from "@/lib/sortTableData";
 import {
     IconArrowRight,
     IconCheck,
+    IconCircleCheck,
     IconDotsVertical,
     IconEdit,
+    IconExclamationCircle,
+    IconFileDislike,
     IconHourglassHigh,
     IconMinus,
     IconTriangleFilled,
@@ -162,7 +165,13 @@ const RowComponent = ({
             );
         //------------------- Search Table ------------------//
         case "Approval":
-            return <IconHourglassHigh size={24} color={"#f59e0b"} />;
+            if (cell === "Accepted") {
+                return <IconCircleCheck size={24} color={"#10b981"} />;
+            } else if (cell === "Pending Review") {
+                return <IconHourglassHigh size={24} color={"#f59e0b"} />;
+            } else {
+                return <IconFileDislike size={24} color={"#ef4444"} />;
+            }
         case "Inspection Status":
             return (
                 <View
@@ -177,6 +186,14 @@ const RowComponent = ({
                     <Text>{cell}</Text>
                 </View>
             );
+        case "Defects/Damages":
+            if (cell === "New Damages") {
+                return <IconExclamationCircle size={20} color={"#ef4444"} />;
+            } else if (cell === "Existing Damages") {
+                return <IconExclamationCircle size={20} color={"#f59e0b"} />;
+            } else {
+                return <IconCheck size={20} color={"#10b981"} />;
+            }
         default:
             return <Text>{cell}</Text>;
     }

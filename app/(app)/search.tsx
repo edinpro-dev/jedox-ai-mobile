@@ -90,7 +90,7 @@ const Search = () => {
                                     onPress={() => openModal("calendarModal")}
                                 />
                             }
-                            value={selectedDate?.toDateString()}
+                            value={selectedDate?.toDateString() ?? "Select a date"}
                         />
                         {isSearchModalOpen.calendarModal && (
                             <CalendarModal
