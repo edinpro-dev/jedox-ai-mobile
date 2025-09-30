@@ -49,10 +49,14 @@ const inspectionStatusData: Data[] = [
 ];
 
 const damageStatusData: Data[] = [
-    { label: "New Damage", value: "new", icon: <AntDesign name="exclamationcircleo" size={20} color="#ef4444" /> },
+    {
+        label: "New Damages",
+        value: "new-damage",
+        icon: <AntDesign name="exclamationcircleo" size={20} color="#ef4444" />,
+    },
     {
         label: "Existing Damages",
-        value: "existing",
+        value: "existing-damage",
         icon: <AntDesign name="exclamationcircleo" size={20} color="#f59e0b" />,
     },
     { label: "No Damages", value: "no-damage", icon: <AntDesign name="check" size={24} color="#10b981" /> },
@@ -102,9 +106,9 @@ const paginationData = [
     },
     { title: "Created by", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
     { title: "Inspection Status", data: ["Completed", "Completed", "Analysis in progress", "Incomplete"] },
-    { title: "Defects/Damages", data: ["!", "!", "!", "!"] },
+    { title: "Defects/Damages", data: ["New Damages", "Existing Damages", "No Damages", "No Damages"] },
     { title: "Previous Driver", data: ["Dennis Sieley", "Dennis Sieley", "Dennis Sieley", "Dennis Sieley"] },
-    { title: "Approval", data: [] },
+    { title: "Approval", data: ["Accepted", "Pending Review", "Accepted", "Rejected"] },
     { title: "Location Name", data: ["Jedox Couriers", "Jedox Couriers", "Jedox Couriers", "Jedox Couriers"] },
     { title: "Sub Location", data: ["DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate", "DEH1 - Bathgate"] },
     {
@@ -210,6 +214,38 @@ export const useSearch = () => {
         setIsSearchModalOpen((prev) => ({ ...prev, settingsModal: false }));
     };
 
+    //filtered data config
+    const filteredDataConfig = [
+        { title: "Inspection Status", value: filteredData.inspectionStatus, source: inspectionStatusData },
+        { title: "Inspection Type", value: filteredData.inspectionType, source: inspectionTypeData },
+        { title: "Defects/Damages", value: filteredData.damageStatus, source: damageStatusData },
+        { title: "Checklist Defect", value: filteredData.defects, source: defectsData },
+        { title: "Safety Audits Issue", value: filteredData.defects, source: defectsData },
+        { title: "Approval", value: filteredData.approvalStatus, source: approvalStatusData },
+        { title: "Location Name", value: filteredData.subLocation, source: subLocationData },
+    ];
+
+    //filter helper
+    const filterHelper = (
+        rows: (string | number)[][],
+        columnTitle: string,
+        filterValue: (string | number)[],
+        dataSource: Data[],
+    ): (string | number)[][] => {
+        if (filterValue.length === 0) return rows;
+
+        const colIndex = paginationData.findIndex((c) => c.title === columnTitle);
+        if (colIndex === -1) return [];
+
+        return rows.filter((row) => {
+            return filterValue.some((value) => {
+                const label = dataSource.find((item) => item.value === value)?.label;
+                const cell = row[colIndex];
+                return label && cell && cell.toString().toLowerCase() === label.toLowerCase();
+            });
+        });
+    };
+
     //Apply filter for Apply button
     const applyFilter = async () => {
         setLoading(true);
@@ -227,25 +263,8 @@ export const useSearch = () => {
                     });
                 }
 
-                if (filteredData.inspectionStatus.length > 0) {
-                    const colIndex = paginationData.findIndex((c) => c.title === "Inspection Status");
-                    updatedRows = updatedRows.filter((row) =>
-                        filteredData.inspectionStatus.some((value) => {
-                            const label = inspectionStatusData.find((item) => item.value === value)?.label;
-                            return label?.toLowerCase() === row[colIndex].toString().toLowerCase();
-                        }),
-                    );
-                }
-
-                if (filteredData.inspectionType.length > 0) {
-                    const colIndex = paginationData.findIndex((c) => c.title === "Inspection Type");
-                    updatedRows = updatedRows.filter((row) =>
-                        filteredData.inspectionType.some((value) => {
-                            const label = inspectionTypeData.find((item) => item.value === value)?.label;
-                            console.log(label);
-                            return label?.toLowerCase() === row[colIndex].toString().toLowerCase();
-                        }),
-                    );
+                for (const f of filteredDataConfig) {
+                    updatedRows = filterHelper(updatedRows, f.title, f.value, f.source);
                 }
 
                 setFilteredRows(updatedRows);

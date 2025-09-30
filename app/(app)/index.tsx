@@ -292,7 +292,15 @@ const Index = () => {
                                 <Text variant={"h4"}>Alerts</Text>
                             </View>
                             <View className="mt-4 flex-row flex-wrap justify-between gap-4">
-                                <Pressable className="active:opacity-40">
+                                <Pressable
+                                    className="active:opacity-40"
+                                    onPress={() =>
+                                        router.push({
+                                            pathname: "/(app)/search",
+                                            params: { value: "new-damage", key: "damageStatus" },
+                                        })
+                                    }
+                                >
                                     <View className="flex-row items-center gap-1">
                                         <Text variant={"label"}>New Damage</Text>
                                         <IconArrowUpRight size={20} color={colors.baseContent} />
@@ -300,7 +308,15 @@ const Index = () => {
                                     <Text variant={"h1"}>1</Text>
                                 </Pressable>
 
-                                <Pressable className="active:opacity-40">
+                                <Pressable
+                                    className="active:opacity-40"
+                                    onPress={() =>
+                                        router.push({
+                                            pathname: "/(app)/search",
+                                            params: { value: "checklist-defect", key: "defects" },
+                                        })
+                                    }
+                                >
                                     <View className="flex-row items-center gap-1">
                                         <Text variant={"label"}>Checklist Defect</Text>
                                         <IconArrowUpRight size={20} color={colors.baseContent} />
@@ -308,7 +324,15 @@ const Index = () => {
                                     <Text variant={"h1"}>0</Text>
                                 </Pressable>
 
-                                <Pressable className="active:opacity-40">
+                                <Pressable
+                                    className="active:opacity-40"
+                                    onPress={() =>
+                                        router.push({
+                                            pathname: "/(app)/search",
+                                            params: { value: "safety-audit", key: "defects" },
+                                        })
+                                    }
+                                >
                                     <View className="flex-row items-center gap-1">
                                         <Text>Safety Audit Issue</Text>
                                         <IconArrowUpRight size={20} color={colors.baseContent} />
@@ -348,7 +372,18 @@ const Index = () => {
 
                         {/* Inspection count */}
                         <View className="mt-4 flex-row flex-wrap justify-between gap-4">
-                            <Pressable className="active:opacity-40">
+                            <Pressable
+                                className="active:opacity-40"
+                                onPress={() =>
+                                    router.push({
+                                        pathname: "/(app)/search",
+                                        params: {
+                                            value: "completed",
+                                            key: "inspectionStatus",
+                                        },
+                                    })
+                                }
+                            >
                                 <View className="flex-row items-center gap-1">
                                     <View className="w-4 h-4 bg-accent rounded" />
                                     <Text variant={"label"}>Inspected</Text>
@@ -361,12 +396,19 @@ const Index = () => {
                                 <View className="flex-row items-center gap-1">
                                     <View className="w-4 h-4 bg-warning rounded" />
                                     <Text variant={"label"}>To be Inspected</Text>
-                                    <IconArrowUpRight size={20} color={colors.baseContent} />
                                 </View>
                                 <Text variant={"h1"}>13</Text>
                             </Pressable>
 
-                            <Pressable className="active:opacity-40">
+                            <Pressable
+                                className="active:opacity-40"
+                                onPress={() =>
+                                    router.push({
+                                        pathname: "/(app)/vehicles",
+                                        params: { value: "active", key: "status" },
+                                    })
+                                }
+                            >
                                 <View className="flex-row items-center gap-1">
                                     <Text>Active Vehicles</Text>
                                     <IconArrowUpRight size={20} color={colors.baseContent} />

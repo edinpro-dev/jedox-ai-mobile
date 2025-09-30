@@ -11,7 +11,7 @@ import { VehicleHistory } from "@/features/vehicles/components/modals/history";
 import { useVehicle } from "@/features/vehicles/hooks/useVehicle";
 import { IconCsv, IconSearch, IconTruck, IconTruckDelivery } from "@tabler/icons-react-native";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Vehicles = () => {
@@ -28,13 +28,15 @@ const Vehicles = () => {
         toggleEditVehicleModalStatus,
         translateX,
         vehicleDummyData,
-        rows,
+        filteredRows,
         toggleRowStatus,
         translateXRow,
         toggleIndividualRow,
         deactivateVehicle,
         toggleAllRow,
         selectedVehicle,
+        filteredData,
+        setFilteredData,
     } = useVehicle();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -73,24 +75,56 @@ const Vehicles = () => {
                             iconLeft={<IconSearch size={24} color={colors.primary} />}
                         />
 
-                        <Button variant="outline">
-                            <Text>Total Active Vehicles: 37</Text>
-                        </Button>
+                        <Pressable
+                            onPress={() => setFilteredData((prev) => ({ ...prev, status: ["active"] }))}
+                            className={`p-2 rounded-full active:opacity-40 ${filteredData.status.find((item) => item === "active") ? "bg-accent" : "border border-accent"}`}
+                        >
+                            <Text className="text-center">Total Active Vehicles: 37</Text>
+                        </Pressable>
 
-                        <Button variant="outline">
-                            <Text>Total Inactive Vehicles: 32</Text>
-                        </Button>
+                        <Pressable
+                            onPress={() => setFilteredData((prev) => ({ ...prev, status: ["inactive"] }))}
+                            className={`p-2 rounded-full active:opacity-40 ${filteredData.status.find((item) => item === "inactive") ? "bg-accent" : "border border-accent"}`}
+                        >
+                            <Text className="text-center">Total Inactive Vehicles: 32</Text>
+                        </Pressable>
                     </View>
 
                     <View className="mt-4 gap-4">
-                        <Select variant="primary" search={false} data={fuelTypeData} placeholder="Fuel Type" />
+                        <Select
+                            variant="primary"
+                            search={false}
+                            data={fuelTypeData}
+                            placeholder="Fuel Type"
+                            onChange={(val) => {
+                                if (typeof val === "string" || typeof val === "number") {
+                                    setFilteredData((prev) => ({ ...prev, fuelType: [val] }));
+                                }
+                            }}
+                        />
                         <Select
                             variant="primary"
                             search={false}
                             data={ownershipTypeData}
                             placeholder="Ownership Type"
+                            onChange={(val) => {
+                                if (typeof val === "string" || typeof val === "number") {
+                                    setFilteredData((prev) => ({ ...prev, ownerShipType: [val] }));
+                                }
+                            }}
                         />
-                        <Select variant="primary" search={false} data={locationData} placeholder="Location" />
+                        <Select
+                            variant="primary"
+                            search={false}
+                            data={locationData}
+                            value={filteredData.location[0]}
+                            placeholder="Location"
+                            onChange={(val) => {
+                                if (typeof val === "string" || typeof val === "number") {
+                                    setFilteredData((prev) => ({ ...prev, location: [val] }));
+                                }
+                            }}
+                        />
                     </View>
 
                     {isVehicleModalOpen.addNewVehicle && (
@@ -113,7 +147,7 @@ const Vehicles = () => {
                             <Table
                                 title="Vehicles"
                                 columns={vehicleDummyData}
-                                rows={rows}
+                                rows={filteredRows}
                                 sortable={true}
                                 sortableColumns={[0, 1, 2, 3, 4, 5, 6, 7, 8]}
                                 useIsActive={false}
