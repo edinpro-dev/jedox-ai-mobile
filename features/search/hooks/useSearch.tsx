@@ -141,6 +141,7 @@ export const useSearch = () => {
         paginationData.map((col) => col.data[rowIndex]),
     );
 
+    //initial state for select component filtered data
     const initialFilteredData: FilteredData = {
         createdBy: [],
         inspectionStatus: [],
@@ -151,6 +152,7 @@ export const useSearch = () => {
         subLocation: [],
     };
 
+    //states
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [isSearchModalOpen, setIsSearchModalOpen] = useState<SearchModalState>({
         settingsModal: false,
@@ -160,7 +162,9 @@ export const useSearch = () => {
     const [columns, setColumns] = useState<Column[]>(searchColumnsData);
     const [filteredData, setFilteredData] = useState<FilteredData>(initialFilteredData);
     const [filteredRows, setFilteredRows] = useState<(string | number)[][]>(rows);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
+    //hooks
     const params = useLocalSearchParams<{ value: string; key: string; t: string }>();
     const { setLoading } = useLoader();
 
@@ -253,6 +257,14 @@ export const useSearch = () => {
             try {
                 let updatedRows = [...rows];
 
+                //search query filter
+                if (searchQuery.trim()) {
+                    const searchResults = searchQuery.toLowerCase();
+                    updatedRows = updatedRows.filter((row) => {
+                        return row.some((cell) => cell.toString().toLowerCase().includes(searchResults));
+                    });
+                }
+
                 if (selectedDate) {
                     const colIndex = paginationData.findIndex((c) => c.title === "Date");
                     updatedRows = updatedRows.filter((row) => {
@@ -333,5 +345,7 @@ export const useSearch = () => {
         startPage,
         endPage,
         clearFilters,
+        searchQuery,
+        setSearchQuery,
     };
 };
