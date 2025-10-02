@@ -11,6 +11,7 @@ const More = () => {
         { title: "Auto Emailer", route: "/auto-emailer" },
         { title: "Driver Schedule", route: "/driver-schedule" },
         { title: "Checklist", route: "/checklist" },
+        { title: "EditVehicle", route: "/edit-vehicle" },
     ];
 
     return (

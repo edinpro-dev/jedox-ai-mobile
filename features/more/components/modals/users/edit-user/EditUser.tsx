@@ -191,7 +191,7 @@ const EditUser = ({
                                     <Text variant={"button"}>Save</Text>
                                 </Button>
 
-                                <Button variant="outline" onPress={() => closeModal("editUser")}>
+                                <Button variant="outline-primary" onPress={() => closeModal("editUser")}>
                                     <Text variant={"button"}>Cancel</Text>
                                 </Button>
                             </View>

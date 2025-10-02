@@ -46,23 +46,23 @@ const Vehicles = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="flex-1 px-4">
                     <View className="gap-4">
-                        <Button variant="outline">
+                        <Button variant="outline-primary">
                             <View className="flex-row items-center gap-2">
-                                <IconCsv size={24} color={"white"} />
+                                <IconCsv size={24} color={"#7367f0"} />
                                 <Text>Export vehicle list</Text>
                             </View>
                         </Button>
 
-                        <Button variant="outline" onPress={() => openModal("addNewVehicle")}>
+                        <Button variant="outline-primary" onPress={() => openModal("addNewVehicle")}>
                             <View className="flex-row items-center gap-2">
-                                <IconTruck size={24} color={"white"} />
+                                <IconTruck size={24} color={"#7367f0"} />
                                 <Text>Add New Vehicle</Text>
                             </View>
                         </Button>
 
-                        <Button variant="outline" onPress={() => openModal("addBulkVehicle")}>
+                        <Button variant="outline-primary" onPress={() => openModal("addBulkVehicle")}>
                             <View className="flex-row items-center gap-2">
-                                <IconTruckDelivery size={24} color={"white"} />
+                                <IconTruckDelivery size={24} color={"#7367f0"} />
                                 <Text>Bulk Vehicle Upload</Text>
                             </View>
                         </Button>

@@ -9,6 +9,7 @@ import { DeleteRowOptions } from "@/features/search/components/modals/delete-row
 import Settings from "@/features/search/components/modals/search-settings/Settings";
 import { useSearch } from "@/features/search/hooks/useSearch";
 import { IconCalendar, IconSearch, IconSettings } from "@tabler/icons-react-native";
+import { router } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -44,6 +45,8 @@ const Search = () => {
         startPage,
         endPage,
         clearFilters,
+        searchQuery,
+        setSearchQuery,
     } = useSearch();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -59,6 +62,8 @@ const Search = () => {
                             variant="primary"
                             placeholder="Search License plate/Vehicle number/VIN/Customer name/Quote ID"
                             iconLeft={<IconSearch size={18} color={colors.primary} />}
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
                         />
 
                         {/* Disabled input */}
@@ -207,6 +212,7 @@ const Search = () => {
                                     useIsActive
                                     sortableColumns={[2, 3, 4, 10, 11, 12, 13]}
                                     onVerticalDotClick={() => openModal("deleteModal")}
+                                    onVehicleInfoClick={() => router.push({ pathname: "/(app)/dashboard" })}
                                 />
                             </ScrollView>
                             <Pagination page={page} totalPage={totalPage} onNext={nextPage} onPrev={prevPage} />

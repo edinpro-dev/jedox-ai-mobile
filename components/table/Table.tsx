@@ -40,6 +40,8 @@ interface TableProps {
     toggleRowStatus?: (index: number) => void;
     toggleIndividualRow?: (rowIndex: number) => void;
     onVerticalDotClick?: (index: number) => void;
+    onVehicleInfoClick?: (index: number, cell: string | number) => void;
+    onRowClick?: (rowIndex: number, row: string | number[]) => void;
     translateXRow?: Animated.AnimatedInterpolation<string | number>[];
 }
 
@@ -84,6 +86,7 @@ const RowComponent = ({
     translateXRow,
     onEditClick,
     onHistoryClick,
+    onVehicleInfoClick,
 }: RowComponentProps) => {
     switch (column.label) {
         //------------------- History Table ------------------//
@@ -194,6 +197,12 @@ const RowComponent = ({
             } else {
                 return <IconCheck size={20} color={"#10b981"} />;
             }
+        case "Vehicle Info":
+            return (
+                <Pressable className="active:opacity-40" onPress={() => onVehicleInfoClick?.(rowIndex, cell)}>
+                    <Text>{cell}</Text>
+                </Pressable>
+            );
         default:
             return <Text>{cell}</Text>;
     }
@@ -216,6 +225,8 @@ const Table = ({
     onEditClick,
     onHistoryClick,
     onVerticalDotClick,
+    onVehicleInfoClick,
+    onRowClick,
 }: TableProps) => {
     const [sortConfig, setSortConfig] = useState<SortConfig>({ columnIndex: null, direction: "asc" });
 
@@ -246,7 +257,7 @@ const Table = ({
     return (
         <View>
             <ScrollView stickyHeaderIndices={[0]} showsVerticalScrollIndicator={false}>
-                <View className="px-4 flex-row items-center justify-start gap-4 border-b border-base-100 bg-base-100 dark:bg-base-100-dark">
+                <View className="px-4 flex-row items-center justify-start gap-4 border-b border-base-100 bg-base-200 dark:bg-base-100-dark">
                     {/* Checkbox column */}
                     {checkbox && (
                         <CheckBoxComponent
@@ -286,7 +297,11 @@ const Table = ({
 
                 {/* Rows data */}
                 {sortedRows.map((row, rowIndex) => (
-                    <View key={rowIndex} className="relative px-4 flex-row items-center justify-between gap-4">
+                    <Pressable
+                        key={rowIndex}
+                        className="relative px-4 flex-row items-center justify-between gap-4 active:opacity-40"
+                        onPress={() => onRowClick?.(rowIndex, row)}
+                    >
                         {/* Checkbox row */}
                         {checkbox && (
                             <CheckBoxComponent
@@ -310,6 +325,7 @@ const Table = ({
                                             translateXRow={translateXRow}
                                             onEditClick={onEditClick}
                                             onHistoryClick={onHistoryClick}
+                                            onVehicleInfoClick={onVehicleInfoClick}
                                         />
                                     </View>
                                 );
@@ -320,7 +336,7 @@ const Table = ({
                                 <IconDotsVertical size={24} color={"grey"} />
                             </Pressable>
                         )}
-                    </View>
+                    </Pressable>
                 ))}
             </ScrollView>
         </View>
