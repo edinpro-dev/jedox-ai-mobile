@@ -1,3 +1,13 @@
+import { useTheme } from "@/lib/theme";
+import { useState } from "react";
+
+export interface DashboardModalState {
+    editVehicleDetailsModal: boolean;
+    editVehicleDamagesModal: boolean;
+}
+
+export type ModalKey = keyof DashboardModalState;
+
 //Temporary data
 const comparisonTableData = [
     {
@@ -109,6 +119,47 @@ const inspectionChecklistFunctionalChecks = [
     },
 ];
 
+const editVehicleDamages = [
+    { id: 1, label: "", data: [] },
+    {
+        id: 2,
+        label: "Panel",
+        data: ["Right front door", "Lower bumper grille", "Foot step", "Foot step", "Front bumper"],
+    },
+    {
+        id: 3,
+        label: "Damage Type",
+        data: ["Dent 2", "Detached", "Scratch", "Dent 2", "Scratch"],
+    },
+    {
+        id: 4,
+        label: "Damage id",
+        data: ["VINhvuptZH", "VINhvuptZH", "VINhvuptZH", "VINhvuptZH", "VINhvuptZH"],
+    },
+    {
+        id: 5,
+        label: "First found on",
+        data: [
+            "18th Sep 2025 20:29",
+            "18th Sep 2025 20:29",
+            "18th Sep 2025 20:29",
+            "18th Sep 2025 20:29",
+            "18th Sep 2025 20:29",
+        ],
+    },
+    {
+        id: 6,
+        label: "Repair Status",
+        data: [
+            "Pending for review",
+            "Pending for review",
+            "Pending for review",
+            "Pending for review",
+            "Pending for review",
+        ],
+    },
+];
+
 export const useDashboard = () => {
     //Temporary row data
 
@@ -133,7 +184,24 @@ export const useDashboard = () => {
         (_, index) => inspectionChecklistFunctionalChecks.map((col) => col.data[index]),
     );
 
+    const vehicleDamageRows = Array.from({ length: editVehicleDamages[1].data.length }, (_, index) =>
+        editVehicleDamages.map((col) => col.data[index]),
+    );
+
+    //states
+    const [isDashboardModalOpen, setIsDashboardModalOpen] = useState<DashboardModalState>({
+        editVehicleDetailsModal: false,
+        editVehicleDamagesModal: false,
+    });
+
+    const { colors } = useTheme();
+
+    //toggle modals
+    const closeModal = (key: ModalKey) => setIsDashboardModalOpen((prev) => ({ ...prev, [key]: false }));
+    const openModal = (key: ModalKey) => setIsDashboardModalOpen((prev) => ({ ...prev, [key]: true }));
+
     return {
+        colors,
         repairEstimateRows,
         repairEstimateData,
         comparisonRows,
@@ -144,5 +212,10 @@ export const useDashboard = () => {
         inspectionChecklistGeneralChecks,
         inspectionChecklistAvailableItems,
         inspectionChecklistFunctionalChecks,
+        closeModal,
+        openModal,
+        isDashboardModalOpen,
+        editVehicleDamages,
+        vehicleDamageRows,
     };
 };

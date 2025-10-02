@@ -47,7 +47,7 @@ const driverSchedule = () => {
                     <View className="pb-4 border-b border-base-100">
                         <View>
                             <View className="gap-4">
-                                <Button disabled={true} variant="outline">
+                                <Button disabled={true} variant="outline-primary">
                                     <View className="flex-row items-center gap-2">
                                         <IconFileTypeCsv size={24} color={colors.accent} />
                                         <Text>Download CSV</Text>
@@ -147,7 +147,7 @@ const driverSchedule = () => {
                         />
 
                         <View className="flex-row items-center justify-between gap-4">
-                            <Button variant="outline">
+                            <Button variant="outline-primary">
                                 <IconPencil size={20} color="white" />
                             </Button>
                             <View className="flex-1">

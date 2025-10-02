@@ -48,7 +48,7 @@ const users = () => {
                 <View className="flex-1 p-4 gap-4">
                     <View className="items-start gap-4">
                         <Button
-                            variant="outline"
+                            variant="outline-primary"
                             className="w-full items-center"
                             onPress={() => openModal("addNewUser")}
                         >
@@ -58,7 +58,7 @@ const users = () => {
                             </View>
                         </Button>
                         <Button
-                            variant="outline"
+                            variant="outline-primary"
                             className="w-full items-center"
                             onPress={() => openModal("addBulkUser")}
                         >

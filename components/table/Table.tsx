@@ -41,6 +41,7 @@ interface TableProps {
     toggleIndividualRow?: (rowIndex: number) => void;
     onVerticalDotClick?: (index: number) => void;
     onVehicleInfoClick?: (index: number, cell: string | number) => void;
+    onRowClick?: (rowIndex: number, row: string | number[]) => void;
     translateXRow?: Animated.AnimatedInterpolation<string | number>[];
 }
 
@@ -225,6 +226,7 @@ const Table = ({
     onHistoryClick,
     onVerticalDotClick,
     onVehicleInfoClick,
+    onRowClick,
 }: TableProps) => {
     const [sortConfig, setSortConfig] = useState<SortConfig>({ columnIndex: null, direction: "asc" });
 
@@ -295,7 +297,11 @@ const Table = ({
 
                 {/* Rows data */}
                 {sortedRows.map((row, rowIndex) => (
-                    <View key={rowIndex} className="relative px-4 flex-row items-center justify-between gap-4">
+                    <Pressable
+                        key={rowIndex}
+                        className="relative px-4 flex-row items-center justify-between gap-4 active:opacity-40"
+                        onPress={() => onRowClick?.(rowIndex, row)}
+                    >
                         {/* Checkbox row */}
                         {checkbox && (
                             <CheckBoxComponent
@@ -330,7 +336,7 @@ const Table = ({
                                 <IconDotsVertical size={24} color={"grey"} />
                             </Pressable>
                         )}
-                    </View>
+                    </Pressable>
                 ))}
             </ScrollView>
         </View>

@@ -130,7 +130,7 @@ const EditVehicle = ({
                         <Button>
                             <Text variant={"button"}>Save</Text>
                         </Button>
-                        <Button variant="outline" onPress={() => closeModal("editVehicle")}>
+                        <Button variant="outline-primary" onPress={() => closeModal("editVehicle")}>
                             <Text variant={"button"}>Cancel</Text>
                         </Button>
                     </View>

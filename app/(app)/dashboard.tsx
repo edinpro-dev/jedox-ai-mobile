@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Table } from "@/components/table";
 import { Text } from "@/components/text";
+import { EditVehicleDetails } from "@/features/dashboard/components/modals/edit-vehicle-details";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 import {
     IconBrandWhatsapp,
@@ -20,6 +21,7 @@ import {
     IconPrinter,
     IconShare,
 } from "@tabler/icons-react-native";
+import { router } from "expo-router";
 import React from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -36,6 +38,11 @@ const Dashboard = () => {
         inspectionChecklistAvailableItems,
         inspectionChecklistFunctionalChecks,
         inspectionChecklistGeneralChecks,
+        closeModal,
+        openModal,
+        isDashboardModalOpen,
+        editVehicleDamages,
+        vehicleDamageRows,
     } = useDashboard();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -104,7 +111,7 @@ const Dashboard = () => {
 
                             {/* Buttons */}
                             <View className="gap-4">
-                                <Button variant="outline">
+                                <Button variant="outline-accent" onPress={() => openModal("editVehicleDetailsModal")}>
                                     <View className="flex-row items-center gap-2">
                                         <IconPencil size={20} color={"#06b6d4"} />
                                         <Text variant={"button"} color={"accent"}>
@@ -113,7 +120,22 @@ const Dashboard = () => {
                                     </View>
                                 </Button>
 
-                                <Button variant="outline">
+                                {/* Edit details modal */}
+                                {isDashboardModalOpen.editVehicleDetailsModal && (
+                                    <EditVehicleDetails
+                                        isVisible={isDashboardModalOpen.editVehicleDetailsModal}
+                                        closeModal={closeModal}
+                                    />
+                                )}
+
+                                <Button
+                                    variant="outline-accent"
+                                    onPress={() =>
+                                        router.push({
+                                            pathname: "/(app)/more/edit-vehicle",
+                                        })
+                                    }
+                                >
                                     <View className="flex-row items-center gap-2">
                                         <IconExternalLink size={20} color={"#06b6d4"} />
                                         <Text variant={"button"} color={"accent"}>
@@ -179,25 +201,25 @@ const Dashboard = () => {
                         <View className="p-4 gap-4">
                             <View className="gap-2">
                                 <Text variant={"h4"}>Inspection Images</Text>
-                                <Button variant="outline">
+                                <Button variant="outline-accent">
                                     <View className="flex-row items-center gap-1">
                                         <IconMapPin size={20} color={"#06b6d4"} />
                                         <Text variant={"button"}>Location</Text>
                                     </View>
                                 </Button>
-                                <Button variant="outline">
+                                <Button variant="outline-accent">
                                     <View className="flex-row items-center gap-1">
                                         <IconMail size={20} color={"#06b6d4"} />
                                         <Text variant={"button"}>Send in Email</Text>
                                     </View>
                                 </Button>
-                                <Button variant="outline">
+                                <Button variant="outline-accent">
                                     <View className="flex-row items-center gap-1">
                                         <IconCloudDownload size={20} color={"#06b6d4"} />
                                         <Text variant={"button"}>Download</Text>
                                     </View>
                                 </Button>
-                                <Button variant="outline">
+                                <Button variant="outline-accent">
                                     <View className="flex-row items-center gap-1">
                                         <IconCloudUpload size={20} color={"#06b6d4"} />
                                         <Text variant={"button"}>Uploads</Text>
@@ -239,56 +261,56 @@ const Dashboard = () => {
                     <Card>
                         <View className="p-4 gap-4">
                             <View className="gap-2">
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Overview
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Heatmap
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Front
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Left Front
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Left Rear
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Rear
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Right Rear
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Right Front
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Roof
                                     </Text>
-                                </Pressable>
-                                <Pressable className={`py-2 border border-accent rounded-full active:opacity-40`}>
+                                </Button>
+                                <Button variant="outline-accent" rounded="rounded-full">
                                     <Text variant={"button"} className="text-center">
                                         Others
                                     </Text>
-                                </Pressable>
+                                </Button>
                             </View>
                             <Text variant={"label-large"} className="py-4 text-center">
                                 Tap on icons to view panels
@@ -306,36 +328,36 @@ const Dashboard = () => {
                             <View className="p-4 gap-2 border border-base-300 dark:border-base-100-dark rounded-lg">
                                 <Text variant={"h4"}>Comparison</Text>
                                 <View className="gap-2">
-                                    <Pressable className="py-2 border border-accent rounded-full active:opacity-40">
+                                    <Button variant="outline-accent" rounded="rounded-full">
                                         <View className="flex-row items-center justify-center gap-1">
                                             <IconExclamationCircleFilled size={18} color={"#ef4444"} />
                                             <Text variant={"button"}>New damages</Text>
                                         </View>
-                                    </Pressable>
-                                    <Pressable className="py-2 border border-accent rounded-full active:opacity-40">
+                                    </Button>
+                                    <Button variant="outline-accent" rounded="rounded-full">
                                         <View className="flex-row items-center justify-center gap-1">
                                             <IconExclamationCircleFilled size={18} color={"#f59e0b"} />
                                             <Text variant={"button"}>Existing damages</Text>
                                         </View>
-                                    </Pressable>
-                                    <Pressable className="py-2 border border-accent rounded-full active:opacity-40">
+                                    </Button>
+                                    <Button variant="outline-accent" rounded="rounded-full">
                                         <View className="flex-row items-center justify-center gap-1">
                                             <IconExclamationCircleFilled size={18} color={"#000"} />
                                             <Text variant={"button"}>Manual inspection needed</Text>
                                         </View>
-                                    </Pressable>
-                                    <Pressable className="py-2 border border-accent rounded-full active:opacity-40">
+                                    </Button>
+                                    <Button variant="outline-accent" rounded="rounded-full">
                                         <View className="flex-row items-center justify-center gap-1">
                                             <IconExclamationCircleFilled size={18} color={"#10b981"} />
                                             <Text variant={"button"}>No damages</Text>
                                         </View>
-                                    </Pressable>
-                                    <Pressable className="py-2 border border-accent rounded-full active:opacity-40">
+                                    </Button>
+                                    <Button variant="outline-accent" rounded="rounded-full">
                                         <View className="flex-row items-center justify-center gap-1">
                                             <IconExclamationCircleFilled size={18} color={"#ff7f50"} />
                                             <Text variant={"button"}>Unrecognized</Text>
                                         </View>
-                                    </Pressable>
+                                    </Button>
                                 </View>
                                 <ScrollView horizontal>
                                     <Table
@@ -358,16 +380,16 @@ const Dashboard = () => {
                                 <Table title="Repair Estimate" columns={repairEstimateData} rows={repairEstimateRows} />
                             </ScrollView>
                             <View className="gap-4">
-                                <Button variant="outline">
+                                <Button variant="outline-primary">
                                     <Text className="button">Email Inspection Report</Text>
                                 </Button>
-                                <Button variant="outline">
+                                <Button variant="outline-primary">
                                     <Text className="button">Approve</Text>
                                 </Button>
-                                <Button variant="outline">
+                                <Button variant="outline-primary">
                                     <Text className="button">Reject</Text>
                                 </Button>
-                                <Button variant="outline">
+                                <Button variant="outline-primary">
                                     <Text className="button">Request approval</Text>
                                 </Button>
                                 <View className="flex-row items-center justify-between">
