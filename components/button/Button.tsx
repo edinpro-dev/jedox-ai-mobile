@@ -3,8 +3,9 @@ import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 
 export interface ButtonProps {
     children: React.ReactNode;
-    variant?: "primary" | "secondary" | "accent" | "neutral" | "outline" | "ghost";
+    variant?: "primary" | "secondary" | "accent" | "neutral" | "outline-primary" | "outline-accent" | "ghost";
     size?: "sm" | "md" | "lg";
+    rounded?: "rounded-lg" | "rounded-full";
     disabled?: boolean;
     onPress?: () => void;
     className?: string;
@@ -16,6 +17,7 @@ const Button: React.FC<ButtonProps> = ({
     children,
     variant = "primary",
     size = "md",
+    rounded = "rounded-lg",
     disabled = false,
     onPress,
     className = "",
@@ -54,9 +56,14 @@ const Button: React.FC<ButtonProps> = ({
                     }`,
                     text: `font-poppins-semibold ${disabled ? "text-base-content" : "text-white"}`,
                 };
-            case "outline":
+            case "outline-primary":
                 return {
                     button: `${baseButtonClasses} bg-transparent ${disabled ? "border-primary/50" : "border-primary"}`,
+                    text: `font-poppins-semibold ${disabled ? "text-primary/50" : "text-primary"}`,
+                };
+            case "outline-accent":
+                return {
+                    button: `${baseButtonClasses} bg-transparent ${disabled ? "border-accent/50" : "border-accent"}`,
                     text: `font-poppins-semibold ${disabled ? "text-primary/50" : "text-primary"}`,
                 };
             case "ghost":
@@ -92,10 +99,24 @@ const Button: React.FC<ButtonProps> = ({
         }
     };
 
+    const getRoundedClasses = (): { button: string } => {
+        switch (rounded) {
+            case "rounded-full":
+                return {
+                    button: "rounded-full",
+                };
+            default: //rounded-lg
+                return {
+                    button: "rounded-lg",
+                };
+        }
+    };
+
     const variantClasses = getVariantClasses();
     const sizeClasses = getSizeClasses();
+    const roundedClasses = getRoundedClasses();
 
-    const buttonClasses = `rounded-lg ${variantClasses.button} ${sizeClasses.button} ${className}`;
+    const buttonClasses = `${roundedClasses.button} ${variantClasses.button} ${sizeClasses.button} ${className}`;
     const textClasses = `${variantClasses.text} ${sizeClasses.text} ${textClassName}`;
 
     return (
