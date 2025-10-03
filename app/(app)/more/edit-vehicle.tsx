@@ -11,8 +11,16 @@ import { Image, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const EditVehicle = () => {
-    const { colors, closeModal, openModal, isDashboardModalOpen, editVehicleDamages, vehicleDamageRows } =
-        useDashboard();
+    const {
+        colors,
+        closeModal,
+        openModal,
+        isDashboardModalOpen,
+        editVehicleDamages,
+        vehicleDamageRows,
+        damageStepView,
+        setDamageStepView,
+    } = useDashboard();
 
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -199,6 +207,8 @@ const EditVehicle = () => {
                                     <EditVehicleDamages
                                         isVisible={isDashboardModalOpen.editVehicleDamagesModal}
                                         closeModal={closeModal}
+                                        damageStepView={damageStepView}
+                                        setDamageStepView={setDamageStepView}
                                     />
                                 )}
                             </View>

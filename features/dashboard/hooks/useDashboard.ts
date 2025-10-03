@@ -1,5 +1,5 @@
 import { useTheme } from "@/lib/theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface DashboardModalState {
     editVehicleDetailsModal: boolean;
@@ -193,12 +193,19 @@ export const useDashboard = () => {
         editVehicleDetailsModal: false,
         editVehicleDamagesModal: false,
     });
+    const [damageStepView, setDamageStepView] = useState<number>(1);
 
     const { colors } = useTheme();
 
     //toggle modals
     const closeModal = (key: ModalKey) => setIsDashboardModalOpen((prev) => ({ ...prev, [key]: false }));
     const openModal = (key: ModalKey) => setIsDashboardModalOpen((prev) => ({ ...prev, [key]: true }));
+
+    useEffect(() => {
+        if (!isDashboardModalOpen.editVehicleDamagesModal) {
+            setDamageStepView(1);
+        }
+    }, [isDashboardModalOpen.editVehicleDamagesModal]);
 
     return {
         colors,
@@ -217,5 +224,7 @@ export const useDashboard = () => {
         isDashboardModalOpen,
         editVehicleDamages,
         vehicleDamageRows,
+        damageStepView,
+        setDamageStepView,
     };
 };
