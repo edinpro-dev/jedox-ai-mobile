@@ -3,6 +3,7 @@ import { Card } from "@/components/card";
 import { Table } from "@/components/table";
 import { Text } from "@/components/text";
 import { EditVehicleDetails } from "@/features/dashboard/components/modals/edit-vehicle-details";
+import { InspectionReports } from "@/features/dashboard/components/modals/inspection-reports";
 import { useDashboard } from "@/features/dashboard/hooks/useDashboard";
 import {
     IconBrandWhatsapp,
@@ -43,6 +44,12 @@ const Dashboard = () => {
         isDashboardModalOpen,
         editVehicleDamages,
         vehicleDamageRows,
+        inspectionType,
+        setInspectionType,
+        inspectionReports,
+        setInspectionReports,
+        selectedLanguage,
+        setSelectedLanguage,
     } = useDashboard();
     return (
         <SafeAreaView edges={["left", "right", "bottom"]} className="flex-1">
@@ -184,16 +191,47 @@ const Dashboard = () => {
                         <View className="flex-row items-center justify-between">
                             <Text variant={"h4"}>Inspection report</Text>
                             <View className="flex-row items-center gap-4">
-                                <Pressable className="active:opacity-40">
+                                <Pressable
+                                    className="active:opacity-40"
+                                    onPress={() => {
+                                        setInspectionType("share");
+                                        openModal("inspectionReportsModal");
+                                    }}
+                                >
                                     <IconShare size={20} color={"#06b6d4"} />
                                 </Pressable>
-                                <Pressable className="active:opacity-40">
+                                <Pressable
+                                    className="active:opacity-40"
+                                    onPress={() => {
+                                        setInspectionType("email");
+
+                                        openModal("inspectionReportsModal");
+                                    }}
+                                >
                                     <IconMail size={20} color={"#06b6d4"} />
                                 </Pressable>
-                                <Pressable className="active:opacity-40">
+                                <Pressable
+                                    className="active:opacity-40"
+                                    onPress={() => {
+                                        setInspectionType("download");
+                                        openModal("inspectionReportsModal");
+                                    }}
+                                >
                                     <IconDownload size={20} color={"#06b6d4"} />
                                 </Pressable>
                             </View>
+
+                            {isDashboardModalOpen.inspectionReportsModal && (
+                                <InspectionReports
+                                    isVisible={isDashboardModalOpen.inspectionReportsModal}
+                                    closeModal={closeModal}
+                                    inspectionType={inspectionType}
+                                    inspectionReports={inspectionReports}
+                                    setInspectionReports={setInspectionReports}
+                                    selectedLanguage={selectedLanguage}
+                                    setSelectedLanguage={setSelectedLanguage}
+                                />
+                            )}
                         </View>
                     </Card>
 

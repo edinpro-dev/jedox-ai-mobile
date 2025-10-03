@@ -4,9 +4,18 @@ import { useEffect, useState } from "react";
 export interface DashboardModalState {
     editVehicleDetailsModal: boolean;
     editVehicleDamagesModal: boolean;
+    inspectionReportsModal: boolean;
 }
 
 export type ModalKey = keyof DashboardModalState;
+
+export interface InspectionReportsInterface {
+    id: number;
+    label: string;
+    isActive: boolean;
+}
+
+export type InspectionType = "share" | "email" | "download" | null;
 
 //Temporary data
 const comparisonTableData = [
@@ -160,6 +169,20 @@ const editVehicleDamages = [
     },
 ];
 
+const inspectionReportsData: InspectionReportsInterface[] = [
+    { id: 1, label: "Comparison Details", isActive: true },
+    { id: 2, label: "Damage heatmap", isActive: true },
+    { id: 3, label: "Estimates", isActive: true },
+    { id: 4, label: "Repair Estimate: New Damages", isActive: true },
+    { id: 5, label: "All Damage Panels", isActive: true },
+    { id: 6, label: "Comparison Images", isActive: true },
+    { id: 7, label: "Remarks", isActive: true },
+    { id: 8, label: "Location", isActive: true },
+    { id: 9, label: "Checklist", isActive: true },
+    { id: 10, label: "Analysed Images", isActive: true },
+    { id: 11, label: "Vehicle Details", isActive: true },
+];
+
 export const useDashboard = () => {
     //Temporary row data
 
@@ -192,8 +215,12 @@ export const useDashboard = () => {
     const [isDashboardModalOpen, setIsDashboardModalOpen] = useState<DashboardModalState>({
         editVehicleDetailsModal: false,
         editVehicleDamagesModal: false,
+        inspectionReportsModal: false,
     });
     const [damageStepView, setDamageStepView] = useState<number>(1);
+    const [inspectionReports, setInspectionReports] = useState<InspectionReportsInterface[]>(inspectionReportsData);
+    const [inspectionType, setInspectionType] = useState<InspectionType>(null);
+    const [selectedLanguage, setSelectedLanguage] = useState<string | number>("en-us");
 
     const { colors } = useTheme();
 
@@ -226,5 +253,11 @@ export const useDashboard = () => {
         vehicleDamageRows,
         damageStepView,
         setDamageStepView,
+        inspectionType,
+        setInspectionType,
+        inspectionReports,
+        setInspectionReports,
+        selectedLanguage,
+        setSelectedLanguage,
     };
 };
